@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholar Dashboard Pro</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+
+    <style>
+        :root {
+            /* Palette - Monochrome Base */
+            --primary: #374151;
+            --primary-dark: #1F2937;
+            --text-main: #111827;
+            --text-sub: #6B7280;
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --danger: #EF4444;
+            --gold: #F59E0B;
+            --radius-box: 24px;
+            --radius-item: 12px;
+        }
+
+        * {
+            box-sizing: border-box; margin: 0; padding: 0; outline: none;
+            font-family: "Pretendard Variable", Pretendard, sans-serif !important;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-size: 16px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1500px;
+            height: 92vh;
+            background: var(--bg-card);
+            border-radius: var(--radius-box);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Quote Bar */
+        .quote-bar {
+            text-align: center;
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-sub);
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+        .quote-text { color: var(--text-main); font-weight: 700; }
+
+        /* Header */
+        header {
+            padding: 0.8rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.95);
+            z-index: 10;
+            gap: 2rem;
+        }
+
+        .user-section { min-width: 200px; }
+        .user-section h1 { font-size: 1.4rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
+        .user-section .subtitle { font-size: 0.85rem; color: var(--text-sub); margin-top: 0.2rem; font-weight: 500; }
+
+        .xp-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .xp-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.4rem; }
+        .xp-track { width: 100%; height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
+        .xp-fill {
+            height: 100%; background: var(--primary); width: 0%; border-radius: 4px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .clock-section { text-align: right; min-width: 110px; font-variant-numeric: tabular-nums; }
+        .clock-time { font-size: 1.5rem; font-weight: 700; color: var(--text-main); letter-spacing: -1px; }
+        .clock-date { font-size: 0.8rem; color: var(--text-sub); font-weight: 500; }
+
+        .btn-reset { margin-left: 1rem; font-size: 0.8rem; color: var(--text-sub); background: transparent; border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .btn-reset:hover { background: #F9FAFB; border-color: var(--danger); color: var(--danger); }
+
+        /* Content Grid */
+        .content-grid { display: grid; grid-template-columns: 320px 380px 1fr; height: 100%; overflow: hidden; }
+
+        .panel { padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
+        .panel-left { background: #F9FAFB; border-right: 1px solid var(--border); }
+        .panel-center { background: white; border-right: 1px solid var(--border); position: relative; z-index: 1; }
+        .panel-right { background: white; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+
+        .btn-add { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.1s; }
+        .btn-add:hover { background: var(--primary-dark); }
+
+        .scroll-area { flex: 1; overflow-y: auto; padding-right: 0.5rem; padding-bottom: 1rem; }
+        .scroll-area::-webkit-scrollbar { width: 5px; }
+        .scroll-area::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+
+        /* Timer Section */
+        .timer-display-box {
+            text-align: center; padding: 1.5rem 0; margin-bottom: 1.5rem;
+            background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px;
+        }
+        .timer-time {
+            font-size: 3rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-main); line-height: 1.1; margin: 0.2rem 0; letter-spacing: -1px;
+        }
+        .timer-label {
+            font-size: 0.75rem; color: var(--text-sub);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;
+        }
+
+        .timer-controls { display: grid; gap: 0.8rem; }
+        .timer-select {
+            width: 100%; padding: 0.9rem; border: 1px solid #D1D5DB; border-radius: 8px;
+            font-size: 0.95rem; background: #FFFFFF; margin-bottom: 0.5rem; cursor: pointer; color: var(--text-main); transition: border-color 0.2s;
+        }
+        .timer-select:focus { border-color: var(--primary); }
+
+        .btn-timer-toggle {
+            width: 100%; padding: 0.9rem; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-start { background: var(--primary); color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .btn-start:hover { background: var(--primary-dark); }
+        .btn-stop { background: white; border: 1px solid var(--danger); color: var(--danger); }
+        .btn-stop:hover { background: #FEF2F2; }
+
+        .today-total { text-align: center; margin-top: 1.2rem; font-size: 0.9rem; color: var(--text-sub); font-weight: 500; }
+        #todayTotal { color: var(--text-main) !important; font-weight: 700; }
+
+        /* [UPDATED] Session History List Design */
+        .history-list {
+            margin-top: 0.5rem; /* 제목과의 간격을 줄임 (기존 1.5rem) */
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .history-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid #F3F4F6; color: var(--text-sub); }
+
+        /* Book Card */
+        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+        .book-card {
+            background: white; border: 1px solid var(--border); border-radius: var(--radius-item);
+            padding: 1.2rem; transition: border-color 0.2s, box-shadow 0.2s; position: relative;
+            display: flex; flex-direction: column; max-height: 350px;
+        }
+        .book-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .book-card-header { margin-bottom: 0.8rem; }
+        .book-card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 25px; color: var(--text-main); }
+        .book-meta { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; font-weight: 500; }
+        .mini-progress { height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; margin-bottom: 0.8rem; flex-shrink: 0; }
+        .mini-fill { height: 100%; background: var(--text-main); width: 0%; border-radius: 3px; transition: width 0.3s; }
+        .book-card.mastered .mini-fill { background: var(--success); }
+
+        .card-chapters { flex: 1; overflow-y: auto; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+        .card-chapters::-webkit-scrollbar { width: 4px; }
+        .card-chapters::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
+
+        .mini-chapter {
+            font-size: 0.85rem; padding: 0.3rem 0; color: var(--text-main);
+            display: flex; align-items: center; cursor: pointer; transition: 0.2s; border-radius: 4px;
+        }
+        .mini-chapter:hover { background: #F3F4F6; }
+        .mini-chapter-checkbox { width: 14px; height: 14px; border: 1px solid #9CA3AF; border-radius: 3px; margin-right: 8px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size: 10px; color: white; transition: background 0.2s, border-color 0.2s; }
+        .mini-chapter.done { text-decoration: line-through; color: #D1D5DB; }
+
+        .btn-delete-book { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; }
+        .btn-delete-book:hover { color: var(--danger); }
+
+        /* XP Effect */
+        @keyframes floatUpFade { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(1); } }
+        .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold); font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); pointer-events: none; z-index: 9999; }
+        .xp-popup.animate { animation: floatUpFade 1.5s ease-out forwards; }
+
+        /* Task Item */
+        .task-item { background: white; border: 1px solid var(--border); border-radius: var(--radius-item); padding: 0.8rem; margin-bottom: 0.6rem; display: flex; align-items: center; cursor: pointer; transition: border-color 0.2s; position: relative; }
+        .task-item:hover { border-color: var(--primary); }
+        .task-item.completed { opacity: 0.6; background: #F9FAFB; }
+        .task-item.completed .task-text { text-decoration: line-through; color: var(--text-sub); }
+        .checkbox { width: 18px; height: 18px; border: 2px solid #D1D5DB; border-radius: 5px; margin-right: 0.8rem; display: flex; align-items: center; justify-content: center; }
+        .task-item.completed .checkbox { background: var(--success); border-color: var(--success); }
+        .task-item.completed .checkbox::after { content: '✓'; color: white; font-size: 11px; font-weight: bold; }
+        .task-content { flex: 1; overflow: hidden; }
+        .task-text { font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); font-weight: 500; }
+        .btn-delete-task { opacity: 0; background: transparent; border: none; color: #9CA3AF; cursor: pointer; padding: 2px; transition: 0.2s; }
+        .task-item:hover .btn-delete-task { opacity: 1; }
+        .btn-delete-task:hover { color: var(--danger); }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            padding: 0.8rem;
+            border-top: 1px solid var(--border);
+            background: white;
+            font-weight: 500;
+        }
+
+        /* Modals */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 2rem; width: 400px; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; margin-bottom: 1rem; background: #F9FAFB; color: var(--text-main); }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 0.5rem; }
+        .btn-cancel { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; color: var(--text-main); font-weight: 600; }
+        .btn-confirm { padding: 0.6rem 1rem; border-radius: 8px; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 600; }
+        .btn-confirm:hover { background: var(--primary-dark); }
+
+        .color-picker-container { display: flex; gap: 10px; margin-bottom: 1rem; align-items: center; }
+        .color-label { font-size: 0.9rem; font-weight: 600; color: var(--text-sub); margin-right: 10px; }
+        .color-input { width: 50px; height: 40px; border: none; cursor: pointer; background: none; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <div class="quote-bar" id="quoteDisplay">Loading Inspiration...</div>
+
+        <header>
+            <div class="user-section">
+                <h1>Scholar Hub</h1>
+                <div class="subtitle" id="lvlInfo">Level 1 • Novice</div>
+            </div>
+
+            <div class="xp-wrapper">
+                <div class="xp-header"><span>EXP Progress</span><span id="xpText">0 / 100</span></div>
+                <div class="xp-track"><div class="xp-fill" id="xpBar"></div></div>
+            </div>
+
+            <div class="clock-section">
+                <div class="clock-time" id="clockTime">00:00:00</div>
+                <div class="clock-date" id="clockDate">YYYY-MM-DD</div>
+            </div>
+
+            <button class="btn-reset" onclick="resetData()">Reset</button>
+        </header>
+
+        <div class="content-grid">
+            <aside class="panel panel-left">
+                <div class="section-header">
+                    <div class="section-title">Daily Missions</div>
+                    <button class="btn-add" onclick="openDailyModal()">+ Task</button>
+                </div>
+                <div class="scroll-area" id="taskList"></div>
+            </aside>
+
+            <section class="panel panel-center">
+                <div class="section-header">
+                    <div class="section-title">Deep Focus</div>
+                </div>
+                <div class="timer-display-box">
+                    <div class="timer-label">Session Duration</div>
+                    <div class="timer-time" id="timerDisplay">00:00:00</div>
+                </div>
+                <div class="timer-controls">
+                    <select id="timerBookSelect" class="timer-select">
+                        <option value="">📚 Select Book to Study...</option>
+                    </select>
+                    <button id="timerBtn" class="btn-timer-toggle btn-start" onclick="toggleTimer()">START FOCUS</button>
+                </div>
+                <div class="today-total">Total Focus Today: <span id="todayTotal">00:00:00</span></div>
+
+                <div class="section-header" style="margin-top: 2rem; margin-bottom: 0.2rem;">
+                    <div class="section-title" style="font-size: 1.25rem;">Session History</div>
+                </div>
+                <div class="history-list" id="historyList"></div>
+            </section>
+
+            <main class="panel panel-right">
+                <div class="section-header">
+                    <div class="section-title">My Library</div>
+                    <button class="btn-add" onclick="openBookModal()">+ Book</button>
+                </div>
+                <div class="scroll-area">
+                    <div class="book-grid" id="bookGrid"></div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="app-footer">Designed by ONFINE | Powered by Gemini</footer>
+    </div>
+
+    <div id="xpEffectsContainer"></div>
+
+    <div id="bookModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="margin-bottom:1rem; font-weight:700;">Add New Book</h3>
+            <input type="text" id="newBookTitle" class="form-input" placeholder="Book Title">
+            <textarea id="newBookChapters" class="form-textarea" rows="5" placeholder="Chapters (one per line)"></textarea>
+
+            <div class="color-picker-container">
+                <span class="color-label">Theme Color:</span>
+                <input type="color" id="newBookColor" class="color-input" value="#374151">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('bookModal')">Cancel</button>
+                <button class="btn-confirm" onclick="addBook()">Add Book</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dailyModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="margin-bottom:1rem; font-weight:700;">Add Daily Task</h3>
+            <select id="dailyType" class="form-select" onchange="toggleBookSelect()">
+                <option value="normal">General Task</option>
+                <option value="study">Study Quest (Link Book)</option>
+            </select>
+            <div id="bookSelectGroup" style="display:none;">
+                <select id="selectBook" class="form-select" onchange="updateChapterSelect()"></select>
+                <select id="selectChapter" class="form-select"></select>
+            </div>
+            <div id="normalInputGroup">
+                <input type="text" id="dailyContent" class="form-input" placeholder="Task description...">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('dailyModal')">Cancel</button>
+                <button class="btn-confirm" onclick="addDailyQuest()">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Icons ---
+        const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+        const ICON_CLOSE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+
+        // --- Data ---
+        let appData = JSON.parse(localStorage.getItem('scholarApp_v3_10')) || {
+            user: { level: 1, xp: 0, nextXp: 100 },
+            books: [],
+            dailies: [],
+            history: [],
+            lastDate: new Date().toLocaleDateString()
+        };
+
+        const quotes = [
+            "시작이 반이다. - Aristoteles",
+            "가장 유능한 사람은 가장 배움에 힘쓰는 사람이다. - Goethe",
+            "중요한 것은 꺾이지 않는 마음.",
+            "피할 수 없으면 즐겨라. - Robert Elliot",
+            "고통 없이는 얻는 것도 없다. (No Pain, No Gain)",
+            "오늘 걷지 않으면 내일은 뛰어야 한다.",
+            "성공은 꿈꾸는 자의 것이 아니라 실천하는 자의 것이다.",
+            "미래는 현재 우리가 무엇을 하는가에 달려 있다. - Gandhi",
+            "천재는 1%의 영감과 99%의 땀으로 만들어진다. - Edison"
+        ];
+
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let isTimerRunning = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkMidnightReset();
+            renderAll();
+            startClock();
+            setDailyQuote();
+        });
+
+        function setDailyQuote() {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            const [text, author] = randomQuote.split('-');
+            const displayHTML = `"<span class="quote-text">${text.trim()}</span>"${author ? ` <span style="font-weight:400; color:#9CA3AF;">- ${author.trim()}</span>` : ''}`;
+            document.getElementById('quoteDisplay').innerHTML = displayHTML;
+        }
+
+        function startClock() {
+            const updateTime = () => {
+                const now = new Date();
+                document.getElementById('clockTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+                document.getElementById('clockDate').innerText = now.toLocaleDateString();
+            };
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function checkMidnightReset() {
+            const today = new Date().toLocaleDateString();
+            if (appData.lastDate !== today) {
+                appData.history = [];
+                appData.lastDate = today;
+                saveData();
+                alert("🌅 New Day! Daily history reset.");
+            }
+        }
+
+        function saveData() { localStorage.setItem('scholarApp_v3_10', JSON.stringify(appData)); }
+
+        function renderAll() {
+            renderUserStats();
+            renderBooks();
+            renderDailies();
+            renderTimerOptions();
+            renderHistory();
+        }
+
+        function showXpEffect(amount) {
+            const container = document.getElementById('xpEffectsContainer');
+            const el = document.createElement('div');
+            el.className = 'xp-popup animate';
+            el.innerText = amount > 0 ? `+${amount} XP` : `${amount} XP`;
+            el.style.color = amount > 0 ? 'var(--gold)' : 'var(--text-sub)';
+            container.appendChild(el);
+            setTimeout(() => { el.remove(); }, 1500);
+        }
+
+        function gainXp(amount) {
+            appData.user.xp += amount;
+            if (appData.user.xp >= appData.user.nextXp) {
+                appData.user.level++;
+                appData.user.xp -= appData.user.nextXp;
+                appData.user.nextXp = Math.floor(appData.user.nextXp * 1.3);
+                alert(`🎉 Level Up! You are now Level ${appData.user.level}`);
+            }
+            saveData();
+            renderUserStats();
+            showXpEffect(amount);
+        }
+
+        function getRankName(level) {
+            if (level < 5) return "Novice";
+            if (level < 10) return "Seeker";
+            if (level < 20) return "Apprentice";
+            if (level < 30) return "Scholar";
+            if (level < 50) return "Sage";
+            return "Grandmaster";
+        }
+
+        function toggleChapter(bookId, chapterIdx) {
+            const book = appData.books.find(b => b.id === bookId);
+            if (!book) return;
+            const chapter = book.chapters[chapterIdx];
+            chapter.done = !chapter.done;
+
+            appData.dailies.forEach(task => {
+                if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) {
+                    task.done = chapter.done;
+                }
+            });
+
+            gainXp(chapter.done ? 10 : -10);
+            saveData();
+            renderAll();
+        }
+
+        function toggleTask(idx) {
+            const t = appData.dailies[idx];
+            t.done = !t.done;
+
+            if(t.type==='study' && t.bookId) {
+                const b = appData.books.find(x=>x.id==t.bookId);
+                if(b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
+            }
+
+            gainXp(t.done?20:-20);
+            saveData();
+            renderAll();
+        }
+
+        function renderBooks() {
+            const grid = document.getElementById('bookGrid');
+            grid.innerHTML = '';
+            appData.books.forEach(book => {
+                const total = book.chapters.length;
+                const done = book.chapters.filter(c => c.done).length;
+                const percent = total === 0 ? 0 : Math.round((done/total)*100);
+                const isMastered = (percent === 100 && total > 0);
+                const color = book.color || '#374151'; // Default
+
+                let chaptersHtml = '<div class="card-chapters">';
+                book.chapters.forEach((ch, idx) => {
+                    const checkboxStyle = ch.done ? `background-color:${color}; border-color:${color};` : '';
+                    chaptersHtml += `
+                        <div class="mini-chapter ${ch.done?'done':''}" onclick="toggleChapter(${book.id}, ${idx})">
+                            <div class="mini-chapter-checkbox" style="${checkboxStyle}">${ch.done?'✔':''}</div>
+                            <span>${ch.name}</span>
+                        </div>
+                    `;
+                });
+                chaptersHtml += '</div>';
+
+                const div = document.createElement('div');
+                div.className = `book-card ${isMastered ? 'mastered' : ''}`;
+                div.onmouseenter = function() { this.style.borderColor = color; };
+                div.onmouseleave = function() { this.style.borderColor = 'var(--border)'; };
+
+                div.innerHTML = `
+                    <button class="btn-delete-book" onclick="deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
+                    <div class="book-card-header">
+                        <div class="book-card-title">${book.title}</div>
+                        <div class="book-meta"><span>${isMastered ? 'Mastered' : 'Progress'}</span><span>${done}/${total}</span></div>
+                    </div>
+                    <div class="mini-progress"><div class="mini-fill" style="width:${percent}%; background-color:${color};"></div></div>
+                    ${chaptersHtml}
+                `;
+                grid.appendChild(div);
+            });
+            renderTimerOptions();
+        }
+
+        function renderUserStats() {
+            const { level, xp, nextXp } = appData.user;
+            const rank = getRankName(level);
+            document.getElementById('lvlInfo').innerText = `Level ${level} • ${rank}`;
+            document.getElementById('xpText').innerText = `${xp} / ${nextXp}`;
+            document.getElementById('xpBar').style.width = `${Math.min((xp/nextXp)*100, 100)}%`;
+        }
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const totalEl = document.getElementById('todayTotal');
+            list.innerHTML = '';
+            let total = 0;
+            appData.history.forEach(item => {
+                total += item.durationSec;
+                const d = document.createElement('div');
+                d.className = 'history-item';
+                d.innerHTML = `<span>${item.timestamp} <b>${item.bookTitle}</b></span><span>+ ${formatTime(item.durationSec)}</span>`;
+                list.appendChild(d);
+            });
+            totalEl.innerText = formatTime(total);
+        }
+        function renderDailies() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            appData.dailies.forEach((task, idx) => {
+                const div = document.createElement('div');
+                div.className = `task-item ${task.done?'completed':''}`;
+                div.onclick = () => toggleTask(idx);
+                div.innerHTML = `
+                    <div class="checkbox"></div>
+                    <div class="task-content"><div class="task-text">${task.content}</div></div>
+                    <button class="btn-delete-task" onclick="deleteTask(${idx}, event)">${ICON_TRASH}</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+        function renderTimerOptions() {
+            const sel = document.getElementById('timerBookSelect');
+            const val = sel.value;
+            sel.innerHTML = '<option value="">Select Book to Study</option>';
+            appData.books.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.title}</option>`);
+            sel.value = val;
+        }
+
+        // --- Timer ---
+        function toggleTimer() {
+            const btn = document.getElementById('timerBtn');
+            const select = document.getElementById('timerBookSelect');
+            if (!isTimerRunning) {
+                if (select.value === "") return alert("Please select a book first.");
+                isTimerRunning = true;
+                btn.innerText = "STOP & SAVE";
+                btn.className = "btn-timer-toggle btn-stop";
+                select.disabled = true;
+
+                timerInterval = setInterval(() => {
+                    timerSeconds++;
+                    updateTimerDisplay();
+                    if (timerSeconds > 0 && timerSeconds % 600 === 0) gainXp(5);
+                    if(new Date().toLocaleDateString() !== appData.lastDate) { stopTimer(); checkMidnightReset(); renderHistory(); }
+                }, 1000);
+            } else {
+                stopTimer();
+            }
+        }
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            const select = document.getElementById('timerBookSelect');
+            if (timerSeconds > 0) {
+                appData.history.unshift({
+                    date: new Date().toLocaleDateString(),
+                    bookTitle: select.options[select.selectedIndex].text,
+                    durationSec: timerSeconds,
+                    timestamp: new Date().toLocaleTimeString()
+                });
+                saveData();
+            }
+            timerSeconds = 0;
+            updateTimerDisplay();
+            document.getElementById('timerBtn').innerText = "START FOCUS";
+            document.getElementById('timerBtn').className = "btn-timer-toggle btn-start";
+            select.disabled = false;
+            renderHistory();
+        }
+        function updateTimerDisplay() { document.getElementById('timerDisplay').innerText = formatTime(timerSeconds); }
+        function formatTime(sec) {
+            const h = String(Math.floor(sec / 3600)).padStart(2, '0');
+            const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+            const s = String(sec % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        // --- CRUD ---
+        function addBook() {
+            const t = document.getElementById('newBookTitle').value;
+            const c = document.getElementById('newBookChapters').value.split('\n').filter(l=>l.trim()).map(l=>({name:l.trim(), done:false}));
+            const color = document.getElementById('newBookColor').value;
+            if(t){
+                appData.books.push({id:Date.now(), title:t, chapters:c, color: color});
+                saveData(); renderAll(); closeModal('bookModal');
+            }
+        }
+        function deleteBook(id, e) { e.stopPropagation(); if(confirm("Delete book?")) { appData.books=appData.books.filter(b=>b.id!==id); saveData(); renderAll(); }}
+        function addDailyQuest() {
+            const type = document.getElementById('dailyType').value;
+            let task = { id:Date.now(), type, done:false, content:'' };
+            if(type==='study') {
+                const bid = document.getElementById('selectBook').value;
+                const cid = document.getElementById('selectChapter').value;
+                if(!bid||cid==="") return alert("Select Book & Chapter");
+                const b = appData.books.find(x=>x.id==bid);
+                task.content = `[${b.title}] ${b.chapters[cid].name}`; task.bookId=bid; task.chapterIdx=cid;
+            } else {
+                task.content = document.getElementById('dailyContent').value;
+                if(!task.content) return;
+            }
+            appData.dailies.push(task); saveData(); renderAll(); closeModal('dailyModal');
+        }
+        function deleteTask(idx, e) { e.stopPropagation(); if(confirm("Delete task?")) { appData.dailies.splice(idx,1); saveData(); renderAll(); }}
+
+        // --- Modals ---
+        function openDailyModal() { document.getElementById('dailyModal').style.display='flex'; toggleBookSelect(); document.getElementById('dailyContent').value=''; }
+        function openBookModal() { document.getElementById('bookModal').style.display='flex'; document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
+        function closeModal(id) { document.getElementById(id).style.display='none'; }
+        function toggleBookSelect() {
+            const isStudy = document.getElementById('dailyType').value === 'study';
+            document.getElementById('bookSelectGroup').style.display = isStudy?'block':'none';
+            document.getElementById('normalInputGroup').style.display = isStudy?'none':'block';
+            if(isStudy) {
+                const sel = document.getElementById('selectBook'); sel.innerHTML='<option value="">Select...</option>';
+                appData.books.forEach(b => sel.innerHTML+=`<option value="${b.id}">${b.title}</option>`);
+            }
+        }
+        function updateChapterSelect() {
+            const bid = document.getElementById('selectBook').value;
+            const csel = document.getElementById('selectChapter'); csel.innerHTML='';
+            const b = appData.books.find(x=>x.id==bid);
+            if(b) b.chapters.forEach((c,i)=>csel.innerHTML+=`<option value="${i}">${c.name} ${c.done?'(Done)':''}</option>`);
+        }
+        function resetData() { if(confirm("Reset ALL data?")) { localStorage.removeItem('scholarApp_v3_10'); location.reload(); }}
+        window.onclick = e => { if(e.target.className==='modal-overlay') e.target.style.display='none'; }
+    </script>
+</body>
+</html>
