@@ -41,7 +41,6 @@
             overflow: hidden;
         }
 
-        /* 로딩 스크린 */
         #loadingScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: white; z-index: 9999;
@@ -62,28 +61,16 @@
             position: relative;
         }
 
-        /* Quote Bar */
         .quote-bar {
-            text-align: center;
-            padding: 0.8rem 1rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-sub);
-            background: white;
-            border-bottom: 1px solid var(--border);
+            text-align: center; padding: 0.8rem 1rem; font-size: 0.9rem; font-weight: 500;
+            color: var(--text-sub); background: white; border-bottom: 1px solid var(--border);
         }
         .quote-text { color: var(--text-main); font-weight: 700; }
 
-        /* Header */
         header {
-            padding: 0.8rem 2rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255,255,255,0.95);
-            z-index: 10;
-            gap: 2rem;
+            padding: 0.8rem 2rem; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,255,255,0.95); z-index: 10; gap: 2rem;
         }
 
         .user-section { min-width: 200px; }
@@ -93,10 +80,7 @@
         .xp-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .xp-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.4rem; }
         .xp-track { width: 100%; height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
-        .xp-fill {
-            height: 100%; background: var(--primary); width: 0%; border-radius: 4px;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .xp-fill { height: 100%; background: var(--primary); width: 0%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
         .clock-section { text-align: right; min-width: 110px; font-variant-numeric: tabular-nums; }
         .clock-time { font-size: 1.5rem; font-weight: 700; color: var(--text-main); letter-spacing: -1px; }
@@ -106,7 +90,12 @@
         .btn-reset:hover { background: #F9FAFB; border-color: var(--danger); color: var(--danger); }
 
         /* Content Grid */
-        .content-grid { display: grid; grid-template-columns: 320px 380px 1fr; height: 100%; overflow: hidden; }
+        .content-grid {
+            display: grid;
+            /* 좌:420px, 중:340px, 우:나머지 */
+            grid-template-columns: 420px 340px 1fr;
+            height: 100%; overflow: hidden;
+        }
 
         .panel { padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%; }
         .panel-left { background: #F9FAFB; border-right: 1px solid var(--border); }
@@ -123,31 +112,16 @@
         .scroll-area::-webkit-scrollbar { width: 5px; }
         .scroll-area::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
 
-        /* Timer Section */
-        .timer-display-box {
-            text-align: center; padding: 1.5rem 0; margin-bottom: 1.5rem;
-            background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px;
-        }
-        .timer-time {
-            font-size: 3rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-main); line-height: 1.1; margin: 0.2rem 0; letter-spacing: -1px;
-        }
-        .timer-label {
-            font-size: 0.75rem; color: var(--text-sub);
-            font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;
-        }
+        /* Timer */
+        .timer-display-box { text-align: center; padding: 1.5rem 0; margin-bottom: 1.5rem; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; }
+        .timer-time { font-size: 3rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-main); line-height: 1.1; margin: 0.2rem 0; letter-spacing: -1px; }
+        .timer-label { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
 
         .timer-controls { display: grid; gap: 0.8rem; }
-        .timer-select {
-            width: 100%; padding: 0.9rem; border: 1px solid #D1D5DB; border-radius: 8px;
-            font-size: 0.95rem; background: #FFFFFF; margin-bottom: 0.5rem; cursor: pointer; color: var(--text-main); transition: border-color 0.2s;
-        }
+        .timer-select { width: 100%; padding: 0.9rem; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 0.95rem; background: #FFFFFF; margin-bottom: 0.5rem; cursor: pointer; color: var(--text-main); transition: border-color 0.2s; }
         .timer-select:focus { border-color: var(--primary); }
 
-        .btn-timer-toggle {
-            width: 100%; padding: 0.9rem; border: none; border-radius: 8px;
-            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
+        .btn-timer-toggle { width: 100%; padding: 0.9rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-start { background: var(--primary); color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         .btn-start:hover { background: var(--primary-dark); }
         .btn-stop { background: white; border: 1px solid var(--danger); color: var(--danger); }
@@ -159,16 +133,33 @@
         .history-list { margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem; flex: 1; overflow-y: auto; }
         .history-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid #F3F4F6; color: var(--text-sub); }
 
-        /* Book Card */
-        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+        /* [수정됨] Book Grid & Card */
+        .book-grid {
+            display: grid;
+            /* 화면이 좁아져도 무조건 2개씩 강제 정렬 */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
         .book-card {
             background: white; border: 1px solid var(--border); border-radius: var(--radius-item);
             padding: 1.2rem; transition: border-color 0.2s, box-shadow 0.2s; position: relative;
             display: flex; flex-direction: column; max-height: 350px;
+            /* 좁은 화면 대응을 위해 min-width 제거 또는 0 설정 */
+            min-width: 0;
         }
         .book-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .book-card-header { margin-bottom: 0.8rem; }
-        .book-card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 25px; color: var(--text-main); }
+
+        .book-card-title {
+            font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            /* 제목이 길 때 버튼과 겹치지 않도록 여백 확보 */
+            padding-right: 65px;
+            color: var(--text-main);
+            display: flex; align-items: center;
+        }
+        .book-color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+
         .book-meta { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; font-weight: 500; }
         .mini-progress { height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; margin-bottom: 0.8rem; flex-shrink: 0; }
         .mini-fill { height: 100%; background: var(--text-main); width: 0%; border-radius: 3px; transition: width 0.3s; }
@@ -177,23 +168,24 @@
         .card-chapters::-webkit-scrollbar { width: 4px; }
         .card-chapters::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
 
-        .mini-chapter {
-            font-size: 0.85rem; padding: 0.3rem 0; color: var(--text-main);
-            display: flex; align-items: center; cursor: pointer; transition: 0.2s; border-radius: 4px;
-        }
+        .mini-chapter { font-size: 0.85rem; padding: 0.3rem 0; color: var(--text-main); display: flex; align-items: center; cursor: pointer; transition: 0.2s; border-radius: 4px; }
         .mini-chapter:hover { background: #F3F4F6; }
         .mini-chapter-checkbox { width: 14px; height: 14px; border: 1px solid #9CA3AF; border-radius: 3px; margin-right: 8px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size: 10px; color: white; transition: background 0.2s, border-color 0.2s; }
         .mini-chapter.done { text-decoration: line-through; color: #D1D5DB; }
 
-        .btn-delete-book { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; }
+        /* Card Buttons */
+        .btn-delete-book { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
         .btn-delete-book:hover { color: var(--danger); }
 
-        /* XP Effect */
+        /* Edit Button (Pencil) */
+        .btn-edit-book { position: absolute; top: 10px; right: 35px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
+        .btn-edit-book:hover { color: var(--primary); }
+
+        /* Effects & Misc */
         @keyframes floatUpFade { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(1); } }
         .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold); font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); pointer-events: none; z-index: 9999; }
         .xp-popup.animate { animation: floatUpFade 1.5s ease-out forwards; }
 
-        /* Task Item */
         .task-item { background: white; border: 1px solid var(--border); border-radius: var(--radius-item); padding: 0.8rem; margin-bottom: 0.6rem; display: flex; align-items: center; cursor: pointer; transition: border-color 0.2s; position: relative; }
         .task-item:hover { border-color: var(--primary); }
         .task-item.completed { opacity: 0.6; background: #F9FAFB; }
@@ -317,6 +309,23 @@
         </div>
     </div>
 
+    <div id="editBookModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="margin-bottom:1rem; font-weight:700;">Edit Book</h3>
+            <input type="text" id="editBookTitle" class="form-input" placeholder="Book Title">
+            <textarea id="editBookChapters" class="form-textarea" rows="5" placeholder="Chapters (one per line)"></textarea>
+            <div class="color-picker-container">
+                <span class="color-label">Theme Color:</span>
+                <input type="color" id="editBookColor" class="color-input" value="#374151">
+            </div>
+            <input type="hidden" id="editBookId">
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="window.closeModal('editBookModal')">Cancel</button>
+                <button class="btn-confirm" onclick="window.confirmEditBook()">Save</button>
+            </div>
+        </div>
+    </div>
+
     <div id="dailyModal" class="modal-overlay">
         <div class="modal-content">
             <h3 style="margin-bottom:1rem; font-weight:700;">Add Daily Task</h3>
@@ -339,11 +348,9 @@
     </div>
 
     <script type="module">
-        // Firebase 콘솔 -> 프로젝트 설정 -> 내 앱 -> SDK 설정 및 구성
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // 키 정보
         const firebaseConfig = {
           apiKey: "AIzaSyDW4xa4Qn5EI1AGlOyAUHwlB6Dtl3NHxHE",
           authDomain: "onstudytosnu27-851e8.firebaseapp.com",
@@ -353,16 +360,14 @@
           appId: "1:695549162437:web:6cf537b21da18d63e591ac"
         };
 
-        // Firebase 초기화
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const USER_DOC_ID = "minchan_data"; // 민찬님 데이터 ID
+        const USER_DOC_ID = "minchan_data";
 
-        // --- Icons ---
         const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         const ICON_CLOSE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        const ICON_EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
 
-        // --- Data State ---
         let appData = {
             user: { level: 1, xp: 0, nextXp: 100 },
             books: [],
@@ -371,7 +376,6 @@
             lastDate: new Date().toLocaleDateString()
         };
 
-        // --- Quotes ---
         const quotes = [
             "시작이 반이다. - Aristoteles",
             "가장 유능한 사람은 가장 배움에 힘쓰는 사람이다. - Goethe",
@@ -388,55 +392,42 @@
         let timerSeconds = 0;
         let isTimerRunning = false;
 
-        // --- Init ---
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadDataFromCloud(); // 데이터 불러오기
+            await loadDataFromCloud();
             checkMidnightReset();
             renderAll();
             startClock();
             setDailyQuote();
-            document.getElementById('loadingScreen').style.display = 'none'; // 로딩 끝
+            document.getElementById('loadingScreen').style.display = 'none';
         });
 
-        // --- Cloud Logic ---
         async function loadDataFromCloud() {
             try {
                 const docRef = doc(db, "users", USER_DOC_ID);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     appData = docSnap.data();
-                    console.log("Document data loaded:", appData);
                 } else {
-                    console.log("No such document! creating new.");
-                    saveDataToCloud(); // 없는 경우 초기 데이터 저장
+                    saveDataToCloud();
                 }
             } catch (e) {
                 console.error("Error loading document: ", e);
-                alert("데이터 로드 실패: Firebase 키를 확인해주세요.");
+                alert("데이터 로드 실패");
             }
         }
 
         async function saveDataToCloud() {
             try {
                 await setDoc(doc(db, "users", USER_DOC_ID), appData);
-                console.log("Document successfully written!");
             } catch (e) {
                 console.error("Error writing document: ", e);
             }
         }
 
-        // --- Core Functions (Attached to Window for HTML Access) ---
         window.resetData = async function() {
-            if(confirm("정말 모든 데이터를 초기화하시겠습니까? (복구 불가)")) {
-                appData = {
-                    user: { level: 1, xp: 0, nextXp: 100 },
-                    books: [],
-                    dailies: [],
-                    history: [],
-                    lastDate: new Date().toLocaleDateString()
-                };
-                await saveDataToCloud();
-                location.reload();
+            if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
+                appData = { user: { level: 1, xp: 0, nextXp: 100 }, books: [], dailies: [], history: [], lastDate: new Date().toLocaleDateString() };
+                await saveDataToCloud(); location.reload();
             }
         };
 
@@ -449,6 +440,47 @@
                 await saveDataToCloud(); renderAll(); window.closeModal('bookModal');
             }
         };
+
+        // Edit Functions
+        window.openEditBookModal = function(bookId) {
+            const book = appData.books.find(b => b.id == bookId);
+            if (!book) return;
+
+            document.getElementById('editBookId').value = bookId;
+            document.getElementById('editBookTitle').value = book.title;
+            document.getElementById('editBookChapters').value = book.chapters.map(c => c.name).join('\n');
+            document.getElementById('editBookColor').value = book.color || '#374151';
+
+            document.getElementById('editBookModal').style.display = 'flex';
+        }
+
+        window.confirmEditBook = async function() {
+            const bookId = document.getElementById('editBookId').value;
+            const title = document.getElementById('editBookTitle').value;
+            const chaptersText = document.getElementById('editBookChapters').value;
+            const color = document.getElementById('editBookColor').value;
+
+            if(!title.trim()) return alert("Title required");
+
+            const bookIndex = appData.books.findIndex(b => b.id == bookId);
+            if (bookIndex > -1) {
+                const oldChapters = appData.books[bookIndex].chapters;
+
+                // 새로운 챕터 리스트 생성 (기존 체크 상태 보존 노력: 인덱스 기준)
+                const newChapters = chaptersText.split('\n').filter(l=>l.trim()).map((line, idx) => {
+                    const isDone = (oldChapters[idx] && oldChapters[idx].done) || false;
+                    return { name: line.trim(), done: isDone };
+                });
+
+                appData.books[bookIndex].title = title;
+                appData.books[bookIndex].chapters = newChapters;
+                appData.books[bookIndex].color = color;
+
+                await saveDataToCloud();
+                renderAll();
+                window.closeModal('editBookModal');
+            }
+        }
 
         window.deleteBook = async function(id, e) {
             e.stopPropagation();
@@ -487,13 +519,11 @@
             if (!book) return;
             const chapter = book.chapters[chapterIdx];
             chapter.done = !chapter.done;
-
             appData.dailies.forEach(task => {
                 if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) {
                     task.done = chapter.done;
                 }
             });
-
             gainXp(chapter.done ? 10 : -10);
             await saveDataToCloud();
             renderAll();
@@ -511,7 +541,6 @@
             renderAll();
         };
 
-        // --- Helper & UI Functions ---
         function setDailyQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             const [text, author] = randomQuote.split('-');
@@ -557,7 +586,6 @@
                 appData.user.nextXp = Math.floor(appData.user.nextXp * 1.3);
                 alert(`🎉 Level Up! You are now Level ${appData.user.level}`);
             }
-            // Note: saveDataToCloud called in parent function
             renderUserStats();
             showXpEffect(amount);
         }
@@ -571,7 +599,6 @@
             return "Grandmaster";
         }
 
-        // --- Render Functions ---
         function renderAll() {
             renderUserStats();
             renderBooks();
@@ -609,8 +636,13 @@
 
                 div.innerHTML = `
                     <button class="btn-delete-book" onclick="window.deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
+                    <button class="btn-edit-book" onclick="window.openEditBookModal(${book.id})" title="Edit">${ICON_EDIT}</button>
+
                     <div class="book-card-header">
-                        <div class="book-card-title">${book.title}</div>
+                        <div class="book-card-title">
+                            <span class="book-color-dot" style="background-color: ${color};"></span>
+                            ${book.title}
+                        </div>
                         <div class="book-meta"><span>${isMastered ? 'Mastered' : 'Progress'}</span><span>${done}/${total}</span></div>
                     </div>
                     <div class="mini-progress"><div class="mini-fill" style="width:${percent}%; background-color:${color};"></div></div>
@@ -668,7 +700,6 @@
             sel.value = val;
         }
 
-        // --- Window Assignments for Modal ---
         window.openDailyModal = function() { document.getElementById('dailyModal').style.display='flex'; window.toggleBookSelect(); document.getElementById('dailyContent').value=''; }
         window.openBookModal = function() { document.getElementById('bookModal').style.display='flex'; document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
         window.closeModal = function(id) { document.getElementById(id).style.display='none'; }
@@ -692,7 +723,6 @@
 
         window.onclick = function(e) { if(e.target.className==='modal-overlay') e.target.style.display='none'; }
 
-        // --- Timer (Global) ---
         window.toggleTimer = function() {
             const btn = document.getElementById('timerBtn');
             const select = document.getElementById('timerBookSelect');
@@ -742,7 +772,6 @@
             const s = String(sec % 60).padStart(2, '0');
             return `${h}:${m}:${s}`;
         }
-
     </script>
 </body>
 </html>
