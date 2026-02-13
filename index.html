@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholar Dashboard Pro</title>
+    <title>ONStudyToSNU27 | ONFINE</title>
 
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
         :root {
-            /* Palette - Monochrome Base */
+            /* Palette - Monochrome */
             --primary: #374151;
             --primary-dark: #1F2937;
             --text-main: #111827;
@@ -39,6 +39,14 @@
             align-items: center;
             padding: 2rem;
             overflow: hidden;
+        }
+
+        /* 로딩 스크린 */
+        #loadingScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            flex-direction: column; font-weight: 600; color: var(--primary);
         }
 
         .dashboard {
@@ -148,14 +156,7 @@
         .today-total { text-align: center; margin-top: 1.2rem; font-size: 0.9rem; color: var(--text-sub); font-weight: 500; }
         #todayTotal { color: var(--text-main) !important; font-weight: 700; }
 
-        /* [UPDATED] Session History List Design */
-        .history-list {
-            margin-top: 0.5rem; /* 제목과의 간격을 줄임 (기존 1.5rem) */
-            border-top: 1px solid var(--border);
-            padding-top: 1rem;
-            flex: 1;
-            overflow-y: auto;
-        }
+        .history-list { margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem; flex: 1; overflow-y: auto; }
         .history-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid #F3F4F6; color: var(--text-sub); }
 
         /* Book Card */
@@ -171,7 +172,6 @@
         .book-meta { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; font-weight: 500; }
         .mini-progress { height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; margin-bottom: 0.8rem; flex-shrink: 0; }
         .mini-fill { height: 100%; background: var(--text-main); width: 0%; border-radius: 3px; transition: width 0.3s; }
-        .book-card.mastered .mini-fill { background: var(--success); }
 
         .card-chapters { flex: 1; overflow-y: auto; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
         .card-chapters::-webkit-scrollbar { width: 4px; }
@@ -207,16 +207,7 @@
         .task-item:hover .btn-delete-task { opacity: 1; }
         .btn-delete-task:hover { color: var(--danger); }
 
-        /* Footer */
-        .app-footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #9CA3AF;
-            padding: 0.8rem;
-            border-top: 1px solid var(--border);
-            background: white;
-            font-weight: 500;
-        }
+        .app-footer { text-align: center; font-size: 0.75rem; color: #9CA3AF; padding: 0.8rem; border-top: 1px solid var(--border); background: white; font-weight: 500; }
 
         /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; }
@@ -233,6 +224,11 @@
     </style>
 </head>
 <body>
+
+    <div id="loadingScreen">
+        <div style="font-size: 1.5rem; margin-bottom: 10px;">Scholar Dashboard</div>
+        <div>Connecting to Cloud...</div>
+    </div>
 
     <div class="dashboard">
         <div class="quote-bar" id="quoteDisplay">Loading Inspiration...</div>
@@ -253,14 +249,14 @@
                 <div class="clock-date" id="clockDate">YYYY-MM-DD</div>
             </div>
 
-            <button class="btn-reset" onclick="resetData()">Reset</button>
+            <button class="btn-reset" onclick="window.resetData()">Reset</button>
         </header>
 
         <div class="content-grid">
             <aside class="panel panel-left">
                 <div class="section-header">
                     <div class="section-title">Daily Missions</div>
-                    <button class="btn-add" onclick="openDailyModal()">+ Task</button>
+                    <button class="btn-add" onclick="window.openDailyModal()">+ Task</button>
                 </div>
                 <div class="scroll-area" id="taskList"></div>
             </aside>
@@ -275,9 +271,9 @@
                 </div>
                 <div class="timer-controls">
                     <select id="timerBookSelect" class="timer-select">
-                        <option value="">📚 Select Book to Study...</option>
+                        <option value="">Select Book to Study...</option>
                     </select>
-                    <button id="timerBtn" class="btn-timer-toggle btn-start" onclick="toggleTimer()">START FOCUS</button>
+                    <button id="timerBtn" class="btn-timer-toggle btn-start" onclick="window.toggleTimer()">START FOCUS</button>
                 </div>
                 <div class="today-total">Total Focus Today: <span id="todayTotal">00:00:00</span></div>
 
@@ -290,7 +286,7 @@
             <main class="panel panel-right">
                 <div class="section-header">
                     <div class="section-title">My Library</div>
-                    <button class="btn-add" onclick="openBookModal()">+ Book</button>
+                    <button class="btn-add" onclick="window.openBookModal()">+ Book</button>
                 </div>
                 <div class="scroll-area">
                     <div class="book-grid" id="bookGrid"></div>
@@ -315,8 +311,8 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModal('bookModal')">Cancel</button>
-                <button class="btn-confirm" onclick="addBook()">Add Book</button>
+                <button class="btn-cancel" onclick="window.closeModal('bookModal')">Cancel</button>
+                <button class="btn-confirm" onclick="window.addBook()">Add Book</button>
             </div>
         </div>
     </div>
@@ -324,31 +320,50 @@
     <div id="dailyModal" class="modal-overlay">
         <div class="modal-content">
             <h3 style="margin-bottom:1rem; font-weight:700;">Add Daily Task</h3>
-            <select id="dailyType" class="form-select" onchange="toggleBookSelect()">
+            <select id="dailyType" class="form-select" onchange="window.toggleBookSelect()">
                 <option value="normal">General Task</option>
                 <option value="study">Study Quest (Link Book)</option>
             </select>
             <div id="bookSelectGroup" style="display:none;">
-                <select id="selectBook" class="form-select" onchange="updateChapterSelect()"></select>
+                <select id="selectBook" class="form-select" onchange="window.updateChapterSelect()"></select>
                 <select id="selectChapter" class="form-select"></select>
             </div>
             <div id="normalInputGroup">
                 <input type="text" id="dailyContent" class="form-input" placeholder="Task description...">
             </div>
             <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModal('dailyModal')">Cancel</button>
-                <button class="btn-confirm" onclick="addDailyQuest()">Add Task</button>
+                <button class="btn-cancel" onclick="window.closeModal('dailyModal')">Cancel</button>
+                <button class="btn-confirm" onclick="window.addDailyQuest()">Add Task</button>
             </div>
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Firebase 콘솔 -> 프로젝트 설정 -> 내 앱 -> SDK 설정 및 구성
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 키 정보
+        const firebaseConfig = {
+          apiKey: "AIzaSyDW4xa4Qn5EI1AGlOyAUHwlB6Dtl3NHxHE",
+          authDomain: "onstudytosnu27-851e8.firebaseapp.com",
+          projectId: "onstudytosnu27-851e8",
+          storageBucket: "onstudytosnu27-851e8.firebasestorage.app",
+          messagingSenderId: "695549162437",
+          appId: "1:695549162437:web:6cf537b21da18d63e591ac"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const USER_DOC_ID = "minchan_data"; // 민찬님 데이터 ID
+
         // --- Icons ---
         const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         const ICON_CLOSE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
 
-        // --- Data ---
-        let appData = JSON.parse(localStorage.getItem('scholarApp_v3_10')) || {
+        // --- Data State ---
+        let appData = {
             user: { level: 1, xp: 0, nextXp: 100 },
             books: [],
             dailies: [],
@@ -356,6 +371,7 @@
             lastDate: new Date().toLocaleDateString()
         };
 
+        // --- Quotes ---
         const quotes = [
             "시작이 반이다. - Aristoteles",
             "가장 유능한 사람은 가장 배움에 힘쓰는 사람이다. - Goethe",
@@ -372,13 +388,130 @@
         let timerSeconds = 0;
         let isTimerRunning = false;
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadDataFromCloud(); // 데이터 불러오기
             checkMidnightReset();
             renderAll();
             startClock();
             setDailyQuote();
+            document.getElementById('loadingScreen').style.display = 'none'; // 로딩 끝
         });
 
+        // --- Cloud Logic ---
+        async function loadDataFromCloud() {
+            try {
+                const docRef = doc(db, "users", USER_DOC_ID);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    appData = docSnap.data();
+                    console.log("Document data loaded:", appData);
+                } else {
+                    console.log("No such document! creating new.");
+                    saveDataToCloud(); // 없는 경우 초기 데이터 저장
+                }
+            } catch (e) {
+                console.error("Error loading document: ", e);
+                alert("데이터 로드 실패: Firebase 키를 확인해주세요.");
+            }
+        }
+
+        async function saveDataToCloud() {
+            try {
+                await setDoc(doc(db, "users", USER_DOC_ID), appData);
+                console.log("Document successfully written!");
+            } catch (e) {
+                console.error("Error writing document: ", e);
+            }
+        }
+
+        // --- Core Functions (Attached to Window for HTML Access) ---
+        window.resetData = async function() {
+            if(confirm("정말 모든 데이터를 초기화하시겠습니까? (복구 불가)")) {
+                appData = {
+                    user: { level: 1, xp: 0, nextXp: 100 },
+                    books: [],
+                    dailies: [],
+                    history: [],
+                    lastDate: new Date().toLocaleDateString()
+                };
+                await saveDataToCloud();
+                location.reload();
+            }
+        };
+
+        window.addBook = async function() {
+            const t = document.getElementById('newBookTitle').value;
+            const c = document.getElementById('newBookChapters').value.split('\n').filter(l=>l.trim()).map(l=>({name:l.trim(), done:false}));
+            const color = document.getElementById('newBookColor').value;
+            if(t){
+                appData.books.push({id:Date.now(), title:t, chapters:c, color: color});
+                await saveDataToCloud(); renderAll(); window.closeModal('bookModal');
+            }
+        };
+
+        window.deleteBook = async function(id, e) {
+            e.stopPropagation();
+            if(confirm("Delete book?")) {
+                appData.books=appData.books.filter(b=>b.id!==id);
+                await saveDataToCloud(); renderAll();
+            }
+        };
+
+        window.addDailyQuest = async function() {
+            const type = document.getElementById('dailyType').value;
+            let task = { id:Date.now(), type, done:false, content:'' };
+            if(type==='study') {
+                const bid = document.getElementById('selectBook').value;
+                const cid = document.getElementById('selectChapter').value;
+                if(!bid||cid==="") return alert("Select Book & Chapter");
+                const b = appData.books.find(x=>x.id==bid);
+                task.content = `[${b.title}] ${b.chapters[cid].name}`; task.bookId=bid; task.chapterIdx=cid;
+            } else {
+                task.content = document.getElementById('dailyContent').value;
+                if(!task.content) return;
+            }
+            appData.dailies.push(task); await saveDataToCloud(); renderAll(); window.closeModal('dailyModal');
+        };
+
+        window.deleteTask = async function(idx, e) {
+            e.stopPropagation();
+            if(confirm("Delete task?")) {
+                appData.dailies.splice(idx,1);
+                await saveDataToCloud(); renderAll();
+            }
+        };
+
+        window.toggleChapter = async function(bookId, chapterIdx) {
+            const book = appData.books.find(b => b.id === bookId);
+            if (!book) return;
+            const chapter = book.chapters[chapterIdx];
+            chapter.done = !chapter.done;
+
+            appData.dailies.forEach(task => {
+                if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) {
+                    task.done = chapter.done;
+                }
+            });
+
+            gainXp(chapter.done ? 10 : -10);
+            await saveDataToCloud();
+            renderAll();
+        };
+
+        window.toggleTask = async function(idx) {
+            const t = appData.dailies[idx];
+            t.done = !t.done;
+            if(t.type==='study' && t.bookId) {
+                const b = appData.books.find(x=>x.id==t.bookId);
+                if(b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
+            }
+            gainXp(t.done?20:-20);
+            await saveDataToCloud();
+            renderAll();
+        };
+
+        // --- Helper & UI Functions ---
         function setDailyQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             const [text, author] = randomQuote.split('-');
@@ -401,19 +534,9 @@
             if (appData.lastDate !== today) {
                 appData.history = [];
                 appData.lastDate = today;
-                saveData();
+                saveDataToCloud();
                 alert("🌅 New Day! Daily history reset.");
             }
-        }
-
-        function saveData() { localStorage.setItem('scholarApp_v3_10', JSON.stringify(appData)); }
-
-        function renderAll() {
-            renderUserStats();
-            renderBooks();
-            renderDailies();
-            renderTimerOptions();
-            renderHistory();
         }
 
         function showXpEffect(amount) {
@@ -434,7 +557,7 @@
                 appData.user.nextXp = Math.floor(appData.user.nextXp * 1.3);
                 alert(`🎉 Level Up! You are now Level ${appData.user.level}`);
             }
-            saveData();
+            // Note: saveDataToCloud called in parent function
             renderUserStats();
             showXpEffect(amount);
         }
@@ -448,35 +571,13 @@
             return "Grandmaster";
         }
 
-        function toggleChapter(bookId, chapterIdx) {
-            const book = appData.books.find(b => b.id === bookId);
-            if (!book) return;
-            const chapter = book.chapters[chapterIdx];
-            chapter.done = !chapter.done;
-
-            appData.dailies.forEach(task => {
-                if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) {
-                    task.done = chapter.done;
-                }
-            });
-
-            gainXp(chapter.done ? 10 : -10);
-            saveData();
-            renderAll();
-        }
-
-        function toggleTask(idx) {
-            const t = appData.dailies[idx];
-            t.done = !t.done;
-
-            if(t.type==='study' && t.bookId) {
-                const b = appData.books.find(x=>x.id==t.bookId);
-                if(b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
-            }
-
-            gainXp(t.done?20:-20);
-            saveData();
-            renderAll();
+        // --- Render Functions ---
+        function renderAll() {
+            renderUserStats();
+            renderBooks();
+            renderDailies();
+            renderTimerOptions();
+            renderHistory();
         }
 
         function renderBooks() {
@@ -487,13 +588,13 @@
                 const done = book.chapters.filter(c => c.done).length;
                 const percent = total === 0 ? 0 : Math.round((done/total)*100);
                 const isMastered = (percent === 100 && total > 0);
-                const color = book.color || '#374151'; // Default
+                const color = book.color || '#374151';
 
                 let chaptersHtml = '<div class="card-chapters">';
                 book.chapters.forEach((ch, idx) => {
                     const checkboxStyle = ch.done ? `background-color:${color}; border-color:${color};` : '';
                     chaptersHtml += `
-                        <div class="mini-chapter ${ch.done?'done':''}" onclick="toggleChapter(${book.id}, ${idx})">
+                        <div class="mini-chapter ${ch.done?'done':''}" onclick="window.toggleChapter(${book.id}, ${idx})">
                             <div class="mini-chapter-checkbox" style="${checkboxStyle}">${ch.done?'✔':''}</div>
                             <span>${ch.name}</span>
                         </div>
@@ -507,7 +608,7 @@
                 div.onmouseleave = function() { this.style.borderColor = 'var(--border)'; };
 
                 div.innerHTML = `
-                    <button class="btn-delete-book" onclick="deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
+                    <button class="btn-delete-book" onclick="window.deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
                     <div class="book-card-header">
                         <div class="book-card-title">${book.title}</div>
                         <div class="book-meta"><span>${isMastered ? 'Mastered' : 'Progress'}</span><span>${done}/${total}</span></div>
@@ -527,6 +628,7 @@
             document.getElementById('xpText').innerText = `${xp} / ${nextXp}`;
             document.getElementById('xpBar').style.width = `${Math.min((xp/nextXp)*100, 100)}%`;
         }
+
         function renderHistory() {
             const list = document.getElementById('historyList');
             const totalEl = document.getElementById('todayTotal');
@@ -541,31 +643,57 @@
             });
             totalEl.innerText = formatTime(total);
         }
+
         function renderDailies() {
             const list = document.getElementById('taskList');
             list.innerHTML = '';
             appData.dailies.forEach((task, idx) => {
                 const div = document.createElement('div');
                 div.className = `task-item ${task.done?'completed':''}`;
-                div.onclick = () => toggleTask(idx);
+                div.onclick = () => window.toggleTask(idx);
                 div.innerHTML = `
                     <div class="checkbox"></div>
                     <div class="task-content"><div class="task-text">${task.content}</div></div>
-                    <button class="btn-delete-task" onclick="deleteTask(${idx}, event)">${ICON_TRASH}</button>
+                    <button class="btn-delete-task" onclick="window.deleteTask(${idx}, event)">${ICON_TRASH}</button>
                 `;
                 list.appendChild(div);
             });
         }
+
         function renderTimerOptions() {
             const sel = document.getElementById('timerBookSelect');
             const val = sel.value;
-            sel.innerHTML = '<option value="">Select Book to Study</option>';
+            sel.innerHTML = '<option value="">Select Book to Study...</option>';
             appData.books.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.title}</option>`);
             sel.value = val;
         }
 
-        // --- Timer ---
-        function toggleTimer() {
+        // --- Window Assignments for Modal ---
+        window.openDailyModal = function() { document.getElementById('dailyModal').style.display='flex'; window.toggleBookSelect(); document.getElementById('dailyContent').value=''; }
+        window.openBookModal = function() { document.getElementById('bookModal').style.display='flex'; document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
+        window.closeModal = function(id) { document.getElementById(id).style.display='none'; }
+
+        window.toggleBookSelect = function() {
+            const isStudy = document.getElementById('dailyType').value === 'study';
+            document.getElementById('bookSelectGroup').style.display = isStudy?'block':'none';
+            document.getElementById('normalInputGroup').style.display = isStudy?'none':'block';
+            if(isStudy) {
+                const sel = document.getElementById('selectBook'); sel.innerHTML='<option value="">Select...</option>';
+                appData.books.forEach(b => sel.innerHTML+=`<option value="${b.id}">${b.title}</option>`);
+            }
+        }
+
+        window.updateChapterSelect = function() {
+            const bid = document.getElementById('selectBook').value;
+            const csel = document.getElementById('selectChapter'); csel.innerHTML='';
+            const b = appData.books.find(x=>x.id==bid);
+            if(b) b.chapters.forEach((c,i)=>csel.innerHTML+=`<option value="${i}">${c.name} ${c.done?'(Done)':''}</option>`);
+        }
+
+        window.onclick = function(e) { if(e.target.className==='modal-overlay') e.target.style.display='none'; }
+
+        // --- Timer (Global) ---
+        window.toggleTimer = function() {
             const btn = document.getElementById('timerBtn');
             const select = document.getElementById('timerBookSelect');
             if (!isTimerRunning) {
@@ -585,7 +713,8 @@
                 stopTimer();
             }
         }
-        function stopTimer() {
+
+        async function stopTimer() {
             clearInterval(timerInterval);
             isTimerRunning = false;
             const select = document.getElementById('timerBookSelect');
@@ -596,7 +725,7 @@
                     durationSec: timerSeconds,
                     timestamp: new Date().toLocaleTimeString()
                 });
-                saveData();
+                await saveDataToCloud();
             }
             timerSeconds = 0;
             updateTimerDisplay();
@@ -605,6 +734,7 @@
             select.disabled = false;
             renderHistory();
         }
+
         function updateTimerDisplay() { document.getElementById('timerDisplay').innerText = formatTime(timerSeconds); }
         function formatTime(sec) {
             const h = String(Math.floor(sec / 3600)).padStart(2, '0');
@@ -613,55 +743,6 @@
             return `${h}:${m}:${s}`;
         }
 
-        // --- CRUD ---
-        function addBook() {
-            const t = document.getElementById('newBookTitle').value;
-            const c = document.getElementById('newBookChapters').value.split('\n').filter(l=>l.trim()).map(l=>({name:l.trim(), done:false}));
-            const color = document.getElementById('newBookColor').value;
-            if(t){
-                appData.books.push({id:Date.now(), title:t, chapters:c, color: color});
-                saveData(); renderAll(); closeModal('bookModal');
-            }
-        }
-        function deleteBook(id, e) { e.stopPropagation(); if(confirm("Delete book?")) { appData.books=appData.books.filter(b=>b.id!==id); saveData(); renderAll(); }}
-        function addDailyQuest() {
-            const type = document.getElementById('dailyType').value;
-            let task = { id:Date.now(), type, done:false, content:'' };
-            if(type==='study') {
-                const bid = document.getElementById('selectBook').value;
-                const cid = document.getElementById('selectChapter').value;
-                if(!bid||cid==="") return alert("Select Book & Chapter");
-                const b = appData.books.find(x=>x.id==bid);
-                task.content = `[${b.title}] ${b.chapters[cid].name}`; task.bookId=bid; task.chapterIdx=cid;
-            } else {
-                task.content = document.getElementById('dailyContent').value;
-                if(!task.content) return;
-            }
-            appData.dailies.push(task); saveData(); renderAll(); closeModal('dailyModal');
-        }
-        function deleteTask(idx, e) { e.stopPropagation(); if(confirm("Delete task?")) { appData.dailies.splice(idx,1); saveData(); renderAll(); }}
-
-        // --- Modals ---
-        function openDailyModal() { document.getElementById('dailyModal').style.display='flex'; toggleBookSelect(); document.getElementById('dailyContent').value=''; }
-        function openBookModal() { document.getElementById('bookModal').style.display='flex'; document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
-        function closeModal(id) { document.getElementById(id).style.display='none'; }
-        function toggleBookSelect() {
-            const isStudy = document.getElementById('dailyType').value === 'study';
-            document.getElementById('bookSelectGroup').style.display = isStudy?'block':'none';
-            document.getElementById('normalInputGroup').style.display = isStudy?'none':'block';
-            if(isStudy) {
-                const sel = document.getElementById('selectBook'); sel.innerHTML='<option value="">Select...</option>';
-                appData.books.forEach(b => sel.innerHTML+=`<option value="${b.id}">${b.title}</option>`);
-            }
-        }
-        function updateChapterSelect() {
-            const bid = document.getElementById('selectBook').value;
-            const csel = document.getElementById('selectChapter'); csel.innerHTML='';
-            const b = appData.books.find(x=>x.id==bid);
-            if(b) b.chapters.forEach((c,i)=>csel.innerHTML+=`<option value="${i}">${c.name} ${c.done?'(Done)':''}</option>`);
-        }
-        function resetData() { if(confirm("Reset ALL data?")) { localStorage.removeItem('scholarApp_v3_10'); location.reload(); }}
-        window.onclick = e => { if(e.target.className==='modal-overlay') e.target.style.display='none'; }
     </script>
 </body>
 </html>
