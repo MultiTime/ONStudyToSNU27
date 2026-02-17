@@ -192,9 +192,14 @@
         .btn-edit-book { position: absolute; top: 10px; right: 35px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
         .btn-edit-book:hover { color: var(--primary); }
 
+        /* Effects */
         @keyframes floatUpFade { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(1); } }
         .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold); font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); pointer-events: none; z-index: 9999; }
         .xp-popup.animate { animation: floatUpFade 1.5s ease-out forwards; }
+
+        /* [NEW] YPT Toast */
+        .ypt-toast { position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 1rem 2rem; border-radius: 30px; font-weight: 700; z-index: 9999; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .ypt-toast.show { display: block; animation: floatUpFade 2s ease-out forwards; }
 
         .task-item { background: white; border: 1px solid var(--border); border-radius: var(--radius-item); padding: 0.8rem; margin-bottom: 0.6rem; display: flex; align-items: center; cursor: pointer; transition: border-color 0.2s; position: relative; }
         .task-item:hover { border-color: var(--primary); }
@@ -301,6 +306,7 @@
     </div>
 
     <div id="xpEffectsContainer"></div>
+    <div id="yptToast" class="ypt-toast">🔄 열품타 연동: + XP 획득!</div>
 
     <div id="bookModal" class="modal-overlay">
         <div class="modal-content">
@@ -360,7 +366,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase Config
         const firebaseConfig = {
           apiKey: "AIzaSyDW4xa4Qn5EI1AGlOyAUHwlB6Dtl3NHxHE",
           authDomain: "onstudytosnu27-851e8.firebaseapp.com",
@@ -409,7 +414,6 @@
 
         function getStudyDateString() {
             const now = new Date();
-            // 5 AM 기준으로 날짜 계산
             if (now.getHours() < 5) {
                 now.setDate(now.getDate() - 1);
             }
@@ -470,18 +474,27 @@
 
             if (diffSec > 0) {
                 const gainedXp = Math.floor(diffSec / 60);
-                if (gainedXp > 0) gainXpNoSave(gainedXp);
+                if (gainedXp > 0) {
+                    gainXpNoSave(gainedXp);
+                    showYptToast(gainedXp); // [NEW] Show Toast
+                }
             }
 
             appData.lastYptTime = newTimeStr;
             saveDataToCloud();
         }
 
-        // [수정] 레벨 다운 로직 포함
+        // [NEW] Toast Function
+        function showYptToast(xp) {
+            const toast = document.getElementById('yptToast');
+            toast.innerText = `🔄 열품타 연동: +${xp} XP 획득!`;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
         function gainXpNoSave(amount) {
             appData.user.xp += amount;
 
-            // Level UP
             while (appData.user.xp >= appData.user.nextXp) {
                 appData.user.xp -= appData.user.nextXp;
                 appData.user.level++;
@@ -489,16 +502,12 @@
                 showXpEffect(amount);
             }
 
-            // Level DOWN (Fix for negative XP)
             while (appData.user.xp < 0) {
                 if (appData.user.level > 1) {
                     appData.user.level--;
-                    // 이전 레벨의 Max XP 계산
                     appData.user.nextXp = 30 + (appData.user.level * 5);
-                    // 마이너스 된 만큼을 Max에서 뺌 (예: -10 + 50 = 40)
                     appData.user.xp += appData.user.nextXp;
                 } else {
-                    // 레벨 1이면 0에서 멈춤
                     appData.user.xp = 0;
                 }
             }
@@ -515,7 +524,6 @@
         function checkDailyReset() {
             const currentStudyDate = getStudyDateString();
             if (appData.lastDate !== currentStudyDate) {
-                // 5 AM 리셋 발동
                 appData.user.level = 1;
                 appData.user.xp = 0;
                 appData.user.nextXp = 30;
@@ -531,7 +539,6 @@
             }
         }
 
-        // [중요] 저장 함수에 안전장치({ merge: true }) 추가
         async function saveDataToCloud() {
             try {
                 await setDoc(doc(db, "users", USER_DOC_ID), appData, { merge: true });
