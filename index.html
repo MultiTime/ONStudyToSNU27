@@ -50,7 +50,7 @@
 
         .dashboard {
             width: 100%;
-            max-width: 1600px; /* 더 넓은 화면 대응을 위해 최대폭 증가 */
+            max-width: 1600px;
             height: 92vh;
             background: var(--bg-card);
             border-radius: var(--radius-box);
@@ -89,23 +89,14 @@
         .btn-reset { margin-left: 1rem; font-size: 0.8rem; color: var(--text-sub); background: transparent; border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 500; }
         .btn-reset:hover { background: #F9FAFB; border-color: var(--danger); color: var(--danger); }
 
-        /* [수정됨] Content Grid - 동적 비율 적용 */
+        /* Grid Layout Ratio: 3.2 : 2.8 : 4.8 */
         .content-grid {
             display: grid;
-            /* 기존: 420px 340px 1fr (고정값)
-               수정: 3fr 2.5fr 5fr (비율)
-               -> Daily(3), Focus(2.5), Library(5) 비율로 공간을 나눠가짐
-               -> Library가 항상 전체의 약 47% 정도를 차지하게 됨
-            */
-            grid-template-columns: 3fr 2.5fr 5fr;
-            height: 100%;
-            overflow: hidden;
+            grid-template-columns: 3.2fr 2.8fr 4.8fr;
+            height: 100%; overflow: hidden;
         }
 
-        .panel {
-            padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%;
-            min-width: 0; /* flex/grid 자식 요소가 내용물보다 작아질 수 있도록 허용 */
-        }
+        .panel { padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%; min-width: 0; }
         .panel-left { background: #F9FAFB; border-right: 1px solid var(--border); }
         .panel-center { background: white; border-right: 1px solid var(--border); position: relative; z-index: 1; }
         .panel-right { background: white; }
@@ -120,54 +111,67 @@
         .scroll-area::-webkit-scrollbar { width: 5px; }
         .scroll-area::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
 
-        /* Timer */
-        .timer-display-box { text-align: center; padding: 1.5rem 0; margin-bottom: 1.5rem; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; }
-        .timer-time { font-size: 3rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-main); line-height: 1.1; margin: 0.2rem 0; letter-spacing: -1px; }
-        .timer-label { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+        /* Center Panel */
+        .status-box {
+            text-align: center; padding: 1.5rem 0; margin-bottom: 1.5rem;
+            background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px;
+        }
+        .status-level-label { font-size: 0.8rem; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .status-level-val { font-size: 3.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-top: 0.2rem; }
+        .status-sub { font-size: 0.9rem; color: var(--text-sub); margin-top: 0.5rem; }
 
-        /* 반응형 폰트 사이즈 조정 (화면 작을 때 타이머 깨짐 방지) */
-        @media (max-width: 1200px) {
-            .timer-time { font-size: 2.5rem; }
+        /* YPT Display */
+        .ypt-display {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: #F3F4F6;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
         }
 
-        .timer-controls { display: grid; gap: 0.8rem; }
-        .timer-select { width: 100%; padding: 0.9rem; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 0.95rem; background: #FFFFFF; margin-bottom: 0.5rem; cursor: pointer; color: var(--text-main); transition: border-color 0.2s; }
-        .timer-select:focus { border-color: var(--primary); }
+        /* Calendar */
+        .calendar-container { flex: 1; display: flex; flex-direction: column; }
+        .calendar-header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0 0.5rem; }
+        .calendar-title { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
+        .btn-cal-nav { background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-sub); cursor: pointer; padding: 4px 8px; font-size: 0.9rem; transition: all 0.2s; }
+        .btn-cal-nav:hover { background: #F3F4F6; color: var(--primary); }
 
-        .btn-timer-toggle { width: 100%; padding: 0.9rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-start { background: var(--primary); color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .btn-start:hover { background: var(--primary-dark); }
-        .btn-stop { background: white; border: 1px solid var(--danger); color: var(--danger); }
-        .btn-stop:hover { background: #FEF2F2; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+        .cal-day-name { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; margin-bottom: 0.5rem; }
 
-        .today-total { text-align: center; margin-top: 1.2rem; font-size: 0.9rem; color: var(--text-sub); font-weight: 500; }
-        #todayTotal { color: var(--text-main) !important; font-weight: 700; }
-
-        .history-list { margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem; flex: 1; overflow-y: auto; }
-        .history-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid #F3F4F6; color: var(--text-sub); }
-
-        /* [유지] Book Grid - 항상 2열 유지 */
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 무조건 2개 */
-            gap: 0.8rem;
+        .cal-cell {
+            aspect-ratio: 1;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 4px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            position: relative;
+            background: #F9FAFB;
+            transition: all 0.3s ease;
         }
+        .cal-cell.has-data { border-color: transparent; color: #111; }
+        .cal-cell.today { border: 2px solid var(--primary); font-weight: 800; }
+        .cal-date-num { align-self: flex-end; font-size: 0.75rem; margin-bottom: auto; }
+        .cal-level-text { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+
+        /* Book Grid */
+        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
         .book-card {
             background: white; border: 1px solid var(--border); border-radius: var(--radius-item);
             padding: 1.2rem; transition: border-color 0.2s, box-shadow 0.2s; position: relative;
-            display: flex; flex-direction: column; max-height: 350px;
-            min-width: 0; /* 중요: 그리드 안에서 넘치지 않도록 */
+            display: flex; flex-direction: column; max-height: 350px; min-width: 0;
         }
         .book-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .book-card-header { margin-bottom: 0.8rem; }
 
-        .book-card-title {
-            font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            padding-right: 65px;
-            color: var(--text-main);
-            display: flex; align-items: center;
-        }
+        .book-card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 65px; color: var(--text-main); display: flex; align-items: center; }
         .book-color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
 
         .book-meta { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; font-weight: 500; }
@@ -183,13 +187,11 @@
         .mini-chapter-checkbox { width: 14px; height: 14px; border: 1px solid #9CA3AF; border-radius: 3px; margin-right: 8px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size: 10px; color: white; transition: background 0.2s, border-color 0.2s; }
         .mini-chapter.done { text-decoration: line-through; color: #D1D5DB; }
 
-        /* Card Buttons */
         .btn-delete-book { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
         .btn-delete-book:hover { color: var(--danger); }
         .btn-edit-book { position: absolute; top: 10px; right: 35px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
         .btn-edit-book:hover { color: var(--primary); }
 
-        /* Effects & Misc */
         @keyframes floatUpFade { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(1); } }
         .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold); font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); pointer-events: none; z-index: 9999; }
         .xp-popup.animate { animation: floatUpFade 1.5s ease-out forwards; }
@@ -209,7 +211,6 @@
 
         .app-footer { text-align: center; font-size: 0.75rem; color: #9CA3AF; padding: 0.8rem; border-top: 1px solid var(--border); background: white; font-weight: 500; }
 
-        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 2rem; width: 400px; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .form-input, .form-select, .form-textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; margin-bottom: 1rem; background: #F9FAFB; color: var(--text-main); }
@@ -217,7 +218,6 @@
         .btn-cancel { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; color: var(--text-main); font-weight: 600; }
         .btn-confirm { padding: 0.6rem 1rem; border-radius: 8px; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 600; }
         .btn-confirm:hover { background: var(--primary-dark); }
-
         .color-picker-container { display: flex; gap: 10px; margin-bottom: 1rem; align-items: center; }
         .color-label { font-size: 0.9rem; font-weight: 600; color: var(--text-sub); margin-right: 10px; }
         .color-input { width: 50px; height: 40px; border: none; cursor: pointer; background: none; }
@@ -236,11 +236,11 @@
         <header>
             <div class="user-section">
                 <h1>Scholar Hub</h1>
-                <div class="subtitle" id="lvlInfo">Level 1 • Novice</div>
+                <div class="subtitle" id="lvlInfo">Today: Lv.1</div>
             </div>
 
             <div class="xp-wrapper">
-                <div class="xp-header"><span>EXP Progress</span><span id="xpText">0 / 100</span></div>
+                <div class="xp-header"><span>Daily Progress</span><span id="xpText">0 / 30</span></div>
                 <div class="xp-track"><div class="xp-fill" id="xpBar"></div></div>
             </div>
 
@@ -263,24 +263,27 @@
 
             <section class="panel panel-center">
                 <div class="section-header">
-                    <div class="section-title">Deep Focus</div>
+                    <div class="section-title">Today's Status</div>
                 </div>
-                <div class="timer-display-box">
-                    <div class="timer-label">Session Duration</div>
-                    <div class="timer-time" id="timerDisplay">00:00:00</div>
-                </div>
-                <div class="timer-controls">
-                    <select id="timerBookSelect" class="timer-select">
-                        <option value="">📚 Select Book to Study...</option>
-                    </select>
-                    <button id="timerBtn" class="btn-timer-toggle btn-start" onclick="window.toggleTimer()">START FOCUS</button>
-                </div>
-                <div class="today-total">Total Focus Today: <span id="todayTotal">00:00:00</span></div>
 
-                <div class="section-header" style="margin-top: 2rem; margin-bottom: 0.2rem;">
-                    <div class="section-title" style="font-size: 1.25rem;">Session History</div>
+                <div class="status-box">
+                    <div class="status-level-label">Today's Level</div>
+                    <div class="status-level-val" id="todayLevelDisplay">Lv. 1</div>
+                    <div class="ypt-display" id="yptTimeDisplay">YPT Time: 00:00:00</div>
+                    <div class="status-sub">YPT Sync ●</div>
                 </div>
-                <div class="history-list" id="historyList"></div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header-nav">
+                        <button class="btn-cal-nav" onclick="window.changeMonth(-1)">&lt;</button>
+                        <span class="calendar-title" id="calendarMonth">February 2026</span>
+                        <button class="btn-cal-nav" onclick="window.changeMonth(1)">&gt;</button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
             </section>
 
             <main class="panel panel-right">
@@ -355,9 +358,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // 키 정보 (민찬님 키 유지)
+        // Firebase Config
         const firebaseConfig = {
           apiKey: "AIzaSyDW4xa4Qn5EI1AGlOyAUHwlB6Dtl3NHxHE",
           authDomain: "onstudytosnu27-851e8.firebaseapp.com",
@@ -371,73 +374,285 @@
         const db = getFirestore(app);
         const USER_DOC_ID = "minchan_data";
 
-        // --- Icons ---
+        // Icons
         const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         const ICON_CLOSE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
         const ICON_EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
 
-        // --- Data ---
+        // State
         let appData = {
-            user: { level: 1, xp: 0, nextXp: 100 },
+            user: { level: 1, xp: 0, nextXp: 30 },
             books: [],
             dailies: [],
-            history: [],
-            lastDate: new Date().toLocaleDateString()
+            calendarHistory: {},
+            lastDate: getStudyDateString(),
+            lastYptTime: "00:00:00"
         };
+        let currentCalendarDate = new Date();
 
         const quotes = [
             "시작이 반이다. - Aristoteles",
             "가장 유능한 사람은 가장 배움에 힘쓰는 사람이다. - Goethe",
             "중요한 것은 꺾이지 않는 마음.",
             "피할 수 없으면 즐겨라. - Robert Elliot",
-            "고통 없이는 얻는 것도 없다. (No Pain, No Gain)",
             "오늘 걷지 않으면 내일은 뛰어야 한다.",
-            "성공은 꿈꾸는 자의 것이 아니라 실천하는 자의 것이다.",
-            "미래는 현재 우리가 무엇을 하는가에 달려 있다. - Gandhi",
-            "천재는 1%의 영감과 99%의 땀으로 만들어진다. - Edison"
+            "성공은 꿈꾸는 자의 것이 아니라 실천하는 자의 것이다."
         ];
 
-        let timerInterval = null;
-        let timerSeconds = 0;
-        let isTimerRunning = false;
+        // --- Core Logic ---
+        function getFixedDateKey(dateObj) {
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function getStudyDateString() {
+            const now = new Date();
+            // 5 AM 기준으로 날짜 계산
+            if (now.getHours() < 5) {
+                now.setDate(now.getDate() - 1);
+            }
+            return getFixedDateKey(now);
+        }
+
+        function timeToSeconds(timeStr) {
+            if (!timeStr) return 0;
+            const parts = timeStr.split(':');
+            if (parts.length !== 3) return 0;
+            return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+        }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadDataFromCloud();
-            checkMidnightReset();
-            renderAll();
+            setupRealtimeListener();
             startClock();
             setDailyQuote();
-            document.getElementById('loadingScreen').style.display = 'none';
         });
 
-        // --- Cloud ---
-        async function loadDataFromCloud() {
-            try {
-                const docRef = doc(db, "users", USER_DOC_ID);
-                const docSnap = await getDoc(docRef);
+        function setupRealtimeListener() {
+            onSnapshot(doc(db, "users", USER_DOC_ID), (docSnap) => {
                 if (docSnap.exists()) {
-                    appData = docSnap.data();
+                    const data = docSnap.data();
+
+                    const remoteYptTime = data.ypt_time || "00:00:00";
+                    if(data.lastYptTime) appData.lastYptTime = data.lastYptTime;
+
+                    processYptUpdate(remoteYptTime);
+
+                    if(data.user) appData.user = data.user;
+                    if(data.books) appData.books = data.books;
+                    if(data.dailies) appData.dailies = data.dailies;
+                    if(data.calendarHistory) appData.calendarHistory = data.calendarHistory;
+                    if(data.lastDate) appData.lastDate = data.lastDate;
+
+                    checkDailyReset();
+                    document.getElementById('yptTimeDisplay').innerText = `YPT Time: ${remoteYptTime}`;
+                    renderAll();
+                    document.getElementById('loadingScreen').style.display = 'none';
                 } else {
                     saveDataToCloud();
                 }
-            } catch (e) {
-                console.error("Error loading document: ", e);
-                alert("데이터 로드 실패");
+            });
+        }
+
+        function processYptUpdate(newTimeStr) {
+            if (newTimeStr === appData.lastYptTime) return;
+
+            const newSec = timeToSeconds(newTimeStr);
+            const oldSec = timeToSeconds(appData.lastYptTime);
+            let diffSec = 0;
+
+            if (newSec > oldSec) {
+                diffSec = newSec - oldSec;
+            } else if (newSec < oldSec) {
+                diffSec = newSec;
+            }
+
+            if (diffSec > 0) {
+                const gainedXp = Math.floor(diffSec / 60);
+                if (gainedXp > 0) gainXpNoSave(gainedXp);
+            }
+
+            appData.lastYptTime = newTimeStr;
+            saveDataToCloud();
+        }
+
+        // [수정] 레벨 다운 로직 포함
+        function gainXpNoSave(amount) {
+            appData.user.xp += amount;
+
+            // Level UP
+            while (appData.user.xp >= appData.user.nextXp) {
+                appData.user.xp -= appData.user.nextXp;
+                appData.user.level++;
+                appData.user.nextXp = 30 + (appData.user.level * 5);
+                showXpEffect(amount);
+            }
+
+            // Level DOWN (Fix for negative XP)
+            while (appData.user.xp < 0) {
+                if (appData.user.level > 1) {
+                    appData.user.level--;
+                    // 이전 레벨의 Max XP 계산
+                    appData.user.nextXp = 30 + (appData.user.level * 5);
+                    // 마이너스 된 만큼을 Max에서 뺌 (예: -10 + 50 = 40)
+                    appData.user.xp += appData.user.nextXp;
+                } else {
+                    // 레벨 1이면 0에서 멈춤
+                    appData.user.xp = 0;
+                }
+            }
+
+            const today = getStudyDateString();
+            appData.calendarHistory[today] = Math.max(appData.calendarHistory[today] || 1, appData.user.level);
+        }
+
+        function gainXp(amount) {
+            gainXpNoSave(amount);
+            saveDataToCloud();
+        }
+
+        function checkDailyReset() {
+            const currentStudyDate = getStudyDateString();
+            if (appData.lastDate !== currentStudyDate) {
+                // 5 AM 리셋 발동
+                appData.user.level = 1;
+                appData.user.xp = 0;
+                appData.user.nextXp = 30;
+                appData.dailies = [];
+                appData.lastDate = currentStudyDate;
+                appData.lastYptTime = "00:00:00";
+
+                saveDataToCloud();
+                if (!appData.calendarHistory) appData.calendarHistory = {};
+                appData.calendarHistory[currentStudyDate] = 1;
+
+                alert("🌅 새로운 하루(05:00 AM) 시작! 레벨과 미션이 초기화되었습니다.");
             }
         }
 
+        // [중요] 저장 함수에 안전장치({ merge: true }) 추가
         async function saveDataToCloud() {
             try {
-                await setDoc(doc(db, "users", USER_DOC_ID), appData);
+                await setDoc(doc(db, "users", USER_DOC_ID), appData, { merge: true });
             } catch (e) {
-                console.error("Error writing document: ", e);
+                console.error("Error:", e);
             }
         }
 
-        // --- Core ---
+        // --- UI Rendering ---
+        function renderAll() {
+            renderUserStats();
+            renderBooks();
+            renderDailies();
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthLabel = document.getElementById('calendarMonth');
+            grid.innerHTML = '';
+
+            const viewYear = currentCalendarDate.getFullYear();
+            const viewMonth = currentCalendarDate.getMonth();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            monthLabel.innerText = `${monthNames[viewMonth]} ${viewYear}`;
+
+            const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+            const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+            for(let i=0; i<firstDay; i++) grid.appendChild(document.createElement('div'));
+
+            const studyDateStr = getStudyDateString();
+
+            for(let d=1; d<=daysInMonth; d++) {
+                const dateObj = new Date(viewYear, viewMonth, d);
+                const dateKey = getFixedDateKey(dateObj);
+
+                const isToday = (dateKey === studyDateStr);
+                const level = appData.calendarHistory[dateKey] || 0;
+
+                const cell = document.createElement('div');
+                cell.className = `cal-cell ${isToday ? 'today' : ''}`;
+
+                let levelHtml = '';
+                if (level > 0) {
+                    cell.classList.add('has-data');
+                    const opacity = Math.min(0.2 + (level * 0.08), 1);
+                    const bgColor = `rgba(55, 65, 81, ${opacity})`;
+                    cell.style.backgroundColor = bgColor;
+                    cell.style.borderColor = bgColor;
+
+                    const textColor = opacity > 0.5 ? 'white' : '#111';
+                    cell.style.color = textColor;
+                    levelHtml = `<div class="cal-level-text" style="color:${textColor}">Lv.${level}</div>`;
+                }
+                cell.innerHTML = `<span class="cal-date-num">${d}</span>${levelHtml}`;
+                grid.appendChild(cell);
+            }
+        }
+
+        function renderUserStats() {
+            const { level, xp, nextXp } = appData.user;
+            document.getElementById('lvlInfo').innerText = `Today: Lv.${level}`;
+            document.getElementById('todayLevelDisplay').innerText = `Lv. ${level}`;
+            document.getElementById('xpText').innerText = `${xp} / ${nextXp}`;
+            document.getElementById('xpBar').style.width = `${Math.min((xp/nextXp)*100, 100)}%`;
+        }
+
+        function renderBooks() {
+            const grid = document.getElementById('bookGrid');
+            grid.innerHTML = '';
+            appData.books.forEach(book => {
+                const total = book.chapters.length;
+                const done = book.chapters.filter(c => c.done).length;
+                const percent = total === 0 ? 0 : Math.round((done/total)*100);
+                const isMastered = (percent === 100 && total > 0);
+                const color = book.color || '#374151';
+                let chaptersHtml = '<div class="card-chapters">';
+                book.chapters.forEach((ch, idx) => {
+                    const checkboxStyle = ch.done ? `background-color:${color}; border-color:${color};` : '';
+                    chaptersHtml += `<div class="mini-chapter ${ch.done?'done':''}" onclick="window.toggleChapter(${book.id}, ${idx})"><div class="mini-chapter-checkbox" style="${checkboxStyle}">${ch.done?'✔':''}</div><span>${ch.name}</span></div>`;
+                });
+                chaptersHtml += '</div>';
+                const div = document.createElement('div');
+                div.className = `book-card ${isMastered ? 'mastered' : ''}`;
+                div.onmouseenter = function() { this.style.borderColor = color; };
+                div.onmouseleave = function() { this.style.borderColor = 'var(--border)'; };
+                div.innerHTML = `
+                    <button class="btn-delete-book" onclick="window.deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
+                    <button class="btn-edit-book" onclick="window.openEditBookModal(${book.id})" title="Edit">${ICON_EDIT}</button>
+                    <div class="book-card-header">
+                        <div class="book-card-title"><span class="book-color-dot" style="background-color: ${color};"></span>${book.title}</div>
+                        <div class="book-meta"><span>${isMastered ? 'Mastered' : 'Progress'}</span><span>${done}/${total}</span></div>
+                    </div>
+                    <div class="mini-progress"><div class="mini-fill" style="width:${percent}%; background-color:${color};"></div></div>
+                    ${chaptersHtml}`;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderDailies() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            appData.dailies.forEach((task, idx) => {
+                const div = document.createElement('div');
+                div.className = `task-item ${task.done?'completed':''}`;
+                div.onclick = () => window.toggleTask(idx);
+                div.innerHTML = `<div class="checkbox"></div><div class="task-content"><div class="task-text">${task.content}</div></div><button class="btn-delete-task" onclick="window.deleteTask(${idx}, event)">${ICON_TRASH}</button>`;
+                list.appendChild(div);
+            });
+        }
+
+        // --- Interaction ---
+        window.changeMonth = function(offset) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + offset);
+            renderCalendar();
+        }
+
         window.resetData = async function() {
             if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
-                appData = { user: { level: 1, xp: 0, nextXp: 100 }, books: [], dailies: [], history: [], lastDate: new Date().toLocaleDateString() };
+                appData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], dailies: [], calendarHistory: {}, lastDate: getStudyDateString(), lastYptTime: "00:00:00" };
                 await saveDataToCloud(); location.reload();
             }
         };
@@ -446,23 +661,16 @@
             const t = document.getElementById('newBookTitle').value;
             const c = document.getElementById('newBookChapters').value.split('\n').filter(l=>l.trim()).map(l=>({name:l.trim(), done:false}));
             const color = document.getElementById('newBookColor').value;
-            if(t){
-                appData.books.push({id:Date.now(), title:t, chapters:c, color: color});
-                await saveDataToCloud(); renderAll(); window.closeModal('bookModal');
-            }
+            if(t){ appData.books.push({id:Date.now(), title:t, chapters:c, color: color}); await saveDataToCloud(); window.closeModal('bookModal'); }
         };
 
-        // Edit Functions
         window.openEditBookModal = function(bookId) {
             const book = appData.books.find(b => b.id == bookId);
             if (!book) return;
-
             document.getElementById('editBookId').value = bookId;
             document.getElementById('editBookTitle').value = book.title;
-            // 챕터 배열을 줄바꿈 문자열로 변환
             document.getElementById('editBookChapters').value = book.chapters.map(c => c.name).join('\n');
             document.getElementById('editBookColor').value = book.color || '#374151';
-
             document.getElementById('editBookModal').style.display = 'flex';
         }
 
@@ -471,35 +679,24 @@
             const title = document.getElementById('editBookTitle').value;
             const chaptersText = document.getElementById('editBookChapters').value;
             const color = document.getElementById('editBookColor').value;
-
             if(!title.trim()) return alert("Title required");
-
             const bookIndex = appData.books.findIndex(b => b.id == bookId);
             if (bookIndex > -1) {
                 const oldChapters = appData.books[bookIndex].chapters;
-
-                // 줄번호 기준으로 기존 완료 상태(done) 보존
                 const newChapters = chaptersText.split('\n').filter(l=>l.trim()).map((line, idx) => {
                     const isDone = (oldChapters[idx] && oldChapters[idx].done) || false;
                     return { name: line.trim(), done: isDone };
                 });
-
                 appData.books[bookIndex].title = title;
                 appData.books[bookIndex].chapters = newChapters;
                 appData.books[bookIndex].color = color;
-
-                await saveDataToCloud();
-                renderAll();
-                window.closeModal('editBookModal');
+                await saveDataToCloud(); window.closeModal('editBookModal');
             }
         }
 
         window.deleteBook = async function(id, e) {
             e.stopPropagation();
-            if(confirm("Delete book?")) {
-                appData.books=appData.books.filter(b=>b.id!==id);
-                await saveDataToCloud(); renderAll();
-            }
+            if(confirm("Delete book?")) { appData.books=appData.books.filter(b=>b.id!==id); await saveDataToCloud(); }
         };
 
         window.addDailyQuest = async function() {
@@ -515,15 +712,11 @@
                 task.content = document.getElementById('dailyContent').value;
                 if(!task.content) return;
             }
-            appData.dailies.push(task); await saveDataToCloud(); renderAll(); window.closeModal('dailyModal');
+            appData.dailies.push(task); await saveDataToCloud(); window.closeModal('dailyModal');
         };
 
         window.deleteTask = async function(idx, e) {
-            e.stopPropagation();
-            if(confirm("Delete task?")) {
-                appData.dailies.splice(idx,1);
-                await saveDataToCloud(); renderAll();
-            }
+            e.stopPropagation(); if(confirm("Delete task?")) { appData.dailies.splice(idx,1); await saveDataToCloud(); }
         };
 
         window.toggleChapter = async function(bookId, chapterIdx) {
@@ -532,54 +725,33 @@
             const chapter = book.chapters[chapterIdx];
             chapter.done = !chapter.done;
             appData.dailies.forEach(task => {
-                if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) {
-                    task.done = chapter.done;
-                }
+                if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) task.done = chapter.done;
             });
             gainXp(chapter.done ? 10 : -10);
-            await saveDataToCloud();
-            renderAll();
         };
 
         window.toggleTask = async function(idx) {
-            const t = appData.dailies[idx];
-            t.done = !t.done;
+            const t = appData.dailies[idx]; t.done = !t.done;
             if(t.type==='study' && t.bookId) {
                 const b = appData.books.find(x=>x.id==t.bookId);
                 if(b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
             }
-            gainXp(t.done?20:-20);
-            await saveDataToCloud();
-            renderAll();
+            gainXp(t.done?10:-10);
         };
 
+        // Helpers
         function setDailyQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             const [text, author] = randomQuote.split('-');
-            const displayHTML = `"<span class="quote-text">${text.trim()}</span>"${author ? ` <span style="font-weight:400; color:#9CA3AF;">- ${author.trim()}</span>` : ''}`;
-            document.getElementById('quoteDisplay').innerHTML = displayHTML;
+            document.getElementById('quoteDisplay').innerHTML = `"<span class="quote-text">${text.trim()}</span>"${author ? ` <span style="font-weight:400; color:#9CA3AF;">- ${author.trim()}</span>` : ''}`;
         }
-
         function startClock() {
-            const updateTime = () => {
+            setInterval(() => {
                 const now = new Date();
                 document.getElementById('clockTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
                 document.getElementById('clockDate').innerText = now.toLocaleDateString();
-            };
-            updateTime();
-            setInterval(updateTime, 1000);
+            }, 1000);
         }
-
-        function checkMidnightReset() {
-            const today = new Date().toLocaleDateString();
-            if (appData.lastDate !== today) {
-                appData.history = [];
-                appData.lastDate = today;
-                saveDataToCloud();
-                alert("🌅 New Day! Daily history reset.");
-            }
-        }
-
         function showXpEffect(amount) {
             const container = document.getElementById('xpEffectsContainer');
             const el = document.createElement('div');
@@ -590,132 +762,10 @@
             setTimeout(() => { el.remove(); }, 1500);
         }
 
-        function gainXp(amount) {
-            appData.user.xp += amount;
-            if (appData.user.xp >= appData.user.nextXp) {
-                appData.user.level++;
-                appData.user.xp -= appData.user.nextXp;
-                appData.user.nextXp = Math.floor(appData.user.nextXp * 1.3);
-                alert(`🎉 Level Up! You are now Level ${appData.user.level}`);
-            }
-            renderUserStats();
-            showXpEffect(amount);
-        }
-
-        function getRankName(level) {
-            if (level < 5) return "Novice";
-            if (level < 10) return "Seeker";
-            if (level < 20) return "Apprentice";
-            if (level < 30) return "Scholar";
-            if (level < 50) return "Sage";
-            return "Grandmaster";
-        }
-
-        function renderAll() {
-            renderUserStats();
-            renderBooks();
-            renderDailies();
-            renderTimerOptions();
-            renderHistory();
-        }
-
-        function renderBooks() {
-            const grid = document.getElementById('bookGrid');
-            grid.innerHTML = '';
-            appData.books.forEach(book => {
-                const total = book.chapters.length;
-                const done = book.chapters.filter(c => c.done).length;
-                const percent = total === 0 ? 0 : Math.round((done/total)*100);
-                const isMastered = (percent === 100 && total > 0);
-                const color = book.color || '#374151';
-
-                let chaptersHtml = '<div class="card-chapters">';
-                book.chapters.forEach((ch, idx) => {
-                    const checkboxStyle = ch.done ? `background-color:${color}; border-color:${color};` : '';
-                    chaptersHtml += `
-                        <div class="mini-chapter ${ch.done?'done':''}" onclick="window.toggleChapter(${book.id}, ${idx})">
-                            <div class="mini-chapter-checkbox" style="${checkboxStyle}">${ch.done?'✔':''}</div>
-                            <span>${ch.name}</span>
-                        </div>
-                    `;
-                });
-                chaptersHtml += '</div>';
-
-                const div = document.createElement('div');
-                div.className = `book-card ${isMastered ? 'mastered' : ''}`;
-                div.onmouseenter = function() { this.style.borderColor = color; };
-                div.onmouseleave = function() { this.style.borderColor = 'var(--border)'; };
-
-                div.innerHTML = `
-                    <button class="btn-delete-book" onclick="window.deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
-                    <button class="btn-edit-book" onclick="window.openEditBookModal(${book.id})" title="Edit">${ICON_EDIT}</button>
-
-                    <div class="book-card-header">
-                        <div class="book-card-title">
-                            <span class="book-color-dot" style="background-color: ${color};"></span>
-                            ${book.title}
-                        </div>
-                        <div class="book-meta"><span>${isMastered ? 'Mastered' : 'Progress'}</span><span>${done}/${total}</span></div>
-                    </div>
-                    <div class="mini-progress"><div class="mini-fill" style="width:${percent}%; background-color:${color};"></div></div>
-                    ${chaptersHtml}
-                `;
-                grid.appendChild(div);
-            });
-            renderTimerOptions();
-        }
-
-        function renderUserStats() {
-            const { level, xp, nextXp } = appData.user;
-            const rank = getRankName(level);
-            document.getElementById('lvlInfo').innerText = `Level ${level} • ${rank}`;
-            document.getElementById('xpText').innerText = `${xp} / ${nextXp}`;
-            document.getElementById('xpBar').style.width = `${Math.min((xp/nextXp)*100, 100)}%`;
-        }
-
-        function renderHistory() {
-            const list = document.getElementById('historyList');
-            const totalEl = document.getElementById('todayTotal');
-            list.innerHTML = '';
-            let total = 0;
-            appData.history.forEach(item => {
-                total += item.durationSec;
-                const d = document.createElement('div');
-                d.className = 'history-item';
-                d.innerHTML = `<span>${item.timestamp} <b>${item.bookTitle}</b></span><span>+ ${formatTime(item.durationSec)}</span>`;
-                list.appendChild(d);
-            });
-            totalEl.innerText = formatTime(total);
-        }
-
-        function renderDailies() {
-            const list = document.getElementById('taskList');
-            list.innerHTML = '';
-            appData.dailies.forEach((task, idx) => {
-                const div = document.createElement('div');
-                div.className = `task-item ${task.done?'completed':''}`;
-                div.onclick = () => window.toggleTask(idx);
-                div.innerHTML = `
-                    <div class="checkbox"></div>
-                    <div class="task-content"><div class="task-text">${task.content}</div></div>
-                    <button class="btn-delete-task" onclick="window.deleteTask(${idx}, event)">${ICON_TRASH}</button>
-                `;
-                list.appendChild(div);
-            });
-        }
-
-        function renderTimerOptions() {
-            const sel = document.getElementById('timerBookSelect');
-            const val = sel.value;
-            sel.innerHTML = '<option value="">📚 Select Book to Study...</option>';
-            appData.books.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.title}</option>`);
-            sel.value = val;
-        }
-
+        // Window assignments
         window.openDailyModal = function() { document.getElementById('dailyModal').style.display='flex'; window.toggleBookSelect(); document.getElementById('dailyContent').value=''; }
         window.openBookModal = function() { document.getElementById('bookModal').style.display='flex'; document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
         window.closeModal = function(id) { document.getElementById(id).style.display='none'; }
-
         window.toggleBookSelect = function() {
             const isStudy = document.getElementById('dailyType').value === 'study';
             document.getElementById('bookSelectGroup').style.display = isStudy?'block':'none';
@@ -725,65 +775,13 @@
                 appData.books.forEach(b => sel.innerHTML+=`<option value="${b.id}">${b.title}</option>`);
             }
         }
-
         window.updateChapterSelect = function() {
             const bid = document.getElementById('selectBook').value;
             const csel = document.getElementById('selectChapter'); csel.innerHTML='';
             const b = appData.books.find(x=>x.id==bid);
             if(b) b.chapters.forEach((c,i)=>csel.innerHTML+=`<option value="${i}">${c.name} ${c.done?'(Done)':''}</option>`);
         }
-
         window.onclick = function(e) { if(e.target.className==='modal-overlay') e.target.style.display='none'; }
-
-        window.toggleTimer = function() {
-            const btn = document.getElementById('timerBtn');
-            const select = document.getElementById('timerBookSelect');
-            if (!isTimerRunning) {
-                if (select.value === "") return alert("Please select a book first.");
-                isTimerRunning = true;
-                btn.innerText = "STOP & SAVE";
-                btn.className = "btn-timer-toggle btn-stop";
-                select.disabled = true;
-
-                timerInterval = setInterval(() => {
-                    timerSeconds++;
-                    updateTimerDisplay();
-                    if (timerSeconds > 0 && timerSeconds % 600 === 0) gainXp(5);
-                    if(new Date().toLocaleDateString() !== appData.lastDate) { stopTimer(); checkMidnightReset(); renderHistory(); }
-                }, 1000);
-            } else {
-                stopTimer();
-            }
-        }
-
-        async function stopTimer() {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-            const select = document.getElementById('timerBookSelect');
-            if (timerSeconds > 0) {
-                appData.history.unshift({
-                    date: new Date().toLocaleDateString(),
-                    bookTitle: select.options[select.selectedIndex].text,
-                    durationSec: timerSeconds,
-                    timestamp: new Date().toLocaleTimeString()
-                });
-                await saveDataToCloud();
-            }
-            timerSeconds = 0;
-            updateTimerDisplay();
-            document.getElementById('timerBtn').innerText = "START FOCUS";
-            document.getElementById('timerBtn').className = "btn-timer-toggle btn-start";
-            select.disabled = false;
-            renderHistory();
-        }
-
-        function updateTimerDisplay() { document.getElementById('timerDisplay').innerText = formatTime(timerSeconds); }
-        function formatTime(sec) {
-            const h = String(Math.floor(sec / 3600)).padStart(2, '0');
-            const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
-            const s = String(sec % 60).padStart(2, '0');
-            return `${h}:${m}:${s}`;
-        }
     </script>
 </body>
 </html>
