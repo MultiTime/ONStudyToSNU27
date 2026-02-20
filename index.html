@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONStudyToSNU27 | ONFINE</title>
-    <link rel="icon" href="icon.ico">
+
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -33,7 +33,7 @@
         .shape-3 { width: 50vw; height: 50vw; background: radial-gradient(circle, #F3E8FF 0%, rgba(243, 232, 255, 0) 70%); top: 15%; left: 25%; animation-delay: -10s; opacity: 0.4;}
         @keyframes floatShape { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(5%, 5%, 0) scale(1.05); } }
 
-        #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; font-weight: 600; color: var(--primary); }
+        #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; font-weight: 600; color: var(--primary); }
 
         .dashboard {
             width: 100%; max-width: 1800px; height: 92vh;
@@ -49,17 +49,22 @@
         .user-section { min-width: 200px; }
         .user-section h1 { font-size: 1.4rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
         .user-section .subtitle { font-size: 0.85rem; color: var(--text-sub); margin-top: 0.2rem; font-weight: 500; }
+
         .xp-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .xp-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.4rem; }
         .xp-track { width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; }
         .xp-fill { height: 100%; background: var(--primary); width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
         .clock-section { text-align: right; min-width: 110px; font-variant-numeric: tabular-nums; }
         .clock-time { font-size: 1.5rem; font-weight: 700; color: var(--text-main); letter-spacing: -1px; }
         .clock-date { font-size: 0.8rem; color: var(--text-sub); font-weight: 500; }
-        .btn-reset { margin-left: 0.5rem; font-size: 0.8rem; color: var(--text-sub); background: transparent; border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 500; }
-        .btn-reset:hover { background: rgba(0,0,0,0.05); border-color: var(--danger); color: var(--danger); }
 
-        /* Grid Layout Ratio: 4 : 2.6 : 4.2 */
+        .btn-group { display: flex; gap: 0.4rem; }
+        .btn-action { font-size: 0.8rem; color: var(--text-sub); background: transparent; border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 600; }
+        .btn-action:hover { background: rgba(0,0,0,0.05); color: var(--text-main); border-color: #D1D5DB; }
+        .btn-danger:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: var(--danger); }
+
         .content-grid { display: grid; grid-template-columns: 4fr 2.6fr 4.2fr; height: 100%; overflow: hidden; }
         .panel { padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%; min-width: 0; }
 
@@ -78,21 +83,18 @@
         .scroll-area::-webkit-scrollbar { width: 5px; }
         .scroll-area::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
 
-        /* =========================================
-           [NEW] 좌측 모던 플래너 (크게 키운 통계)
-           ========================================= */
+        /* 좌측 패널: 모던 플래너 */
         .pl-info-bar { display: grid; grid-template-columns: 1.35fr 0.8fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem; flex-shrink: 0; }
         .pl-pill {
             background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px;
-            padding: 1rem; display: flex; flex-direction: column;
+            padding: 1rem; display: flex; flex-direction: column; flex: 1; min-width: 0;
             justify-content: center; align-items: flex-start; transition: all 0.3s;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02); position: relative;
         }
         .pl-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-color: #D1D5DB; }
         .pl-pill-label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.4rem; display: flex; justify-content: space-between; width: 100%;}
 
-        /* [수정] 데이터 텍스트 크기 대폭 확대 */
-        .pl-pill-val { font-size: 1.4rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px; line-height: 1;}
+        .pl-pill-val { font-size: 1.4rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
         .pl-dday-val { color: var(--primary); cursor: pointer; }
         .pl-time-val { color: var(--gold); font-variant-numeric: tabular-nums; }
 
@@ -101,7 +103,7 @@
 
         .pl-body { display: flex; flex: 1; min-height: 0; gap: 1.5rem; flex-direction: row; }
 
-        .pl-tasks-wrap { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-right: 5px; }
+        .pl-tasks-wrap { flex: 1.1; display: flex; flex-direction: column; overflow-y: auto; padding-right: 5px; }
         .pl-section-title { font-size: 0.85rem; font-weight: 800; color: var(--text-sub); margin-bottom: 0.8rem; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center;}
 
         .task-item {
@@ -127,8 +129,7 @@
         .task-item:hover .btn-delete-task { opacity: 1; transform: scale(1); }
         .btn-delete-task:hover { color: var(--danger) !important; transform: scale(1.2) !important; }
 
-        /* 세로형 오리지널 모트모트 타임테이블 */
-        .pl-tt-wrap { flex: 0.8; display: flex; flex-direction: column; overflow-y: auto; user-select: none; padding-left: 1rem; border-left: 1px solid var(--border);}
+        .pl-tt-wrap { flex: 0.9; display: flex; flex-direction: column; overflow-y: auto; user-select: none; padding-left: 1rem; border-left: 1px solid var(--border);}
         .tt-row { display: grid; grid-template-columns: 24px repeat(6, 1fr); gap: 3px; margin-bottom: 4px; align-items: center; }
         .tt-hour { font-size: 0.75rem; font-weight: 700; color: #9CA3AF; text-align: center; }
         .tt-cell {
@@ -161,7 +162,7 @@
         .stage-3 .sha-part { border: none; background: #475569; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
         .stage-3 .ground { background: #CBD5E1; }
         .stage-4 .sha-part { background: #1E3A8A; }
-        .stage-4 .sha-ya-top, .stage-4 .sha-ya-bot, .stage-4 .sha-bridge { background: #3B82F6; }
+        .stage-4 .sha-ya-top, .sha-ya-bot, .stage-4 .sha-bridge { background: #3B82F6; }
         .stage-4 .tree { opacity: 1; transform: translateY(0); }
         .stage-4 .ground { background: #86EFAC; }
         .stage-5 .campus-bg { background: linear-gradient(to bottom, #0F172A, #1E1B4B); }
@@ -177,13 +178,14 @@
         .status-sub { font-size: 0.85rem; color: var(--text-sub); margin-top: 0.3rem; font-weight: 600; transition: 0.3s;}
 
         .calendar-container { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative;}
+
         .calendar-header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; padding: 0 0.5rem; flex-shrink: 0; }
         .calendar-title { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
         .btn-cal-nav { background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-sub); cursor: pointer; padding: 4px 12px; font-size: 0.9rem; transition: all 0.2s; }
         .btn-cal-nav:hover { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05);}
         .btn-cal-nav:active { transform: scale(0.95); }
 
-        .calendar-grid-wrapper { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-right: 5px; }
+        .calendar-grid-wrapper { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-right: 5px; overflow-x: hidden; }
         .calendar-grid-wrapper::-webkit-scrollbar { width: 5px; }
         .calendar-grid-wrapper::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
 
@@ -279,8 +281,8 @@
     </div>
 
     <div id="loadingScreen">
-        <div style="font-size: 1.5rem; margin-bottom: 10px;">Scholar Dashboard</div>
-        <div>Connecting to Cloud...</div>
+        <div style="font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: var(--text-main);">Scholar Hub</div>
+        <div id="loadingMsg" style="font-size: 1rem; font-weight: 600; color: var(--text-sub);">클라우드 데이터 동기화 중...</div>
     </div>
 
     <div class="dashboard">
@@ -297,12 +299,18 @@
                 <div class="xp-track"><div class="xp-fill" id="xpBar"></div></div>
             </div>
 
-            <div class="clock-section">
-                <div class="clock-time" id="clockTime">00:00:00</div>
-                <div class="clock-date" id="clockDate">YYYY-MM-DD</div>
-            </div>
+            <div class="header-actions">
+                <div class="clock-section">
+                    <div class="clock-time" id="clockTime">00:00:00</div>
+                    <div class="clock-date" id="clockDate">YYYY-MM-DD</div>
+                </div>
 
-            <button class="btn-reset" onclick="window.resetData()" title="데이터 초기화">Reset</button>
+                <div class="btn-group">
+                    <button class="btn-action" onclick="window.backupData()" title="데이터를 안전하게 백업합니다">백업</button>
+                    <button class="btn-action" onclick="window.restoreData()" title="백업된 데이터를 불러옵니다">복원</button>
+                    <button class="btn-action btn-danger" onclick="window.resetData()" title="현재 데이터를 초기화합니다">Reset</button>
+                </div>
+            </div>
         </header>
 
         <div class="content-grid">
@@ -318,7 +326,7 @@
                             <div class="pl-pill-label">DATE <span class="btn-return-today" id="btnReturnToday" onclick="window.returnToToday()" style="display:none;">➔ 오늘 복귀</span></div>
                             <span class="pl-pill-val" id="plDateDisplay">2026.02.20</span>
                         </div>
-                        <div class="pl-pill" onclick="window.setDday()">
+                        <div class="pl-pill" onclick="window.setDday()" title="클릭하여 목표일 설정">
                             <span class="pl-pill-label">D-DAY</span>
                             <span class="pl-pill-val pl-dday-val" id="plDdayDisplay">설정</span>
                         </div>
@@ -492,6 +500,13 @@
         const ICON_CLOSE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
         const ICON_EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
 
+        window.appState = {
+            isRestoring: false,
+            isAfterRestore: false,   // 🔥 추가
+            saveTimeoutTT: null,
+            unsubSnapshot: null
+        };
+
         let appData = {
             user: { level: 1, xp: 0, nextXp: 30 },
             books: [], calendarHistory: {},
@@ -504,7 +519,6 @@
 
         let isDraggingTT = false;
         let dragModeTT = true;
-        let saveTimeoutTT = null;
 
         const quotes = [
             "시작이 반이다. - Aristoteles",
@@ -539,44 +553,155 @@
             window.addEventListener('mouseup', () => { isDraggingTT = false; });
         });
 
-        function setupRealtimeListener() {
-            onSnapshot(doc(db, "users", USER_DOC_ID), (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const remoteYptTime = data.ypt_time || "00:00:00";
-                    if(data.lastYptTime) appData.lastYptTime = data.lastYptTime;
-
-                    processYptUpdate(remoteYptTime);
-
-                    if(data.user) appData.user = data.user;
-                    if(data.books) appData.books = data.books;
-                    if(data.calendarHistory) appData.calendarHistory = { ...appData.calendarHistory, ...data.calendarHistory };
-                    if(data.dailyPlanner) appData.dailyPlanner = { ...appData.dailyPlanner, ...data.dailyPlanner };
-                    if(data.lastDate) appData.lastDate = data.lastDate;
-                    if(data.plannerConfigs) appData.plannerConfigs = data.plannerConfigs;
-
-                    checkDailyReset();
-                    document.getElementById('plTotalTime').innerText = (viewDate === getStudyDateString()) ? remoteYptTime : (appData.calendarHistory[viewDate]?.time || "00:00:00");
-                    renderAll();
-                    document.getElementById('loadingScreen').style.display = 'none';
-                } else {
-                    saveDataToCloud();
+        // --- 백업 기능 ---
+        window.backupData = async function() {
+            if(confirm("현재 데이터를 백업하시겠습니까?\n기존 백업 데이터는 덮어씌워집니다.")) {
+                try {
+                    const snap = await getDoc(doc(db, "users", USER_DOC_ID));
+                    if(snap.exists()){
+                        const data = snap.data();
+                        data.ypt_time = appData.lastYptTime;
+                        await setDoc(doc(db, "users", "backup_data"), data);
+                        alert("✅ 데이터 백업이 완벽하게 완료되었습니다!");
+                    } else {
+                        alert("저장할 데이터가 존재하지 않습니다.");
+                    }
+                } catch (e) {
+                    console.error("Backup Error:", e);
+                    alert("백업 중 오류가 발생했습니다.");
                 }
+            }
+        };
+
+        window.restoreData = async function() {
+
+            if(!confirm("정말 복원하시겠습니까?")) return;
+
+            if(window.appState.unsubSnapshot)
+                window.appState.unsubSnapshot();
+
+            const backupSnap = await getDoc(doc(db,"users","backup_data"));
+            if(!backupSnap.exists()){
+                alert("백업 데이터 없음");
+                setupRealtimeListener();
+                return;
+            }
+
+            let backupData = backupSnap.data();
+
+            backupData.lastDate = getStudyDateString();
+
+            // 🔥 ypt_time 동기화
+            backupData.lastYptTime = backupData.ypt_time || "00:00:00";
+
+            appData = JSON.parse(JSON.stringify(backupData));
+            renderAll();
+
+            await setDoc(doc(db,"users",USER_DOC_ID), backupData);
+
+            window.appState.isAfterRestore = true;   // 🔥 핵심
+
+            setupRealtimeListener();
+
+            alert("✅ 복원 완료");
+        };
+
+        // --- 초기화 기능 (Reload 제거 적용) ---
+        window.resetData = async function() {
+            if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
+
+                window.appState.isRestoring = true;
+                document.getElementById('loadingMsg').innerText = "모든 데이터를 초기화하고 있습니다...";
+                document.getElementById('loadingScreen').style.display = 'flex';
+
+                if(window.appState.unsubSnapshot) window.appState.unsubSnapshot();
+                clearTimeout(window.appState.saveTimeoutTT);
+
+                try {
+                    const blankData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], calendarHistory: {}, dailyPlanner: {}, plannerConfigs: {ddayDate:""}, lastDate: getStudyDateString(), lastYptTime: "00:00:00", ypt_time: "00:00:00" };
+
+                    appData = blankData;
+                    viewDate = getStudyDateString();
+                    renderAll();
+
+                    await setDoc(doc(db, "users", USER_DOC_ID), blankData);
+
+                    alert("✅ 데이터 초기화가 완료되었습니다!");
+                    document.getElementById('loadingScreen').style.display = 'none';
+
+                    window.appState.isRestoring = false;
+                    setupRealtimeListener();
+                } catch (e) {
+                    console.error("Reset Error:", e);
+                    alert("초기화 중 오류가 발생했습니다.");
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    window.appState.isRestoring = false;
+                    setupRealtimeListener();
+                }
+            }
+        };
+
+        function setupRealtimeListener(){
+
+            window.appState.unsubSnapshot =
+            onSnapshot(doc(db,"users",USER_DOC_ID),(docSnap)=>{
+
+                if(!docSnap.exists()) return;
+
+                const data = docSnap.data();
+
+                appData = JSON.parse(JSON.stringify(data));
+
+                checkDailyReset();
+
+                // 🔥 복원 직후에는 YPT 처리 금지
+                if(!window.appState.isAfterRestore){
+                    const remoteYptTime = data.ypt_time || "00:00:00";
+                    processYptUpdate(remoteYptTime);
+                } else {
+                    window.appState.isAfterRestore = false;
+                }
+
+                renderAll();
+
+                document.getElementById('loadingScreen').style.display = 'none';
             });
         }
 
         function processYptUpdate(newTimeStr) {
-            if (newTimeStr === appData.lastYptTime) return;
-            const newSec = timeToSeconds(newTimeStr);
-            const oldSec = timeToSeconds(appData.lastYptTime);
-            let diffSec = newSec > oldSec ? newSec - oldSec : newSec;
+            let shouldSave = false;
+            const today = getStudyDateString();
 
-            if (diffSec > 0) {
-                const gainedXp = Math.floor(diffSec / 60);
-                if (gainedXp > 0) { gainXpNoSave(gainedXp); showYptToast(gainedXp); }
+            if (newTimeStr !== appData.lastYptTime) {
+                const newSec = timeToSeconds(newTimeStr);
+                const oldSec = timeToSeconds(appData.lastYptTime);
+                let diffSec = newSec > oldSec ? newSec - oldSec : newSec;
+
+                if (diffSec > 0) {
+                    const gainedXp = Math.floor(diffSec / 60);
+                    if (gainedXp > 0) { gainXpNoSave(gainedXp); showYptToast(gainedXp); }
+                }
+                appData.lastYptTime = newTimeStr;
+                shouldSave = true;
             }
-            appData.lastYptTime = newTimeStr;
-            saveDataToCloud();
+
+            if (!appData.calendarHistory) appData.calendarHistory = {};
+
+            const existingCalSec = timeToSeconds(appData.calendarHistory[today]?.time || "00:00:00");
+            const incomingCalSec = timeToSeconds(newTimeStr);
+
+            if (!appData.calendarHistory[today] || typeof appData.calendarHistory[today] !== 'object') {
+                appData.calendarHistory[today] = { level: appData.user.level, time: newTimeStr };
+                shouldSave = true;
+            } else if (incomingCalSec > existingCalSec) {
+                appData.calendarHistory[today].time = newTimeStr;
+                appData.calendarHistory[today].level = Math.max(appData.calendarHistory[today].level, appData.user.level);
+                shouldSave = true;
+            }
+
+            if (shouldSave && !window.appState.isRestoring) {
+                saveDataToCloud();
+            }
         }
 
         function showYptToast(xp) {
@@ -601,17 +726,17 @@
                     appData.user.xp += appData.user.nextXp;
                 } else { appData.user.xp = 0; }
             }
-            const today = getStudyDateString();
-            const currentData = appData.calendarHistory[today];
-            let maxLevel = appData.user.level;
-            if (currentData && typeof currentData === 'object') maxLevel = Math.max(currentData.level || 1, appData.user.level);
-            else if (currentData) maxLevel = Math.max(currentData, appData.user.level);
-
-            if(!appData.calendarHistory) appData.calendarHistory = {};
-            appData.calendarHistory[today] = { level: maxLevel, time: appData.lastYptTime };
         }
 
-        function gainXp(amount) { gainXpNoSave(amount); saveDataToCloud(); }
+        function gainXp(amount) {
+            gainXpNoSave(amount);
+            const today = getStudyDateString();
+            if (!appData.calendarHistory) appData.calendarHistory = {};
+            if (appData.calendarHistory[today]) {
+                appData.calendarHistory[today].level = Math.max(appData.calendarHistory[today].level, appData.user.level);
+            }
+            saveDataToCloud();
+        }
 
         function checkDailyReset() {
             const currentStudyDate = getStudyDateString();
@@ -626,11 +751,14 @@
 
                 if (!appData.calendarHistory) appData.calendarHistory = {};
                 appData.calendarHistory[currentStudyDate] = { level: 1, time: "00:00:00" };
+
+                if(!window.appState.isRestoring) setDoc(doc(db, "users", USER_DOC_ID), { ypt_time: "00:00:00" }, { merge: true });
                 saveDataToCloud();
             }
         }
 
         async function saveDataToCloud() {
+            if(window.appState.isRestoring) return; // 방어막
             try { await setDoc(doc(db, "users", USER_DOC_ID), appData, { merge: true }); }
             catch (e) { console.error("Error:", e); }
         }
@@ -667,7 +795,7 @@
                 ddayEl.innerText = "설정 (클릭)";
             }
 
-            document.getElementById('plTotalTime').innerText = isToday ? appData.lastYptTime : (appData.calendarHistory[viewDate]?.time || "00:00:00");
+            document.getElementById('plTotalTime').innerText = appData.calendarHistory[viewDate]?.time || "00:00:00";
 
             const list = document.getElementById('taskList');
             list.innerHTML = '';
@@ -750,8 +878,8 @@
             if(state) cell.classList.add('filled');
             else cell.classList.remove('filled');
 
-            clearTimeout(saveTimeoutTT);
-            saveTimeoutTT = setTimeout(() => { saveDataToCloud(); }, 1000);
+            clearTimeout(window.appState.saveTimeoutTT);
+            window.appState.saveTimeoutTT = setTimeout(() => { saveDataToCloud(); }, 1000);
         }
 
         function renderCampusEvolution() {
@@ -893,13 +1021,6 @@
                 setTimeout(() => { grid.classList.remove('fade-in'); }, 300);
             }, 150);
         }
-
-        window.resetData = async function() {
-            if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
-                appData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], calendarHistory: {}, dailyPlanner: {}, plannerConfigs: {ddayDate:""}, lastDate: getStudyDateString(), lastYptTime: "00:00:00" };
-                await saveDataToCloud(); location.reload();
-            }
-        };
 
         window.addBook = async function() {
             const t = document.getElementById('newBookTitle').value;
