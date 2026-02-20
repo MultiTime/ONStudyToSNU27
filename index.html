@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONStudyToSNU27 | ONFINE</title>
-    <link rel="icon" href="icon.ico">
+
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
@@ -28,9 +28,9 @@
         body { color: var(--text-main); font-size: 16px; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem; overflow: hidden; background-color: #F1F5F9; }
         .bg-shapes { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
         .shape { position: absolute; opacity: 0.6; border-radius: 50%; will-change: transform; animation: floatShape 20s infinite alternate ease-in-out; }
-        .shape-1 { width: 70vw; height: 70vw; background: radial-gradient(circle, #DBEAFE 0%, rgba(219, 234, 254, 0) 70%); top: -25%; left: -15%; }
-        .shape-2 { width: 60vw; height: 60vw; background: radial-gradient(circle, #FFEDD5 0%, rgba(255, 237, 213, 0) 70%); bottom: -20%; right: -15%; animation-delay: -5s; animation-direction: alternate-reverse; }
-        .shape-3 { width: 50vw; height: 50vw; background: radial-gradient(circle, #F3E8FF 0%, rgba(243, 232, 255, 0) 70%); top: 15%; left: 25%; animation-delay: -10s; opacity: 0.4;}
+        .shape-1 { width: 70vw; height: 70vw; background: radial-gradient(circle, #1447E6 0%, rgba(219, 234, 254, 0) 70%); top: -25%; left: -15%; }
+        .shape-2 { width: 60vw; height: 60vw; background: radial-gradient(circle, #F4320B 0%, rgba(255, 237, 213, 0) 70%); bottom: -20%; right: -15%; animation-delay: -5s; animation-direction: alternate-reverse; }
+        .shape-3 { width: 50vw; height: 50vw; background: radial-gradient(circle, #C201D0 0%, rgba(243, 232, 255, 0) 70%); top: 15%; left: 25%; animation-delay: -10s; opacity: 0.4;}
         @keyframes floatShape { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(5%, 5%, 0) scale(1.05); } }
 
         #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; font-weight: 600; color: var(--primary); }
@@ -162,7 +162,7 @@
         .stage-3 .sha-part { border: none; background: #475569; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
         .stage-3 .ground { background: #CBD5E1; }
         .stage-4 .sha-part { background: #1E3A8A; }
-        .stage-4 .sha-ya-top, .sha-ya-bot, .stage-4 .sha-bridge { background: #3B82F6; }
+        .stage-4 .sha-ya-top, .stage-4 .sha-ya-bot, .stage-4 .sha-bridge { background: #3B82F6; }
         .stage-4 .tree { opacity: 1; transform: translateY(0); }
         .stage-4 .ground { background: #86EFAC; }
         .stage-5 .campus-bg { background: linear-gradient(to bottom, #0F172A, #1E1B4B); }
@@ -502,7 +502,7 @@
 
         window.appState = {
             isRestoring: false,
-            isAfterRestore: false,   // 🔥 추가
+            isAfterRestore: false,
             saveTimeoutTT: null,
             unsubSnapshot: null
         };
@@ -574,7 +574,6 @@
         };
 
         window.restoreData = async function() {
-
             if(!confirm("정말 복원하시겠습니까?")) return;
 
             if(window.appState.unsubSnapshot)
@@ -591,7 +590,6 @@
 
             backupData.lastDate = getStudyDateString();
 
-            // 🔥 ypt_time 동기화
             backupData.lastYptTime = backupData.ypt_time || "00:00:00";
 
             appData = JSON.parse(JSON.stringify(backupData));
@@ -599,14 +597,13 @@
 
             await setDoc(doc(db,"users",USER_DOC_ID), backupData);
 
-            window.appState.isAfterRestore = true;   // 🔥 핵심
+            window.appState.isAfterRestore = true;
 
             setupRealtimeListener();
 
             alert("✅ 복원 완료");
         };
 
-        // --- 초기화 기능 (Reload 제거 적용) ---
         window.resetData = async function() {
             if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
 
@@ -641,8 +638,31 @@
             }
         };
 
-        function setupRealtimeListener(){
+        // [핵심] 리셋 여부를 감지하고 리턴값을 내보내는 함수
+        function checkDailyReset() {
+            const currentStudyDate = getStudyDateString();
+            if (appData.lastDate !== currentStudyDate) {
+                appData.user.level = 1; appData.user.xp = 0; appData.user.nextXp = 30;
+                appData.lastDate = currentStudyDate; appData.lastYptTime = "00:00:00";
 
+                if(!appData.dailyPlanner) appData.dailyPlanner = {};
+                if(!appData.dailyPlanner[currentStudyDate]) {
+                    appData.dailyPlanner[currentStudyDate] = { grid: new Array(144).fill(false), tasks: [] };
+                }
+
+                if (!appData.calendarHistory) appData.calendarHistory = {};
+                appData.calendarHistory[currentStudyDate] = { level: 1, time: "00:00:00" };
+
+                if(!window.appState.isRestoring) {
+                    setDoc(doc(db, "users", USER_DOC_ID), { ypt_time: "00:00:00" }, { merge: true });
+                    saveDataToCloud();
+                }
+                return true; // 리셋 발생 여부 반환
+            }
+            return false;
+        }
+
+        function setupRealtimeListener(){
             window.appState.unsubSnapshot =
             onSnapshot(doc(db,"users",USER_DOC_ID),(docSnap)=>{
 
@@ -652,13 +672,14 @@
 
                 appData = JSON.parse(JSON.stringify(data));
 
-                checkDailyReset();
+                // 리셋 여부를 담는 변수
+                const isReset = checkDailyReset();
 
-                // 🔥 복원 직후에는 YPT 처리 금지
-                if(!window.appState.isAfterRestore){
+                // 🔥 방금 일일 초기화가 돌았거나 복원 직후라면, 옛날(어제) ypt_time이 오늘 달력에 합쳐지는 것을 방어
+                if(!window.appState.isAfterRestore && !isReset){
                     const remoteYptTime = data.ypt_time || "00:00:00";
                     processYptUpdate(remoteYptTime);
-                } else {
+                } else if (window.appState.isAfterRestore) {
                     window.appState.isAfterRestore = false;
                 }
 
@@ -736,25 +757,6 @@
                 appData.calendarHistory[today].level = Math.max(appData.calendarHistory[today].level, appData.user.level);
             }
             saveDataToCloud();
-        }
-
-        function checkDailyReset() {
-            const currentStudyDate = getStudyDateString();
-            if (appData.lastDate !== currentStudyDate) {
-                appData.user.level = 1; appData.user.xp = 0; appData.user.nextXp = 30;
-                appData.lastDate = currentStudyDate; appData.lastYptTime = "00:00:00";
-
-                if(!appData.dailyPlanner) appData.dailyPlanner = {};
-                if(!appData.dailyPlanner[currentStudyDate]) {
-                    appData.dailyPlanner[currentStudyDate] = { grid: new Array(144).fill(false), tasks: [] };
-                }
-
-                if (!appData.calendarHistory) appData.calendarHistory = {};
-                appData.calendarHistory[currentStudyDate] = { level: 1, time: "00:00:00" };
-
-                if(!window.appState.isRestoring) setDoc(doc(db, "users", USER_DOC_ID), { ypt_time: "00:00:00" }, { merge: true });
-                saveDataToCloud();
-            }
         }
 
         async function saveDataToCloud() {
