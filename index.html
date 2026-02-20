@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONStudyToSNU27 | ONFINE</title>
-
+    <link rel="icon" href="icon.ico">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
         :root {
-            /* Palette - Monochrome */
             --primary: #374151;
             --primary-dark: #1F2937;
             --text-main: #111827;
             --text-sub: #6B7280;
-            --bg-body: #F3F4F6;
             --bg-card: #FFFFFF;
             --border: #E5E7EB;
             --success: #10B981;
@@ -24,211 +22,261 @@
             --radius-item: 12px;
         }
 
-        * {
-            box-sizing: border-box; margin: 0; padding: 0; outline: none;
-            font-family: "Pretendard Variable", Pretendard, sans-serif !important;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; font-family: "Pretendard Variable", Pretendard, sans-serif !important; }
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-size: 16px;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            overflow: hidden;
-        }
+        /* 배경 애니메이션 */
+        body { color: var(--text-main); font-size: 16px; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem; overflow: hidden; background-color: #F1F5F9; }
+        .bg-shapes { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
+        .shape { position: absolute; opacity: 0.6; border-radius: 50%; will-change: transform; animation: floatShape 20s infinite alternate ease-in-out; }
+        .shape-1 { width: 70vw; height: 70vw; background: radial-gradient(circle, #DBEAFE 0%, rgba(219, 234, 254, 0) 70%); top: -25%; left: -15%; }
+        .shape-2 { width: 60vw; height: 60vw; background: radial-gradient(circle, #FFEDD5 0%, rgba(255, 237, 213, 0) 70%); bottom: -20%; right: -15%; animation-delay: -5s; animation-direction: alternate-reverse; }
+        .shape-3 { width: 50vw; height: 50vw; background: radial-gradient(circle, #F3E8FF 0%, rgba(243, 232, 255, 0) 70%); top: 15%; left: 25%; animation-delay: -10s; opacity: 0.4;}
+        @keyframes floatShape { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(5%, 5%, 0) scale(1.05); } }
 
-        #loadingScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            flex-direction: column; font-weight: 600; color: var(--primary);
-        }
+        #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; font-weight: 600; color: var(--primary); }
 
         .dashboard {
-            width: 100%;
-            max-width: 1600px;
-            height: 92vh;
-            background: var(--bg-card);
-            border-radius: var(--radius-box);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            display: grid;
-            grid-template-rows: auto auto 1fr auto;
-            overflow: hidden;
-            position: relative;
+            width: 100%; max-width: 1800px; height: 92vh;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-box); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.6) inset;
+            display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; position: relative;
         }
 
-        .quote-bar {
-            text-align: center; padding: 0.8rem 1rem; font-size: 0.9rem; font-weight: 500;
-            color: var(--text-sub); background: white; border-bottom: 1px solid var(--border);
-        }
+        .quote-bar { text-align: center; padding: 0.8rem 1rem; font-size: 0.9rem; font-weight: 500; color: var(--text-sub); background: rgba(255,255,255,0.6); border-bottom: 1px solid var(--border); }
         .quote-text { color: var(--text-main); font-weight: 700; }
 
-        header {
-            padding: 0.8rem 2rem; border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255,255,255,0.95); z-index: 10; gap: 2rem;
-        }
-
+        header { padding: 0.8rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: transparent; z-index: 10; gap: 2rem; }
         .user-section { min-width: 200px; }
         .user-section h1 { font-size: 1.4rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
         .user-section .subtitle { font-size: 0.85rem; color: var(--text-sub); margin-top: 0.2rem; font-weight: 500; }
-
         .xp-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .xp-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.4rem; }
-        .xp-track { width: 100%; height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
-        .xp-fill { height: 100%; background: var(--primary); width: 0%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-
+        .xp-track { width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; }
+        .xp-fill { height: 100%; background: var(--primary); width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .clock-section { text-align: right; min-width: 110px; font-variant-numeric: tabular-nums; }
         .clock-time { font-size: 1.5rem; font-weight: 700; color: var(--text-main); letter-spacing: -1px; }
         .clock-date { font-size: 0.8rem; color: var(--text-sub); font-weight: 500; }
+        .btn-reset { margin-left: 0.5rem; font-size: 0.8rem; color: var(--text-sub); background: transparent; border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .btn-reset:hover { background: rgba(0,0,0,0.05); border-color: var(--danger); color: var(--danger); }
 
-        .btn-reset { margin-left: 1rem; font-size: 0.8rem; color: var(--text-sub); background: transparent; border: 1px solid var(--border); padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: 500; }
-        .btn-reset:hover { background: #F9FAFB; border-color: var(--danger); color: var(--danger); }
-
-        /* Grid Layout Ratio: 3.2 : 2.8 : 4.8 */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 3.2fr 2.8fr 4.8fr;
-            height: 100%; overflow: hidden;
-        }
-
+        /* Grid Layout Ratio: 4 : 2.6 : 4.2 */
+        .content-grid { display: grid; grid-template-columns: 4fr 2.6fr 4.2fr; height: 100%; overflow: hidden; }
         .panel { padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%; min-width: 0; }
-        .panel-left { background: #F9FAFB; border-right: 1px solid var(--border); }
-        .panel-center { background: white; border-right: 1px solid var(--border); position: relative; z-index: 1; }
-        .panel-right { background: white; }
 
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+        .panel-left { background: transparent; border-right: 1px solid var(--border); }
+        .panel-center { background: transparent; border-right: 1px solid var(--border); position: relative; z-index: 1; }
+        .panel-right { background: transparent; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-shrink: 0;}
         .section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); white-space: nowrap; }
 
-        .btn-add { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.1s; white-space: nowrap; }
-        .btn-add:hover { background: var(--primary-dark); }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s; white-space: nowrap; will-change: transform;}
+        .btn-add:hover { background: var(--primary-dark); transform: scale(1.05); }
+        .btn-add:active { transform: scale(0.95); }
 
         .scroll-area { flex: 1; overflow-y: auto; padding-right: 0.5rem; padding-bottom: 1rem; }
         .scroll-area::-webkit-scrollbar { width: 5px; }
         .scroll-area::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
 
-        /* Center Panel */
-        .status-box {
-            text-align: center; padding: 1.5rem 0; margin-bottom: 1.5rem;
-            background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px;
+        /* =========================================
+           [NEW] 좌측 모던 플래너 (크게 키운 통계)
+           ========================================= */
+        .pl-info-bar { display: grid; grid-template-columns: 1.35fr 0.8fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem; flex-shrink: 0; }
+        .pl-pill {
+            background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px;
+            padding: 1rem; display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start; transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); position: relative;
         }
+        .pl-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-color: #D1D5DB; }
+        .pl-pill-label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.4rem; display: flex; justify-content: space-between; width: 100%;}
+
+        /* [수정] 데이터 텍스트 크기 대폭 확대 */
+        .pl-pill-val { font-size: 1.4rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px; line-height: 1;}
+        .pl-dday-val { color: var(--primary); cursor: pointer; }
+        .pl-time-val { color: var(--gold); font-variant-numeric: tabular-nums; }
+
+        .btn-return-today { color: var(--danger); cursor: pointer; font-size: 0.65rem; transition: 0.2s; background: rgba(239, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px; line-height: normal; font-weight: 800;}
+        .btn-return-today:hover { background: var(--danger); color: white;}
+
+        .pl-body { display: flex; flex: 1; min-height: 0; gap: 1.5rem; flex-direction: row; }
+
+        .pl-tasks-wrap { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-right: 5px; }
+        .pl-section-title { font-size: 0.85rem; font-weight: 800; color: var(--text-sub); margin-bottom: 0.8rem; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center;}
+
+        .task-item {
+            background: white; border: 1px solid var(--border); border-radius: var(--radius-item);
+            padding: 0.8rem 1rem; margin-bottom: 0.6rem; display: flex; align-items: center; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .task-item:hover { border-color: var(--primary); transform: translate3d(4px, 0, 0); box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+        .task-item.completed { opacity: 0.5; background: #F9FAFB; transform: none; box-shadow: none; border-color: var(--border);}
+
+        .checkbox { width: 18px; height: 18px; border: 2px solid #D1D5DB; border-radius: 5px; margin-right: 0.8rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0;}
+        .task-item.completed .checkbox { background: var(--success); border-color: var(--success); }
+        .task-item.completed .checkbox::after { content: '✓'; color: white; font-size: 11px; font-weight: bold; }
+
+        .task-content { flex: 1; overflow: hidden; }
+        .task-text {
+            font-size: 1rem; white-space: normal; word-break: break-word;
+            color: var(--text-main); font-weight: 600; transition: color 0.3s; line-height: 1.4;
+        }
+        .task-item.completed .task-text { text-decoration: line-through; color: var(--text-sub); }
+
+        .btn-delete-task { opacity: 0; background: transparent; border: none; color: #9CA3AF; cursor: pointer; padding: 2px; transition: 0.2s; transform: scale(0.8); flex-shrink: 0;}
+        .task-item:hover .btn-delete-task { opacity: 1; transform: scale(1); }
+        .btn-delete-task:hover { color: var(--danger) !important; transform: scale(1.2) !important; }
+
+        /* 세로형 오리지널 모트모트 타임테이블 */
+        .pl-tt-wrap { flex: 0.8; display: flex; flex-direction: column; overflow-y: auto; user-select: none; padding-left: 1rem; border-left: 1px solid var(--border);}
+        .tt-row { display: grid; grid-template-columns: 24px repeat(6, 1fr); gap: 3px; margin-bottom: 4px; align-items: center; }
+        .tt-hour { font-size: 0.75rem; font-weight: 700; color: #9CA3AF; text-align: center; }
+        .tt-cell {
+            height: 16px; background: #E2E8F0; border-radius: 4px; cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform, background-color;
+        }
+        .tt-cell:hover { transform: scale(1.2); box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 2; position: relative; background: #CBD5E1;}
+        .tt-cell.filled { background: var(--primary); }
+        .tt-cell.filled:hover { background: var(--primary-dark); }
+
+        /* 중앙 패널: Status & Calendar */
+        .status-box { position: relative; text-align: center; background: #FFFFFF; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 1.5rem; flex-shrink: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.02);}
+        .campus-bg { position: relative; width: 100%; height: 140px; background: #F8FAFC; display: flex; justify-content: center; align-items: flex-end; transition: background 1.5s; }
+        .sha-container { position: relative; width: 150px; height: 110px; margin-bottom: 10px; z-index: 10; }
+        .sha-part { position: absolute; background: transparent; border: 2px dashed #CBD5E1; transition: all 1s; }
+        .sha-s-left { width: 15px; height: 80px; left: 25px; bottom: 0; transform: skewX(-25deg); }
+        .sha-s-right { width: 15px; height: 80px; left: 55px; bottom: 0; transform: skewX(25deg); }
+        .sha-ya-main { width: 15px; height: 100px; right: 30px; bottom: 0; }
+        .sha-ya-top { width: 25px; height: 12px; right: 5px; top: 30px; }
+        .sha-ya-bot { width: 25px; height: 12px; right: 5px; top: 60px; }
+        .sha-bridge { width: 30px; height: 10px; left: 65px; top: 40px; }
+        .tree { position: absolute; bottom: 0; font-size: 1.8rem; opacity: 0; transform: translateY(10px); transition: 1s; z-index: 15; }
+        .tree-left { left: -30px; } .tree-right { right: -40px; font-size: 2.2rem; }
+        .ground { width: 100%; height: 15px; background: #E2E8F0; position: absolute; bottom: 0; z-index: 5; transition: 1s; }
+        .stars { position: absolute; width: 100%; height: 100%; background: radial-gradient(white, rgba(255,255,255,0) 2px); background-size: 50px 50px; opacity: 0; transition: 2s; z-index: 1;}
+
+        .stage-1 .sha-part { border: 1px dashed #9CA3AF; background: rgba(255,255,255,0.2); }
+        .stage-2 .sha-part { border: 2px solid #64748B; background: #94A3B8; }
+        .stage-3 .sha-part { border: none; background: #475569; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
+        .stage-3 .ground { background: #CBD5E1; }
+        .stage-4 .sha-part { background: #1E3A8A; }
+        .stage-4 .sha-ya-top, .stage-4 .sha-ya-bot, .stage-4 .sha-bridge { background: #3B82F6; }
+        .stage-4 .tree { opacity: 1; transform: translateY(0); }
+        .stage-4 .ground { background: #86EFAC; }
+        .stage-5 .campus-bg { background: linear-gradient(to bottom, #0F172A, #1E1B4B); }
+        .stage-5 .status-sub { color: var(--gold); font-weight: 800; }
+        .stage-5 .sha-part { background: #0F172A; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); border: 1px solid #F59E0B; }
+        .stage-5 .sha-s-left, .stage-5 .sha-s-right, .stage-5 .sha-ya-main { background: linear-gradient(to top, #1E3A8A, #F59E0B); }
+        .stage-5 .stars { opacity: 0.6; }
+        .stage-5 .ground { background: #064E3B; }
+
+        .status-content { padding: 1rem; z-index: 20; background: white; border-top: 1px solid var(--border); }
         .status-level-label { font-size: 0.8rem; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .status-level-val { font-size: 3.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-top: 0.2rem; }
-        .status-sub { font-size: 0.9rem; color: var(--text-sub); margin-top: 0.5rem; }
+        .status-level-val { font-size: 3rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-top: 0.2rem; }
+        .status-sub { font-size: 0.85rem; color: var(--text-sub); margin-top: 0.3rem; font-weight: 600; transition: 0.3s;}
 
-        /* YPT Display */
-        .ypt-display {
-            margin-top: 1rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--primary);
-            background: #F3F4F6;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        /* Calendar */
-        .calendar-container { flex: 1; display: flex; flex-direction: column; }
-        .calendar-header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0 0.5rem; }
+        .calendar-container { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative;}
+        .calendar-header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; padding: 0 0.5rem; flex-shrink: 0; }
         .calendar-title { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
-        .btn-cal-nav { background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-sub); cursor: pointer; padding: 4px 8px; font-size: 0.9rem; transition: all 0.2s; }
-        .btn-cal-nav:hover { background: #F3F4F6; color: var(--primary); }
+        .btn-cal-nav { background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-sub); cursor: pointer; padding: 4px 12px; font-size: 0.9rem; transition: all 0.2s; }
+        .btn-cal-nav:hover { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05);}
+        .btn-cal-nav:active { transform: scale(0.95); }
 
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-        .cal-day-name { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; margin-bottom: 0.5rem; }
+        .calendar-grid-wrapper { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-right: 5px; }
+        .calendar-grid-wrapper::-webkit-scrollbar { width: 5px; }
+        .calendar-grid-wrapper::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform, opacity; padding-bottom: 5px; }
+        .calendar-grid.fade-out { opacity: 0; transform: translate3d(-15px, 0, 0); }
+        .calendar-grid.fade-in { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        .cal-day-name { font-size: 0.75rem; color: var(--text-sub); font-weight: 600; margin-bottom: 0.3rem; }
 
         .cal-cell {
-            aspect-ratio: 1;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            padding: 4px;
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            position: relative;
-            background: #F9FAFB;
-            transition: all 0.3s ease;
+            min-height: 45px; border: 1px solid var(--border); border-radius: 8px;
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end;
+            padding: 6px; font-size: 0.85rem; color: var(--text-sub);
+            position: relative; background: #F9FAFB; cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.3s;
+            will-change: transform;
         }
+        .cal-cell:hover { transform: translate3d(0, -3px, 0) scale(1.05); z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--primary);}
         .cal-cell.has-data { border-color: transparent; color: #111; }
         .cal-cell.today { border: 2px solid var(--primary); font-weight: 800; }
-        .cal-date-num { align-self: flex-end; font-size: 0.75rem; margin-bottom: auto; }
-        .cal-level-text { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+        .cal-date-num { font-size: 0.8rem; font-weight: 600; line-height: 1; pointer-events: none;}
 
-        /* Book Grid */
-        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-        .book-card {
-            background: white; border: 1px solid var(--border); border-radius: var(--radius-item);
-            padding: 1.2rem; transition: border-color 0.2s, box-shadow 0.2s; position: relative;
-            display: flex; flex-direction: column; max-height: 350px; min-width: 0;
+        .cal-detail-panel {
+            position: relative; max-height: 0; overflow: hidden; opacity: 0; transform: translate3d(0, -10px, 0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #F8FAFC; border-radius: 12px; margin-top: 0px;
+            border: 1px solid transparent; flex-shrink: 0; will-change: transform, opacity, max-height;
         }
-        .book-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .cal-detail-panel.show { max-height: 150px; opacity: 1; transform: translate3d(0, 0, 0); padding: 1rem; border-color: var(--border); margin-top: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .btn-close-detail { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text-sub); cursor: pointer; padding: 2px; transition: color 0.2s, transform 0.2s; }
+        .btn-close-detail:hover { color: var(--danger); transform: scale(1.1); }
+        .detail-header { font-size: 0.85rem; color: var(--text-sub); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; padding-right: 20px;}
+        .detail-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;}
+        .detail-label { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+        .detail-val-lvl { font-size: 1.2rem; font-weight: 900; color: var(--primary); }
+        .detail-val-time { font-size: 1.1rem; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums;}
+
+        /* 우측 패널: Library */
+        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+        .book-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-item); padding: 1.2rem; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; position: relative; display: flex; flex-direction: column; max-height: 350px; min-width: 0; will-change: transform;}
+        .book-card:hover { box-shadow: 0 8px 20px -4px rgba(0,0,0,0.1); transform: translate3d(0, -2px, 0); border-color: #D1D5DB;}
         .book-card-header { margin-bottom: 0.8rem; }
 
-        .book-card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 65px; color: var(--text-main); display: flex; align-items: center; }
-        .book-color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+        .book-card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; white-space: normal; word-break: break-word; line-height: 1.3; padding-right: 55px; color: var(--text-main); display: flex; align-items: flex-start; }
+        .book-color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; margin-top: 5px;}
 
         .book-meta { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; font-weight: 500; }
         .mini-progress { height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; margin-bottom: 0.8rem; flex-shrink: 0; }
-        .mini-fill { height: 100%; background: var(--text-main); width: 0%; border-radius: 3px; transition: width 0.3s; }
-
+        .mini-fill { height: 100%; background: var(--text-main); width: 0%; border-radius: 3px; transition: width 0.4s ease-out; }
         .card-chapters { flex: 1; overflow-y: auto; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
         .card-chapters::-webkit-scrollbar { width: 4px; }
         .card-chapters::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
-
-        .mini-chapter { font-size: 0.85rem; padding: 0.3rem 0; color: var(--text-main); display: flex; align-items: center; cursor: pointer; transition: 0.2s; border-radius: 4px; }
-        .mini-chapter:hover { background: #F3F4F6; }
+        .mini-chapter { font-size: 0.85rem; padding: 0.3rem 0; color: var(--text-main); display: flex; align-items: center; cursor: pointer; transition: all 0.2s; border-radius: 4px; }
+        .mini-chapter:hover { background: #F3F4F6; padding-left: 5px; }
         .mini-chapter-checkbox { width: 14px; height: 14px; border: 1px solid #9CA3AF; border-radius: 3px; margin-right: 8px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size: 10px; color: white; transition: background 0.2s, border-color 0.2s; }
         .mini-chapter.done { text-decoration: line-through; color: #D1D5DB; }
-
         .btn-delete-book { position: absolute; top: 10px; right: 10px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
-        .btn-delete-book:hover { color: var(--danger); }
+        .btn-delete-book:hover { color: var(--danger); transform: scale(1.1); }
         .btn-edit-book { position: absolute; top: 10px; right: 35px; border: none; background: none; color: #D1D5DB; cursor: pointer; transition: 0.2s; z-index: 2; }
-        .btn-edit-book:hover { color: var(--primary); }
+        .btn-edit-book:hover { color: var(--primary); transform: scale(1.1); }
 
-        /* Effects */
-        @keyframes floatUpFade { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); } 100% { opacity: 0; transform: translate(-50%, -60px) scale(1); } }
-        .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold); font-size: 2.5rem; font-weight: 800; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); pointer-events: none; z-index: 9999; }
+        /* Effects & Modals */
+        @keyframes floatUpFade { 0% { opacity: 0; transform: translate3d(-50%, 0, 0) scale(0.5); } 20% { opacity: 1; transform: translate3d(-50%, -20px, 0) scale(1.2); } 100% { opacity: 0; transform: translate3d(-50%, -60px, 0) scale(1); } }
+        .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0); color: var(--gold); font-size: 3rem; font-weight: 900; text-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); pointer-events: none; z-index: 9999; will-change: transform, opacity;}
         .xp-popup.animate { animation: floatUpFade 1.5s ease-out forwards; }
+        .ypt-toast { position: fixed; top: 20%; left: 50%; transform: translate3d(-50%, -50%, 0); background: rgba(17, 24, 39, 0.9); color: white; padding: 1.2rem 2.5rem; border-radius: 50px; font-weight: 800; font-size: 1.1rem; z-index: 9999; display: none; box-shadow: 0 15px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); will-change: transform, opacity;}
+        .ypt-toast.show { display: block; animation: floatUpFade 2.5s ease-out forwards; }
+        .app-footer { text-align: center; font-size: 0.75rem; color: #9CA3AF; padding: 0.8rem; border-top: 1px solid var(--border); background: transparent; font-weight: 500; }
 
-        /* [NEW] YPT Toast */
-        .ypt-toast { position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 1rem 2rem; border-radius: 30px; font-weight: 700; z-index: 9999; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .ypt-toast.show { display: block; animation: floatUpFade 2s ease-out forwards; }
-
-        .task-item { background: white; border: 1px solid var(--border); border-radius: var(--radius-item); padding: 0.8rem; margin-bottom: 0.6rem; display: flex; align-items: center; cursor: pointer; transition: border-color 0.2s; position: relative; }
-        .task-item:hover { border-color: var(--primary); }
-        .task-item.completed { opacity: 0.6; background: #F9FAFB; }
-        .task-item.completed .task-text { text-decoration: line-through; color: var(--text-sub); }
-        .checkbox { width: 18px; height: 18px; border: 2px solid #D1D5DB; border-radius: 5px; margin-right: 0.8rem; display: flex; align-items: center; justify-content: center; }
-        .task-item.completed .checkbox { background: var(--success); border-color: var(--success); }
-        .task-item.completed .checkbox::after { content: '✓'; color: white; font-size: 11px; font-weight: bold; }
-        .task-content { flex: 1; overflow: hidden; }
-        .task-text { font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); font-weight: 500; }
-        .btn-delete-task { opacity: 0; background: transparent; border: none; color: #9CA3AF; cursor: pointer; padding: 2px; transition: 0.2s; }
-        .task-item:hover .btn-delete-task { opacity: 1; }
-        .btn-delete-task:hover { color: var(--danger); }
-
-        .app-footer { text-align: center; font-size: 0.75rem; color: #9CA3AF; padding: 0.8rem; border-top: 1px solid var(--border); background: white; font-weight: 500; }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 2rem; width: 400px; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; margin-bottom: 1rem; background: #F9FAFB; color: var(--text-main); }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 0.5rem; }
-        .btn-cancel { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; color: var(--text-main); font-weight: 600; }
-        .btn-confirm { padding: 0.6rem 1rem; border-radius: 8px; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 600; }
-        .btn-confirm:hover { background: var(--primary-dark); }
-        .color-picker-container { display: flex; gap: 10px; margin-bottom: 1rem; align-items: center; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; will-change: opacity, visibility; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background: white; padding: 2.5rem; width: 450px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); transform: translate3d(0, 20px, 0) scale(0.9); opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform, opacity; }
+        .modal-overlay.show .modal-content { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; margin-bottom: 1rem; background: #F9FAFB; color: var(--text-main); transition: border-color 0.2s, background 0.2s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); background: white; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;}
+        .btn-cancel { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; color: var(--text-main); font-weight: 600; transition: background 0.2s;}
+        .btn-cancel:hover { background: #F3F4F6; }
+        .btn-confirm { padding: 0.6rem 1rem; border-radius: 8px; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 600; transition: background 0.2s, transform 0.2s; will-change: transform; }
+        .btn-confirm:hover { background: var(--text-main); transform: translate3d(0, -1px, 0); box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .btn-confirm:active { transform: translate3d(0, 0, 0); }
+        .color-picker-container { display: flex; gap: 10px; margin-bottom: 1.5rem; align-items: center; }
         .color-label { font-size: 0.9rem; font-weight: 600; color: var(--text-sub); margin-right: 10px; }
-        .color-input { width: 50px; height: 40px; border: none; cursor: pointer; background: none; }
+        .color-input { width: 50px; height: 40px; border: none; cursor: pointer; background: none; border-radius: 6px; overflow: hidden; }
     </style>
 </head>
 <body>
+
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
 
     <div id="loadingScreen">
         <div style="font-size: 1.5rem; margin-bottom: 10px;">Scholar Dashboard</div>
@@ -254,16 +302,47 @@
                 <div class="clock-date" id="clockDate">YYYY-MM-DD</div>
             </div>
 
-            <button class="btn-reset" onclick="window.resetData()">Reset</button>
+            <button class="btn-reset" onclick="window.resetData()" title="데이터 초기화">Reset</button>
         </header>
 
         <div class="content-grid">
+
             <aside class="panel panel-left">
                 <div class="section-header">
                     <div class="section-title">Daily Missions</div>
-                    <button class="btn-add" onclick="window.openDailyModal()">+ Task</button>
                 </div>
-                <div class="scroll-area" id="taskList"></div>
+
+                <div class="scroll-area" style="display: flex; flex-direction: column;">
+                    <div class="pl-info-bar">
+                        <div class="pl-pill">
+                            <div class="pl-pill-label">DATE <span class="btn-return-today" id="btnReturnToday" onclick="window.returnToToday()" style="display:none;">➔ 오늘 복귀</span></div>
+                            <span class="pl-pill-val" id="plDateDisplay">2026.02.20</span>
+                        </div>
+                        <div class="pl-pill" onclick="window.setDday()">
+                            <span class="pl-pill-label">D-DAY</span>
+                            <span class="pl-pill-val pl-dday-val" id="plDdayDisplay">설정</span>
+                        </div>
+                        <div class="pl-pill">
+                            <span class="pl-pill-label">TOTAL TIME</span>
+                            <span class="pl-pill-val pl-time-val" id="plTotalTime">00:00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="pl-body">
+                        <div class="pl-tasks-wrap">
+                            <div class="pl-section-title">
+                                DAILY TASKS
+                                <button class="btn-add" onclick="window.openDailyModal()">+ Task</button>
+                            </div>
+                            <div id="taskList"></div>
+                        </div>
+
+                        <div class="pl-tt-wrap">
+                            <div class="pl-section-title" style="justify-content: center; margin-bottom: 4px;">TIMETABLE</div>
+                            <div id="ttGrid"></div>
+                        </div>
+                    </div>
+                </div>
             </aside>
 
             <section class="panel panel-center">
@@ -271,11 +350,26 @@
                     <div class="section-title">Today's Status</div>
                 </div>
 
-                <div class="status-box">
-                    <div class="status-level-label">Today's Level</div>
-                    <div class="status-level-val" id="todayLevelDisplay">Lv. 1</div>
-                    <div class="ypt-display" id="yptTimeDisplay">YPT Time: 00:00:00</div>
-                    <div class="status-sub">YPT Sync ●</div>
+                <div class="status-box stage-1" id="campusWidget">
+                    <div class="campus-bg">
+                        <div class="stars"></div>
+                        <div class="sha-container">
+                            <div class="tree tree-left">🌳</div>
+                            <div class="tree tree-right">🌲</div>
+                            <div class="sha-part sha-s-left"></div>
+                            <div class="sha-part sha-s-right"></div>
+                            <div class="sha-part sha-ya-main"></div>
+                            <div class="sha-part sha-ya-top"></div>
+                            <div class="sha-part sha-ya-bot"></div>
+                            <div class="sha-part sha-bridge"></div>
+                        </div>
+                        <div class="ground"></div>
+                    </div>
+                    <div class="status-content">
+                        <div class="status-level-label">Today's Level</div>
+                        <div class="status-level-val" id="todayLevelDisplay">Lv. 1</div>
+                        <div class="status-sub" id="campusMsg">오늘의 공부 씨앗을 심어주세요.</div>
+                    </div>
                 </div>
 
                 <div class="calendar-container">
@@ -284,10 +378,25 @@
                         <span class="calendar-title" id="calendarMonth">February 2026</span>
                         <button class="btn-cal-nav" onclick="window.changeMonth(1)">&gt;</button>
                     </div>
-                    <div class="calendar-grid">
-                        <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+
+                    <div class="calendar-grid-wrapper">
+                        <div class="calendar-grid" id="calendarGrid"></div>
                     </div>
-                    <div class="calendar-grid" id="calendarGrid"></div>
+
+                    <div class="cal-detail-panel" id="calDetailPanel">
+                        <button class="btn-close-detail" onclick="window.closeCalDetail()" title="닫기">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                        <div class="detail-header" id="detailDate">YYYY. MM. DD</div>
+                        <div class="detail-row">
+                            <span class="detail-label">달성 레벨</span>
+                            <span class="detail-val-lvl" id="detailLevel">Lv. 0</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">공부 시간</span>
+                            <span class="detail-val-time" id="detailTime">00:00:00</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -310,9 +419,9 @@
 
     <div id="bookModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="margin-bottom:1rem; font-weight:700;">Add New Book</h3>
-            <input type="text" id="newBookTitle" class="form-input" placeholder="Book Title">
-            <textarea id="newBookChapters" class="form-textarea" rows="5" placeholder="Chapters (one per line)"></textarea>
+            <h3 style="margin-bottom:1.5rem; font-weight:800; font-size:1.2rem;">Add New Book</h3>
+            <input type="text" id="newBookTitle" class="form-input" placeholder="문제집 제목">
+            <textarea id="newBookChapters" class="form-textarea" rows="5" placeholder="목차 (엔터로 구분해서 입력)"></textarea>
             <div class="color-picker-container">
                 <span class="color-label">Theme Color:</span>
                 <input type="color" id="newBookColor" class="color-input" value="#374151">
@@ -326,9 +435,9 @@
 
     <div id="editBookModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="margin-bottom:1rem; font-weight:700;">Edit Book</h3>
-            <input type="text" id="editBookTitle" class="form-input" placeholder="Book Title">
-            <textarea id="editBookChapters" class="form-textarea" rows="5" placeholder="Chapters (one per line)"></textarea>
+            <h3 style="margin-bottom:1.5rem; font-weight:800; font-size:1.2rem;">Edit Book</h3>
+            <input type="text" id="editBookTitle" class="form-input" placeholder="문제집 제목">
+            <textarea id="editBookChapters" class="form-textarea" rows="5" placeholder="목차 (엔터로 구분해서 입력)"></textarea>
             <div class="color-picker-container">
                 <span class="color-label">Theme Color:</span>
                 <input type="color" id="editBookColor" class="color-input" value="#374151">
@@ -343,17 +452,17 @@
 
     <div id="dailyModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="margin-bottom:1rem; font-weight:700;">Add Daily Task</h3>
+            <h3 style="margin-bottom:1.5rem; font-weight:800; font-size:1.2rem;">Add Daily Task</h3>
             <select id="dailyType" class="form-select" onchange="window.toggleBookSelect()">
-                <option value="normal">General Task</option>
-                <option value="study">Study Quest (Link Book)</option>
+                <option value="normal">일반 할 일 (General Task)</option>
+                <option value="study">문제집 진도 연동 (Study Quest)</option>
             </select>
             <div id="bookSelectGroup" style="display:none;">
                 <select id="selectBook" class="form-select" onchange="window.updateChapterSelect()"></select>
                 <select id="selectChapter" class="form-select"></select>
             </div>
             <div id="normalInputGroup">
-                <input type="text" id="dailyContent" class="form-input" placeholder="Task description...">
+                <input type="text" id="dailyContent" class="form-input" placeholder="오늘 할 일을 적어주세요...">
             </div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="window.closeModal('dailyModal')">Cancel</button>
@@ -379,65 +488,61 @@
         const db = getFirestore(app);
         const USER_DOC_ID = "minchan_data";
 
-        // Icons
         const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         const ICON_CLOSE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
         const ICON_EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
 
-        // State
         let appData = {
             user: { level: 1, xp: 0, nextXp: 30 },
-            books: [],
-            dailies: [],
-            calendarHistory: {},
-            lastDate: getStudyDateString(),
-            lastYptTime: "00:00:00"
+            books: [], calendarHistory: {},
+            plannerConfigs: { ddayDate: "" }, dailyPlanner: {},
+            lastDate: getStudyDateString(), lastYptTime: "00:00:00"
         };
         let currentCalendarDate = new Date();
+        let activeCalDate = null;
+        let viewDate = getStudyDateString();
+
+        let isDraggingTT = false;
+        let dragModeTT = true;
+        let saveTimeoutTT = null;
 
         const quotes = [
             "시작이 반이다. - Aristoteles",
             "가장 유능한 사람은 가장 배움에 힘쓰는 사람이다. - Goethe",
             "중요한 것은 꺾이지 않는 마음.",
             "피할 수 없으면 즐겨라. - Robert Elliot",
-            "오늘 걷지 않으면 내일은 뛰어야 한다.",
-            "성공은 꿈꾸는 자의 것이 아니라 실천하는 자의 것이다."
+            "오늘 걷지 않으면 내일은 뛰어야 한다."
         ];
 
-        // --- Core Logic ---
         function getFixedDateKey(dateObj) {
             const y = dateObj.getFullYear();
             const m = String(dateObj.getMonth() + 1).padStart(2, '0');
             const d = String(dateObj.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
+            return `${y}.${m}.${d}`;
         }
-
         function getStudyDateString() {
             const now = new Date();
-            if (now.getHours() < 5) {
-                now.setDate(now.getDate() - 1);
-            }
+            if (now.getHours() < 5) now.setDate(now.getDate() - 1);
             return getFixedDateKey(now);
         }
-
         function timeToSeconds(timeStr) {
             if (!timeStr) return 0;
             const parts = timeStr.split(':');
-            if (parts.length !== 3) return 0;
             return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
         }
 
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            initTimetableGrid();
             setupRealtimeListener();
             startClock();
             setDailyQuote();
+            window.addEventListener('mouseup', () => { isDraggingTT = false; });
         });
 
         function setupRealtimeListener() {
             onSnapshot(doc(db, "users", USER_DOC_ID), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-
                     const remoteYptTime = data.ypt_time || "00:00:00";
                     if(data.lastYptTime) appData.lastYptTime = data.lastYptTime;
 
@@ -445,12 +550,13 @@
 
                     if(data.user) appData.user = data.user;
                     if(data.books) appData.books = data.books;
-                    if(data.dailies) appData.dailies = data.dailies;
-                    if(data.calendarHistory) appData.calendarHistory = data.calendarHistory;
+                    if(data.calendarHistory) appData.calendarHistory = { ...appData.calendarHistory, ...data.calendarHistory };
+                    if(data.dailyPlanner) appData.dailyPlanner = { ...appData.dailyPlanner, ...data.dailyPlanner };
                     if(data.lastDate) appData.lastDate = data.lastDate;
+                    if(data.plannerConfigs) appData.plannerConfigs = data.plannerConfigs;
 
                     checkDailyReset();
-                    document.getElementById('yptTimeDisplay').innerText = `YPT Time: ${remoteYptTime}`;
+                    document.getElementById('plTotalTime').innerText = (viewDate === getStudyDateString()) ? remoteYptTime : (appData.calendarHistory[viewDate]?.time || "00:00:00");
                     renderAll();
                     document.getElementById('loadingScreen').style.display = 'none';
                 } else {
@@ -461,30 +567,18 @@
 
         function processYptUpdate(newTimeStr) {
             if (newTimeStr === appData.lastYptTime) return;
-
             const newSec = timeToSeconds(newTimeStr);
             const oldSec = timeToSeconds(appData.lastYptTime);
-            let diffSec = 0;
-
-            if (newSec > oldSec) {
-                diffSec = newSec - oldSec;
-            } else if (newSec < oldSec) {
-                diffSec = newSec;
-            }
+            let diffSec = newSec > oldSec ? newSec - oldSec : newSec;
 
             if (diffSec > 0) {
                 const gainedXp = Math.floor(diffSec / 60);
-                if (gainedXp > 0) {
-                    gainXpNoSave(gainedXp);
-                    showYptToast(gainedXp); // [NEW] Show Toast
-                }
+                if (gainedXp > 0) { gainXpNoSave(gainedXp); showYptToast(gainedXp); }
             }
-
             appData.lastYptTime = newTimeStr;
             saveDataToCloud();
         }
 
-        // [NEW] Toast Function
         function showYptToast(xp) {
             const toast = document.getElementById('yptToast');
             toast.innerText = `🔄 열품타 연동: +${xp} XP 획득!`;
@@ -494,66 +588,205 @@
 
         function gainXpNoSave(amount) {
             appData.user.xp += amount;
-
             while (appData.user.xp >= appData.user.nextXp) {
                 appData.user.xp -= appData.user.nextXp;
                 appData.user.level++;
                 appData.user.nextXp = 30 + (appData.user.level * 5);
                 showXpEffect(amount);
             }
-
             while (appData.user.xp < 0) {
                 if (appData.user.level > 1) {
                     appData.user.level--;
                     appData.user.nextXp = 30 + (appData.user.level * 5);
                     appData.user.xp += appData.user.nextXp;
-                } else {
-                    appData.user.xp = 0;
-                }
+                } else { appData.user.xp = 0; }
             }
-
             const today = getStudyDateString();
-            appData.calendarHistory[today] = Math.max(appData.calendarHistory[today] || 1, appData.user.level);
+            const currentData = appData.calendarHistory[today];
+            let maxLevel = appData.user.level;
+            if (currentData && typeof currentData === 'object') maxLevel = Math.max(currentData.level || 1, appData.user.level);
+            else if (currentData) maxLevel = Math.max(currentData, appData.user.level);
+
+            if(!appData.calendarHistory) appData.calendarHistory = {};
+            appData.calendarHistory[today] = { level: maxLevel, time: appData.lastYptTime };
         }
 
-        function gainXp(amount) {
-            gainXpNoSave(amount);
-            saveDataToCloud();
-        }
+        function gainXp(amount) { gainXpNoSave(amount); saveDataToCloud(); }
 
         function checkDailyReset() {
             const currentStudyDate = getStudyDateString();
             if (appData.lastDate !== currentStudyDate) {
-                appData.user.level = 1;
-                appData.user.xp = 0;
-                appData.user.nextXp = 30;
-                appData.dailies = [];
-                appData.lastDate = currentStudyDate;
-                appData.lastYptTime = "00:00:00";
+                appData.user.level = 1; appData.user.xp = 0; appData.user.nextXp = 30;
+                appData.lastDate = currentStudyDate; appData.lastYptTime = "00:00:00";
 
-                saveDataToCloud();
+                if(!appData.dailyPlanner) appData.dailyPlanner = {};
+                if(!appData.dailyPlanner[currentStudyDate]) {
+                    appData.dailyPlanner[currentStudyDate] = { grid: new Array(144).fill(false), tasks: [] };
+                }
+
                 if (!appData.calendarHistory) appData.calendarHistory = {};
-                appData.calendarHistory[currentStudyDate] = 1;
-
-                alert("🌅 새로운 하루(05:00 AM) 시작! 레벨과 미션이 초기화되었습니다.");
+                appData.calendarHistory[currentStudyDate] = { level: 1, time: "00:00:00" };
+                saveDataToCloud();
             }
         }
 
         async function saveDataToCloud() {
-            try {
-                await setDoc(doc(db, "users", USER_DOC_ID), appData, { merge: true });
-            } catch (e) {
-                console.error("Error:", e);
+            try { await setDoc(doc(db, "users", USER_DOC_ID), appData, { merge: true }); }
+            catch (e) { console.error("Error:", e); }
+        }
+
+        function renderAll() {
+            renderUserStats();
+            renderCampusEvolution();
+            renderPlanner();
+            renderBooks();
+            renderCalendar();
+        }
+
+        function renderPlanner() {
+            document.getElementById('plDateDisplay').innerText = viewDate;
+
+            const isToday = (viewDate === getStudyDateString());
+            document.getElementById('btnReturnToday').style.display = isToday ? 'none' : 'inline-block';
+
+            if(!appData.dailyPlanner) appData.dailyPlanner = {};
+            if(!appData.dailyPlanner[viewDate]) {
+                appData.dailyPlanner[viewDate] = { grid: new Array(144).fill(false), tasks: [] };
+            }
+            const viewData = appData.dailyPlanner[viewDate];
+
+            const ddayEl = document.getElementById('plDdayDisplay');
+            if (appData.plannerConfigs?.ddayDate) {
+                const target = new Date(appData.plannerConfigs.ddayDate.replace(/\./g, '-'));
+                const viewObj = new Date(viewDate.replace(/\./g, '-'));
+                const diff = Math.ceil((target - viewObj) / (1000 * 60 * 60 * 24));
+                if (diff > 0) ddayEl.innerText = `D-${diff}`;
+                else if (diff === 0) ddayEl.innerText = `D-DAY`;
+                else ddayEl.innerText = `D+${Math.abs(diff)}`;
+            } else {
+                ddayEl.innerText = "설정 (클릭)";
+            }
+
+            document.getElementById('plTotalTime').innerText = isToday ? appData.lastYptTime : (appData.calendarHistory[viewDate]?.time || "00:00:00");
+
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            (viewData.tasks || []).forEach((task, idx) => {
+                const div = document.createElement('div');
+                div.className = `task-item ${task.done ? 'completed' : ''}`;
+                div.onclick = () => window.toggleTask(idx);
+                div.innerHTML = `
+                    <div class="checkbox"></div>
+                    <div class="task-content">
+                        <div class="task-text">${task.content}</div>
+                    </div>
+                    <button class="btn-delete-task" onclick="window.deleteTask(${idx}, event)">${ICON_TRASH}</button>
+                `;
+                list.appendChild(div);
+            });
+
+            viewData.grid.forEach((isFilled, i) => {
+                const cell = document.getElementById(`tt-cell-${i}`);
+                if(cell) {
+                    if(isFilled) cell.classList.add('filled');
+                    else cell.classList.remove('filled');
+                }
+            });
+        }
+
+        window.returnToToday = function() {
+            viewDate = getStudyDateString();
+            renderPlanner();
+        }
+
+        window.setDday = function() {
+            const current = appData.plannerConfigs?.ddayDate || "2026.11.12";
+            const input = prompt("D-DAY 목표 날짜를 YYYY.MM.DD 형식으로 입력하세요:", current);
+            if(input) {
+                if(!appData.plannerConfigs) appData.plannerConfigs = {};
+                appData.plannerConfigs.ddayDate = input;
+                saveDataToCloud();
+                renderPlanner();
+            }
+        };
+
+        function initTimetableGrid() {
+            const gridEl = document.getElementById('ttGrid');
+            gridEl.innerHTML = '';
+            for(let hr = 6; hr < 30; hr++) {
+                const displayHr = hr % 24;
+                const row = document.createElement('div');
+                row.className = 'tt-row';
+
+                const label = document.createElement('div');
+                label.className = 'tt-hour';
+                label.innerText = displayHr.toString().padStart(2, '0');
+                row.appendChild(label);
+
+                for(let min = 0; min < 6; min++) {
+                    const idx = ((hr - 6) * 6) + min;
+                    const cell = document.createElement('div');
+                    cell.className = 'tt-cell';
+                    cell.id = `tt-cell-${idx}`;
+
+                    cell.onmousedown = (e) => {
+                        isDraggingTT = true;
+                        dragModeTT = !appData.dailyPlanner[viewDate].grid[idx];
+                        toggleTtCell(idx, dragModeTT);
+                    };
+                    cell.onmouseenter = (e) => { if(isDraggingTT) toggleTtCell(idx, dragModeTT); };
+                    row.appendChild(cell);
+                }
+                gridEl.appendChild(row);
             }
         }
 
-        // --- UI Rendering ---
-        function renderAll() {
-            renderUserStats();
-            renderBooks();
-            renderDailies();
-            renderCalendar();
+        function toggleTtCell(idx, state) {
+            if(!appData.dailyPlanner[viewDate]) return;
+            if(appData.dailyPlanner[viewDate].grid[idx] === state) return;
+
+            appData.dailyPlanner[viewDate].grid[idx] = state;
+            const cell = document.getElementById(`tt-cell-${idx}`);
+            if(state) cell.classList.add('filled');
+            else cell.classList.remove('filled');
+
+            clearTimeout(saveTimeoutTT);
+            saveTimeoutTT = setTimeout(() => { saveDataToCloud(); }, 1000);
         }
+
+        function renderCampusEvolution() {
+            const lvl = appData.user.level;
+            const widget = document.getElementById('campusWidget');
+            const msg = document.getElementById('campusMsg');
+            widget.className = 'status-box';
+
+            if (lvl <= 4) { widget.classList.add('stage-1'); msg.innerText = "오늘의 공부 씨앗을 심어주세요."; }
+            else if (lvl <= 9) { widget.classList.add('stage-2'); msg.innerText = "기초가 탄탄해지고 있습니다!"; }
+            else if (lvl <= 14) { widget.classList.add('stage-3'); msg.innerText = "구조가 완성되었습니다. (콘크리트 양생)"; }
+            else if (lvl <= 19) { widget.classList.add('stage-4'); msg.innerText = "지식이 뿌리내렸습니다. (조경 완료)"; }
+            else { widget.classList.add('stage-5'); msg.innerText = "완벽한 하루! 수고하셨습니다. 🎇"; }
+        }
+
+        window.showCalDetail = function(dateStr, level, time) {
+            const panel = document.getElementById('calDetailPanel');
+
+            if (activeCalDate === dateStr && panel.classList.contains('show')) {
+                window.closeCalDetail();
+                window.returnToToday();
+                return;
+            }
+
+            activeCalDate = dateStr;
+            viewDate = dateStr;
+            renderPlanner();
+
+            document.getElementById('detailDate').innerText = dateStr.replace(/\./g, ' / ');
+            document.getElementById('detailLevel').innerText = `Lv. ${level}`;
+            document.getElementById('detailTime').innerText = time || "00:00:00";
+            panel.classList.add('show');
+        }
+
+        window.closeCalDetail = function() { document.getElementById('calDetailPanel').classList.remove('show'); activeCalDate = null; }
 
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
@@ -568,6 +801,13 @@
             const firstDay = new Date(viewYear, viewMonth, 1).getDay();
             const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
 
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayNames.forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'cal-day-name'; el.innerText = d;
+                grid.appendChild(el);
+            });
+
             for(let i=0; i<firstDay; i++) grid.appendChild(document.createElement('div'));
 
             const studyDateStr = getStudyDateString();
@@ -575,26 +815,29 @@
             for(let d=1; d<=daysInMonth; d++) {
                 const dateObj = new Date(viewYear, viewMonth, d);
                 const dateKey = getFixedDateKey(dateObj);
-
                 const isToday = (dateKey === studyDateStr);
-                const level = appData.calendarHistory[dateKey] || 0;
+                const historyEntry = appData.calendarHistory[dateKey];
+
+                let level = 0; let studyTime = "";
+                if (historyEntry) {
+                    if (typeof historyEntry === 'object') { level = historyEntry.level || 0; studyTime = historyEntry.time || ""; }
+                    else { level = historyEntry; }
+                }
 
                 const cell = document.createElement('div');
                 cell.className = `cal-cell ${isToday ? 'today' : ''}`;
 
-                let levelHtml = '';
                 if (level > 0) {
                     cell.classList.add('has-data');
                     const opacity = Math.min(0.2 + (level * 0.08), 1);
                     const bgColor = `rgba(55, 65, 81, ${opacity})`;
                     cell.style.backgroundColor = bgColor;
                     cell.style.borderColor = bgColor;
-
-                    const textColor = opacity > 0.5 ? 'white' : '#111';
-                    cell.style.color = textColor;
-                    levelHtml = `<div class="cal-level-text" style="color:${textColor}">Lv.${level}</div>`;
+                    cell.style.color = opacity > 0.5 ? 'white' : '#111';
+                    cell.onclick = () => window.showCalDetail(dateKey, level, studyTime);
                 }
-                cell.innerHTML = `<span class="cal-date-num">${d}</span>${levelHtml}`;
+
+                cell.innerHTML = `<span class="cal-date-num">${d}</span>`;
                 grid.appendChild(cell);
             }
         }
@@ -624,8 +867,6 @@
                 chaptersHtml += '</div>';
                 const div = document.createElement('div');
                 div.className = `book-card ${isMastered ? 'mastered' : ''}`;
-                div.onmouseenter = function() { this.style.borderColor = color; };
-                div.onmouseleave = function() { this.style.borderColor = 'var(--border)'; };
                 div.innerHTML = `
                     <button class="btn-delete-book" onclick="window.deleteBook(${book.id}, event)">${ICON_CLOSE}</button>
                     <button class="btn-edit-book" onclick="window.openEditBookModal(${book.id})" title="Edit">${ICON_EDIT}</button>
@@ -639,27 +880,23 @@
             });
         }
 
-        function renderDailies() {
-            const list = document.getElementById('taskList');
-            list.innerHTML = '';
-            appData.dailies.forEach((task, idx) => {
-                const div = document.createElement('div');
-                div.className = `task-item ${task.done?'completed':''}`;
-                div.onclick = () => window.toggleTask(idx);
-                div.innerHTML = `<div class="checkbox"></div><div class="task-content"><div class="task-text">${task.content}</div></div><button class="btn-delete-task" onclick="window.deleteTask(${idx}, event)">${ICON_TRASH}</button>`;
-                list.appendChild(div);
-            });
-        }
-
-        // --- Interaction ---
         window.changeMonth = function(offset) {
-            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + offset);
-            renderCalendar();
+            const grid = document.getElementById('calendarGrid');
+            window.closeCalDetail();
+            window.returnToToday();
+            grid.classList.add('fade-out');
+            setTimeout(() => {
+                currentCalendarDate.setMonth(currentCalendarDate.getMonth() + offset);
+                renderCalendar();
+                grid.classList.remove('fade-out');
+                grid.classList.add('fade-in');
+                setTimeout(() => { grid.classList.remove('fade-in'); }, 300);
+            }, 150);
         }
 
         window.resetData = async function() {
             if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
-                appData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], dailies: [], calendarHistory: {}, lastDate: getStudyDateString(), lastYptTime: "00:00:00" };
+                appData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], calendarHistory: {}, dailyPlanner: {}, plannerConfigs: {ddayDate:""}, lastDate: getStudyDateString(), lastYptTime: "00:00:00" };
                 await saveDataToCloud(); location.reload();
             }
         };
@@ -670,7 +907,6 @@
             const color = document.getElementById('newBookColor').value;
             if(t){ appData.books.push({id:Date.now(), title:t, chapters:c, color: color}); await saveDataToCloud(); window.closeModal('bookModal'); }
         };
-
         window.openEditBookModal = function(bookId) {
             const book = appData.books.find(b => b.id == bookId);
             if (!book) return;
@@ -678,9 +914,8 @@
             document.getElementById('editBookTitle').value = book.title;
             document.getElementById('editBookChapters').value = book.chapters.map(c => c.name).join('\n');
             document.getElementById('editBookColor').value = book.color || '#374151';
-            document.getElementById('editBookModal').style.display = 'flex';
+            window.openModal('editBookModal');
         }
-
         window.confirmEditBook = async function() {
             const bookId = document.getElementById('editBookId').value;
             const title = document.getElementById('editBookTitle').value;
@@ -700,10 +935,8 @@
                 await saveDataToCloud(); window.closeModal('editBookModal');
             }
         }
-
         window.deleteBook = async function(id, e) {
-            e.stopPropagation();
-            if(confirm("Delete book?")) { appData.books=appData.books.filter(b=>b.id!==id); await saveDataToCloud(); }
+            e.stopPropagation(); if(confirm("Delete book?")) { appData.books=appData.books.filter(b=>b.id!==id); await saveDataToCloud(); }
         };
 
         window.addDailyQuest = async function() {
@@ -719,11 +952,19 @@
                 task.content = document.getElementById('dailyContent').value;
                 if(!task.content) return;
             }
-            appData.dailies.push(task); await saveDataToCloud(); window.closeModal('dailyModal');
+            if(!appData.dailyPlanner[viewDate]) appData.dailyPlanner[viewDate] = { grid: new Array(144).fill(false), tasks: [] };
+            if(!appData.dailyPlanner[viewDate].tasks) appData.dailyPlanner[viewDate].tasks = [];
+
+            appData.dailyPlanner[viewDate].tasks.push(task);
+            await saveDataToCloud(); window.closeModal('dailyModal');
         };
 
         window.deleteTask = async function(idx, e) {
-            e.stopPropagation(); if(confirm("Delete task?")) { appData.dailies.splice(idx,1); await saveDataToCloud(); }
+            e.stopPropagation();
+            if(confirm("Delete task?")) {
+                appData.dailyPlanner[viewDate].tasks.splice(idx,1);
+                await saveDataToCloud();
+            }
         };
 
         window.toggleChapter = async function(bookId, chapterIdx) {
@@ -731,22 +972,26 @@
             if (!book) return;
             const chapter = book.chapters[chapterIdx];
             chapter.done = !chapter.done;
-            appData.dailies.forEach(task => {
-                if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) task.done = chapter.done;
-            });
-            gainXp(chapter.done ? 10 : -10);
+            if(appData.dailyPlanner[viewDate] && appData.dailyPlanner[viewDate].tasks) {
+                appData.dailyPlanner[viewDate].tasks.forEach(task => {
+                    if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) task.done = chapter.done;
+                });
+            }
+            if(viewDate === getStudyDateString()) gainXp(chapter.done ? 10 : -10);
+            else saveDataToCloud();
         };
 
         window.toggleTask = async function(idx) {
-            const t = appData.dailies[idx]; t.done = !t.done;
+            const t = appData.dailyPlanner[viewDate].tasks[idx];
+            t.done = !t.done;
             if(t.type==='study' && t.bookId) {
                 const b = appData.books.find(x=>x.id==t.bookId);
                 if(b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
             }
-            gainXp(t.done?10:-10);
+            if(viewDate === getStudyDateString()) gainXp(t.done?10:-10);
+            else saveDataToCloud();
         };
 
-        // Helpers
         function setDailyQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             const [text, author] = randomQuote.split('-');
@@ -769,10 +1014,12 @@
             setTimeout(() => { el.remove(); }, 1500);
         }
 
-        // Window assignments
-        window.openDailyModal = function() { document.getElementById('dailyModal').style.display='flex'; window.toggleBookSelect(); document.getElementById('dailyContent').value=''; }
-        window.openBookModal = function() { document.getElementById('bookModal').style.display='flex'; document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
-        window.closeModal = function(id) { document.getElementById(id).style.display='none'; }
+        window.openModal = function(id) { document.getElementById(id).classList.add('show'); }
+        window.closeModal = function(id) { document.getElementById(id).classList.remove('show'); }
+
+        window.openDailyModal = function() { window.openModal('dailyModal'); window.toggleBookSelect(); document.getElementById('dailyContent').value=''; }
+        window.openBookModal = function() { window.openModal('bookModal'); document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
+
         window.toggleBookSelect = function() {
             const isStudy = document.getElementById('dailyType').value === 'study';
             document.getElementById('bookSelectGroup').style.display = isStudy?'block':'none';
@@ -788,7 +1035,8 @@
             const b = appData.books.find(x=>x.id==bid);
             if(b) b.chapters.forEach((c,i)=>csel.innerHTML+=`<option value="${i}">${c.name} ${c.done?'(Done)':''}</option>`);
         }
-        window.onclick = function(e) { if(e.target.className==='modal-overlay') e.target.style.display='none'; }
+
+        window.onclick = function(e) { if(e.target.classList.contains('modal-overlay')) { e.target.classList.remove('show'); } }
     </script>
 </body>
 </html>
