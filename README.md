@@ -2,7 +2,6 @@
 📜 Version History & Release Notes (v1.0 ~ v14.2)
 
 v1.0 🌱 프로젝트의 시작 (Initial Setup) 
-
 바닐라 HTML/CSS/JS를 활용하여 단순한 형태의 스터디 플래너와 실시간 시계 타이머 기능을 갖춘 기본 웹페이지 레이아웃 구조 설계 및 배포
 
 v2.0 📚 문제집 & 할 일 관리 (Task & Library) 
