@@ -11,18 +11,31 @@
 
     <style>
         :root {
-            --primary: #374151;
+            --primary: #4B5563;
             --primary-dark: #1F2937;
-            --text-main: #111827;
-            --text-sub: #4B5563;
-            --bg-card: rgba(255, 255, 255, 0.6);
-            --border-glass: rgba(255, 255, 255, 0.4);
-            --border-glass-light: rgba(255, 255, 255, 0.8);
+            --text-main: #0F172A;
+            --text-sub: #475569;
+            --text-muted: #94A3B8;
+
+            --border-outer: rgba(226, 232, 240, 0.8);
+            /* 깔끔하고 얇은 경계선 */
+            --border-inner: #F1F5F9;
+
             --success: #10B981;
             --danger: #EF4444;
             --gold: #F59E0B;
+            --accent: #2563EB;
+            --gemini: #A855F7;
+
+            --bg-app: #F8FAFC;
+            /* 메인 본문 배경 산뜻한 연그레이 */
+            --bg-panel: rgba(255, 255, 255, 0.7);
+            /* 카드/패널 배경 */
+            --bg-offwhite: #F8FAFC;
+            /* 섹션 구분용 아주 밝은 회색 */
+
             --radius-box: 24px;
-            --radius-item: 16px;
+            --radius-item: 12px;
         }
 
         * {
@@ -30,20 +43,21 @@
             margin: 0;
             padding: 0;
             outline: none;
-            font-family: "Pretendard Variable", Pretendard, sans-serif !important;
+            font-family: "Pretendard Variable", -apple-system, sans-serif !important;
         }
 
-        /* 원래의 그라데이션 도형 배경 복구 */
+        /* 칙칙했던 다크모드를 걷어내고, ONPlan과 완벽히 호환되는 화사하고 은은한 그라디언트 배경 적용 */
         body {
             color: var(--text-main);
-            font-size: 16px;
+            font-size: 14px;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 2rem;
             overflow: hidden;
-            background-color: #080A1A;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            letter-spacing: -0.01em;
         }
 
         .bg-shapes {
@@ -59,36 +73,34 @@
 
         .shape {
             position: absolute;
-            opacity: 0.7;
+            opacity: 0.25;
             border-radius: 50%;
-            filter: blur(30px);
+            filter: blur(120px);
+            transition: all 1s ease;
         }
 
         .shape-1 {
-            width: 90vw;
-            height: 90vw;
-            background: radial-gradient(circle, #0066FF 0%, rgba(0, 102, 255, 0.3) 80%);
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle, #DBEAFE 0%, rgba(219, 234, 254, 0) 70%);
             bottom: -20%;
-            left: -20%;
-            right: auto;
+            left: -10%;
         }
 
         .shape-2 {
-            width: 90vw;
-            height: 90vw;
-            background: radial-gradient(circle, #E0005A 0%, rgba(224, 0, 90, 0.2) 70%);
-            top: -50%;
-            right: -30%;
-            left: auto;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, #FCE7F3 0%, rgba(252, 231, 243, 0) 70%);
+            top: -30%;
+            right: -20%;
         }
 
         .shape-3 {
-            width: 70vw;
-            height: 70vw;
-            background: radial-gradient(circle, #FFB800 0%, rgba(255, 184, 0, 0.2) 80%);
-            bottom: -50%;
-            right: 0%;
-            left: auto;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, #FEF3C7 0%, rgba(254, 243, 199, 0) 70%);
+            bottom: -30%;
+            right: 10%;
         }
 
         #loadingScreen {
@@ -97,29 +109,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(30px);
+            background: #fff;
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             font-weight: 600;
-            color: var(--primary);
+            color: var(--text-main);
+            transition: opacity 0.4s ease;
         }
 
+        /* ✅ 대시보드 프레임을 완벽히 투명도가 제어된 프리미엄 화이트 글라스모피즘으로 교체 */
         .dashboard {
             width: 100%;
             max-width: 1800px;
             height: 92vh;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
             border-radius: var(--radius-box);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8);
             display: grid;
             grid-template-rows: auto auto 1fr auto;
             overflow: hidden;
@@ -130,20 +141,20 @@
             text-align: center;
             padding: 0.8rem 1rem;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 700;
             color: var(--text-main);
             background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid var(--border-glass-light);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.04);
         }
 
         .quote-text {
             color: var(--text-main);
-            font-weight: 800;
+            font-weight: 900;
         }
 
         header {
             padding: 0.8rem 2rem;
-            border-bottom: 1px solid var(--border-glass-light);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.04);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -268,16 +279,16 @@
             overflow: hidden;
         }
 
-        /* 🚀 최적화: panel의 중복 backdrop-filter 제거로 프레임 드랍 억제 */
+        /* 🚀 패널을 가늘고 투명한 세련된 반투명 테두리로 변경하고 여백 조율 */
         .panel {
-            padding: 1.5rem;
+            padding: 1.8rem;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             height: 100%;
             min-width: 0;
-            background: rgba(255, 255, 255, 0.25);
-            border-right: 1px solid var(--border-glass-light);
+            background: rgba(248, 250, 252, 0.25);
+            border-right: 1px solid rgba(15, 23, 42, 0.05);
         }
 
         .panel-right {
@@ -294,29 +305,29 @@
 
         .section-title {
             font-size: 1.1rem;
-            font-weight: 800;
+            font-weight: 850;
             color: var(--text-main);
             white-space: nowrap;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .btn-add {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--accent);
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: none;
             padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-weight: 700;
+            border-radius: 8px;
+            font-weight: 800;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
         .btn-add:hover {
-            transform: scale(1.03) translateY(-1px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            background: #1D4ED8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
         }
 
         .btn-add:active {
@@ -335,24 +346,22 @@
         }
 
         .scroll-area::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 2px;
         }
 
         .liquid-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-bottom-color: rgba(255, 255, 255, 0.15);
-            border-right-color: rgba(255, 255, 255, 0.15);
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.04);
             border-radius: var(--radius-item);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-            transition: all 0.2s ease-out;
-            /* 최적화: 버벅임 방지를 위해 ease-out 적용 */
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .liquid-card:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            background: #FFFFFF;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+            border-color: rgba(37, 99, 235, 0.15);
         }
 
         .pl-info-bar {
@@ -397,15 +406,13 @@
         }
 
         .pl-dday-val {
-            color: #1E3A8A;
+            color: var(--accent);
             cursor: pointer;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
         }
 
         .pl-time-val {
             color: #92400E;
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
         }
 
         .btn-return-today {
@@ -463,16 +470,28 @@
         }
 
         #taskList::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 2px;
         }
 
+        /* ✅ 드래그 가능한 할 일 리스트 카드를 3D 리프트업 화이트 카드로 업그레이드 */
         .task-item {
-            padding: 0.8rem 1rem;
-            margin-bottom: 0.6rem;
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            border-radius: var(--radius-item);
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             cursor: grab;
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+            border-color: rgba(37, 99, 235, 0.15);
         }
 
         .task-item:active {
@@ -481,9 +500,9 @@
 
         .task-item.completed {
             opacity: 0.5;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(248, 250, 252, 0.5);
             transform: none;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02);
             border-color: transparent;
         }
 
@@ -496,30 +515,35 @@
 
         /* 🚀 렌더링 최적화: drag-over 시 transform scale 삭제, 배경색과 테두리만 변경 */
         .drag-over {
-            border: 2px dashed rgba(255, 255, 255, 0.9) !important;
-            background: rgba(255, 255, 255, 0.5) !important;
+            border: 2px dashed rgba(37, 99, 235, 0.4) !important;
+            background: rgba(37, 99, 235, 0.02) !important;
         }
 
+        /* ✅ 체크박스를 둥근 토스/애플 스타일로 고도화 */
         .checkbox {
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(0, 0, 0, 0.15);
-            border-radius: 5px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #E2E8F0;
+            border-radius: 6px;
             margin-right: 0.8rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             flex-shrink: 0;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.4);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            background: #FFFFFF;
+        }
+
+        .checkbox:hover {
+            border-color: var(--accent);
+            background: rgba(37, 99, 235, 0.02);
         }
 
         .task-item.completed .checkbox {
             background: var(--success);
             border-color: var(--success);
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.15);
         }
 
         .task-item.completed .checkbox::after {
@@ -542,13 +566,11 @@
             font-weight: 700;
             transition: color 0.3s;
             line-height: 1.4;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .task-item.completed .task-text {
             text-decoration: line-through;
-            color: rgba(17, 24, 39, 0.4);
-            text-shadow: none;
+            color: var(--text-muted);
         }
 
         .btn-delete-task {
@@ -577,7 +599,7 @@
         .status-box {
             position: relative;
             text-align: center;
-            border-radius: 20px;
+            border-radius: var(--radius-box);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -589,12 +611,12 @@
             position: relative;
             width: 100%;
             height: 140px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(15, 23, 42, 0.03);
             display: flex;
             justify-content: center;
             align-items: flex-end;
             transition: all 1s ease;
-            box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 -3px 8px rgba(15, 23, 42, 0.02);
         }
 
         .sha-container {
@@ -678,13 +700,12 @@
         .ground {
             width: 100%;
             height: 15px;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(15, 23, 42, 0.05);
             position: absolute;
             bottom: 0;
             z-index: 5;
             transition: 1s;
-            backdrop-filter: blur(5px);
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
         }
 
         .stars {
@@ -700,34 +721,34 @@
 
         /* 정문 Evolution Stages */
         .stage-1 .sha-part {
-            border: 1px dashed rgba(55, 65, 81, 0.3);
-            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(15, 23, 42, 0.25);
+            background: rgba(15, 23, 42, 0.01);
         }
 
         .stage-2 .sha-part {
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            background: rgba(148, 163, 184, 0.25);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(148, 163, 184, 0.15);
         }
 
         .stage-3 .sha-part {
             border: none;
-            background: rgba(71, 85, 105, 0.8);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            background: #64748B;
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         .stage-3 .ground {
-            background: rgba(203, 213, 225, 0.6);
+            background: rgba(148, 163, 184, 0.2);
         }
 
         .stage-4 .sha-part {
-            background: #1E3A8A;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            background: var(--accent);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .stage-4 .sha-ya-top,
         .stage-4 .sha-ya-bot,
         .stage-4 .sha-bridge {
-            background: #3B82F6;
+            background: #60A5FA;
         }
 
         .stage-4 .tree {
@@ -740,6 +761,7 @@
             border-top: 1px solid #4ADE80;
         }
 
+        /* ✅ Lv.5 파이널 진화: 은하수 인디고 밤하늘과 찬란한 황금빛 오로라 글로우의 명작 연출 */
         .stage-5 .campus-bg {
             background: linear-gradient(to bottom, #0F172A, #1E1B4B);
         }
@@ -747,7 +769,7 @@
         .stage-5 .status-sub {
             color: #F59E0B;
             font-weight: 800;
-            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
         }
 
         .stage-5 .sha-part {
@@ -771,12 +793,11 @@
             border-top: 1px solid #059669;
         }
 
-        /* 🚀 최적화: 중복 블러 제거 */
         .status-content {
             padding: 1rem;
             z-index: 20;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.15));
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(15, 23, 42, 0.04);
         }
 
         .status-level-label {
@@ -822,29 +843,28 @@
         }
 
         .calendar-title {
-            font-weight: 800;
+            font-weight: 900;
             font-size: 1.1rem;
             color: var(--text-main);
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
         }
 
         .btn-cal-nav {
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid var(--border-glass);
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.05);
             border-radius: 8px;
             color: var(--text-main);
             cursor: pointer;
-            padding: 4px 12px;
+            padding: 6px 14px;
             font-size: 0.9rem;
-            transition: all 0.3s;
+            transition: all 0.2s;
             font-weight: 800;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
         }
 
         .btn-cal-nav:hover {
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(1.03) translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+            background: var(--bg-offwhite);
+            border-color: rgba(15, 23, 42, 0.1);
+            transform: translateY(-1px);
         }
 
         .btn-cal-nav:active {
@@ -865,7 +885,7 @@
         }
 
         .calendar-grid-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 2px;
         }
 
@@ -896,43 +916,44 @@
             margin-bottom: 0.3rem;
         }
 
+        /* ✅ 하단 스터디 캘린더 셀을 ONPlan과 동일하게 둥글고 독립적인 화이트 카드로 리모델링 */
         .cal-cell {
-            min-height: 45px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
+            min-height: 48px;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            border-radius: var(--radius-item);
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-end;
-            padding: 6px;
+            padding: 8px 10px;
             font-size: 0.85rem;
             color: var(--text-sub);
             position: relative;
-            background: rgba(255, 255, 255, 0.1);
+            background: #FFFFFF;
             cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background 0.3s;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.01);
             will-change: transform;
         }
 
         .cal-cell:hover {
-            transform: translate3d(0, -2px, 0) scale(1.03);
+            transform: translateY(-2px);
             z-index: 2;
-            background: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.7);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: #FFFFFF;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.06);
+            border-color: rgba(37, 99, 235, 0.15);
         }
 
         .cal-cell.has-data {
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #111;
+            color: var(--text-main);
+            font-weight: 700;
         }
 
         .cal-cell.today {
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.08);
             font-weight: 900;
-            background: rgba(255, 255, 255, 0.3);
+            background: #EFF6FF;
         }
 
         .cal-date-num {
@@ -940,7 +961,6 @@
             font-weight: 700;
             line-height: 1;
             pointer-events: none;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .cal-detail-panel {
@@ -1001,7 +1021,6 @@
             font-size: 0.95rem;
             font-weight: 800;
             color: var(--text-main);
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .detail-val-lvl {
@@ -1024,14 +1043,26 @@
             gap: 1rem;
         }
 
+        /* ✅ 문제집 카드를 3D 호버 리프트업 스타일로 고급화 */
         .book-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            border-radius: var(--radius-item);
             padding: 1.2rem;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: grab;
             display: flex;
             flex-direction: column;
             max-height: 350px;
             min-width: 0;
             will-change: transform;
+        }
+
+        .book-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+            border-color: rgba(37, 99, 235, 0.15);
         }
 
         .book-card:active {
@@ -1053,7 +1084,6 @@
             color: var(--text-main);
             display: flex;
             align-items: flex-start;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .book-color-dot {
@@ -1064,7 +1094,6 @@
             margin-right: 8px;
             flex-shrink: 0;
             margin-top: 4px;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 1px 2px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
@@ -1078,26 +1107,26 @@
 
         .mini-progress {
             height: 8px;
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(15, 23, 42, 0.05);
             border-radius: 4px;
             overflow: hidden;
             margin-bottom: 0.8rem;
             flex-shrink: 0;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
         }
 
+        /* ✅ 문제집 진행도 바 충전 효과를 에메랄드-퍼플 그라데이션으로 화려하게 튜닝 */
         .mini-fill {
             height: 100%;
             width: 0%;
             border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--gemini));
             transition: width 0.4s ease-out;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
         }
 
         .card-chapters {
             flex: 1;
             overflow-y: auto;
-            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+            border-top: 1px dashed rgba(15, 23, 42, 0.08);
             padding-top: 0.5rem;
         }
 
@@ -1106,7 +1135,7 @@
         }
 
         .card-chapters::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 2px;
         }
 
@@ -1119,19 +1148,20 @@
             cursor: pointer;
             transition: all 0.2s;
             border-radius: 6px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .mini-chapter:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(37, 99, 235, 0.04);
             padding-left: 6px;
+            color: var(--accent);
         }
 
         .mini-chapter-checkbox {
             width: 16px;
             height: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid #CBD5E1;
+            background: #FFFFFF;
             border-radius: 4px;
             margin-right: 8px;
             display: flex;
@@ -1141,18 +1171,16 @@
             font-size: 11px;
             color: white;
             transition: all 0.2s;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
         }
 
         .mini-chapter.done {
             text-decoration: line-through;
-            color: rgba(17, 24, 39, 0.4);
-            text-shadow: none;
+            color: var(--text-muted);
         }
 
         .mini-chapter.done .mini-chapter-checkbox {
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-            border-color: transparent;
+            background: var(--success);
+            border-color: var(--success);
         }
 
         .btn-delete-book {
@@ -1160,7 +1188,7 @@
             top: 12px;
             right: 12px;
             border: none;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(15, 23, 42, 0.03);
             border-radius: 50%;
             width: 24px;
             height: 24px;
@@ -1169,15 +1197,14 @@
             align-items: center;
             color: var(--text-sub);
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
             z-index: 2;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .btn-delete-book:hover {
             color: var(--danger);
             transform: scale(1.1) rotate(90deg);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(239, 68, 68, 0.1);
         }
 
         .btn-edit-book {
@@ -1185,7 +1212,7 @@
             top: 12px;
             right: 42px;
             border: none;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(15, 23, 42, 0.03);
             border-radius: 50%;
             width: 24px;
             height: 24px;
@@ -1194,15 +1221,14 @@
             align-items: center;
             color: var(--text-sub);
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
             z-index: 2;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .btn-edit-book:hover {
-            color: var(--primary);
+            color: var(--accent);
             transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(37, 99, 235, 0.1);
         }
 
         /* Effects & Modals */
@@ -1282,14 +1308,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 10, 0.5);
+            background: rgba(15, 23, 42, 0.3);
             z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             will-change: opacity, visibility;
         }
 
@@ -1299,22 +1327,20 @@
         }
 
         .modal-content {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: #FFFFFF;
             padding: 2.5rem;
             width: 450px;
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transform: translate3d(0, 20px, 0) scale(0.9);
+            border-radius: 24px;
+            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(15, 23, 42, 0.05);
+            transform: scale(0.95) translateY(12px);
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             will-change: transform, opacity;
         }
 
         .modal-overlay.show .modal-content {
-            transform: translate3d(0, 0, 0) scale(1);
+            transform: scale(1) translateY(0);
             opacity: 1;
         }
 
