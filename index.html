@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONStudy2SNU27 | ONFINE</title>
     <link rel="icon" href="icon.ico">
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
     <style>
         :root {
@@ -23,314 +25,1478 @@
             --radius-item: 16px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; font-family: "Pretendard Variable", Pretendard, sans-serif !important; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            font-family: "Pretendard Variable", Pretendard, sans-serif !important;
+        }
 
         /* 원래의 그라데이션 도형 배경 복구 */
-        body { color: var(--text-main); font-size: 16px; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem; overflow: hidden; background-color: #080A1A; }
-        .bg-shapes { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
-        .shape { position: absolute; opacity: 0.7; border-radius: 50%; filter: blur(30px); }
-        .shape-1 { width: 90vw; height: 90vw; background: radial-gradient(circle, #0066FF 0%, rgba(0, 102, 255, 0.3) 80%); bottom: -20%; left: -20%; right: auto; }
-        .shape-2 { width: 90vw; height: 90vw; background: radial-gradient(circle, #E0005A 0%, rgba(224, 0, 90, 0.2) 70%); top: -50%; right: -30%; left: auto; }
-        .shape-3 { width: 70vw; height: 70vw; background: radial-gradient(circle, #FFB800 0%, rgba(255, 184, 0, 0.2) 80%); bottom: -50%; right: 0%; left: auto; }
+        body {
+            color: var(--text-main);
+            font-size: 16px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            overflow: hidden;
+            background-color: #080A1A;
+        }
 
-        #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(30px); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; font-weight: 600; color: var(--primary); }
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.7;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .shape-1 {
+            width: 90vw;
+            height: 90vw;
+            background: radial-gradient(circle, #0066FF 0%, rgba(0, 102, 255, 0.3) 80%);
+            bottom: -20%;
+            left: -20%;
+            right: auto;
+        }
+
+        .shape-2 {
+            width: 90vw;
+            height: 90vw;
+            background: radial-gradient(circle, #E0005A 0%, rgba(224, 0, 90, 0.2) 70%);
+            top: -50%;
+            right: -30%;
+            left: auto;
+        }
+
+        .shape-3 {
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, #FFB800 0%, rgba(255, 184, 0, 0.2) 80%);
+            bottom: -50%;
+            right: 0%;
+            left: auto;
+        }
+
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-weight: 600;
+            color: var(--primary);
+        }
 
         .dashboard {
-            width: 100%; max-width: 1800px; height: 92vh;
+            width: 100%;
+            max-width: 1800px;
+            height: 92vh;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-radius: var(--radius-box);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.7);
-            display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; position: relative;
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            overflow: hidden;
+            position: relative;
         }
 
-        .quote-bar { text-align: center; padding: 0.8rem 1rem; font-size: 0.9rem; font-weight: 500; color: var(--text-main); background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid var(--border-glass-light); }
-        .quote-text { color: var(--text-main); font-weight: 800; }
+        .quote-bar {
+            text-align: center;
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid var(--border-glass-light);
+        }
 
-        header { padding: 0.8rem 2rem; border-bottom: 1px solid var(--border-glass-light); display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.8); z-index: 10; gap: 2rem; }
-        .user-section { min-width: 200px; }
-        .user-section h1 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; text-shadow: 0 1px 2px rgba(255,255,255,0.4); }
-        .user-section .subtitle { font-size: 0.85rem; color: var(--text-sub); margin-top: 0.2rem; font-weight: 600; }
+        .quote-text {
+            color: var(--text-main);
+            font-weight: 800;
+        }
 
-        .xp-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .xp-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; color: var(--text-sub); margin-bottom: 0.4rem; }
-        .xp-track { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
-        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark)); width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: inset 0 1px 2px rgba(255,255,255,0.4); }
+        header {
+            padding: 0.8rem 2rem;
+            border-bottom: 1px solid var(--border-glass-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            gap: 2rem;
+        }
 
-        .header-actions { display: flex; align-items: center; gap: 1rem; }
-        .clock-section { text-align: right; min-width: 110px; font-variant-numeric: tabular-nums; }
-        .clock-time { font-size: 1.5rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; text-shadow: 0 1px 2px rgba(255,255,255,0.4); }
-        .clock-date { font-size: 0.8rem; color: var(--text-sub); font-weight: 600; }
+        .user-section {
+            min-width: 200px;
+        }
 
-        .btn-group { display: flex; gap: 0.4rem; }
-        .btn-action { font-size: 0.8rem; color: var(--text-main); background: rgba(255,255,255,0.4); border: 1px solid var(--border-glass); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.04), inset 0 1px 1px rgba(255,255,255,0.6); }
-        .btn-action:hover { background: rgba(255,255,255,0.7); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.7); }
-        .btn-danger:hover { background: rgba(239, 68, 68, 0.2); color: var(--danger); border-color: rgba(239, 68, 68, 0.4); }
+        .user-section h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
 
-        .content-grid { display: grid; grid-template-columns: 3.2fr 2.4fr 5.4fr; height: 100%; overflow: hidden; }
+        .user-section .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 0.2rem;
+            font-weight: 600;
+        }
+
+        .xp-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .xp-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-sub);
+            margin-bottom: 0.4rem;
+        }
+
+        .xp-track {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            width: 0%;
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .clock-section {
+            text-align: right;
+            min-width: 110px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .clock-time {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .clock-date {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .btn-action {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--border-glass);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3.2fr 2.4fr 5.4fr;
+            height: 100%;
+            overflow: hidden;
+        }
 
         /* 🚀 최적화: panel의 중복 backdrop-filter 제거로 프레임 드랍 억제 */
         .panel {
-            padding: 1.5rem; display: flex; flex-direction: column; overflow: hidden; height: 100%; min-width: 0;
-            background: rgba(255,255,255,0.25);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.25);
             border-right: 1px solid var(--border-glass-light);
         }
-        .panel-right { border-right: none; }
 
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-shrink: 0;}
-        .section-title { font-size: 1.1rem; font-weight: 800; color: var(--text-main); white-space: nowrap; text-shadow: 0 1px 1px rgba(255,255,255,0.4); }
+        .panel-right {
+            border-right: none;
+        }
 
-        .btn-add { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: 1px solid rgba(255,255,255,0.15); padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.3); }
-        .btn-add:hover { transform: scale(1.03) translateY(-1px); box-shadow: 0 6px 12px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.4); }
-        .btn-add:active { transform: scale(0.97); }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
 
-        .scroll-area { flex: 1; overflow-y: auto; padding-right: 0.5rem; padding-bottom: 1rem; }
-        .scroll-area::-webkit-scrollbar { width: 4px; }
-        .scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 2px; }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            white-space: nowrap;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-add:hover {
+            transform: scale(1.03) translateY(-1px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-add:active {
+            transform: scale(0.97);
+        }
+
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            padding-bottom: 1rem;
+        }
+
+        .scroll-area::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+        }
 
         .liquid-card {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-bottom-color: rgba(255,255,255,0.15);
-            border-right-color: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-bottom-color: rgba(255, 255, 255, 0.15);
+            border-right-color: rgba(255, 255, 255, 0.15);
             border-radius: var(--radius-item);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-            transition: all 0.2s ease-out; /* 최적화: 버벅임 방지를 위해 ease-out 적용 */
+            transition: all 0.2s ease-out;
+            /* 최적화: 버벅임 방지를 위해 ease-out 적용 */
         }
+
         .liquid-card:hover {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9);
         }
 
-        .pl-info-bar { display: grid; grid-template-columns: 1.3fr 0.7fr 1fr; gap: 0.6rem; margin-bottom: 1.5rem; flex-shrink: 0; }
-        .pl-pill {
-            padding: 0.8rem 1rem; display: flex; flex-direction: column; flex: 1; min-width: 0;
-            justify-content: center; align-items: flex-start; position: relative;
+        .pl-info-bar {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr 1fr;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
         }
-        .pl-pill-label { font-size: 0.75rem; font-weight: 800; color: var(--text-sub); margin-bottom: 0.4rem; display: flex; justify-content: space-between; width: 100%;}
-        .pl-pill-val { font-size: 1.3rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
-        .pl-dday-val { color: #1E3A8A; cursor: pointer; text-shadow: 0 1px 2px rgba(255,255,255,0.4); }
-        .pl-time-val { color: #92400E; font-variant-numeric: tabular-nums; text-shadow: 0 1px 2px rgba(255,255,255,0.4); }
 
-        .btn-return-today { color: white; cursor: pointer; font-size: 0.65rem; transition: 0.2s; background: rgba(239, 68, 68, 0.8); padding: 2px 6px; border-radius: 4px; line-height: normal; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .btn-return-today:hover { background: var(--danger); transform: scale(1.03);}
+        .pl-pill {
+            padding: 0.8rem 1rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+        }
 
-        .pl-body { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+        .pl-pill-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-sub);
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-        .pl-tasks-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; }
-        .pl-section-title { font-size: 0.85rem; font-weight: 800; color: var(--text-sub); margin-bottom: 0.8rem; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .pl-pill-val {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
 
-        #taskList { flex: 1; overflow-y: auto; padding-right: 5px; }
-        #taskList::-webkit-scrollbar { width: 4px; }
-        #taskList::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 2px; }
+        .pl-dday-val {
+            color: #1E3A8A;
+            cursor: pointer;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .pl-time-val {
+            color: #92400E;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-return-today {
+            color: white;
+            cursor: pointer;
+            font-size: 0.65rem;
+            transition: 0.2s;
+            background: rgba(239, 68, 68, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            line-height: normal;
+            font-weight: 800;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-return-today:hover {
+            background: var(--danger);
+            transform: scale(1.03);
+        }
+
+        .pl-body {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            flex-direction: column;
+        }
+
+        .pl-tasks-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .pl-section-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-sub);
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        #taskList {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        #taskList::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #taskList::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+        }
 
         .task-item {
-            padding: 0.8rem 1rem; margin-bottom: 0.6rem; display: flex; align-items: center;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
             cursor: grab;
         }
-        .task-item:active { cursor: grabbing; }
-        .task-item.completed { opacity: 0.5; background: rgba(255,255,255,0.2); transform: none; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); border-color: transparent;}
+
+        .task-item:active {
+            cursor: grabbing;
+        }
+
+        .task-item.completed {
+            opacity: 0.5;
+            background: rgba(255, 255, 255, 0.2);
+            transform: none;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-color: transparent;
+        }
 
         /* 🚀 렌더링 최적화: 드래그 중 transform, transition 끄기 (렉의 주범 제거) */
-        .dragging { opacity: 0.5 !important; transition: none !important; z-index: 50; }
-        /* 🚀 렌더링 최적화: drag-over 시 transform scale 삭제, 배경색과 테두리만 변경 */
-        .drag-over { border: 2px dashed rgba(255,255,255,0.9) !important; background: rgba(255,255,255,0.5) !important; }
-
-        .checkbox { width: 18px; height: 18px; border: 2px solid rgba(0,0,0,0.15); border-radius: 5px; margin-right: 0.8rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; cursor: pointer; background: rgba(255,255,255,0.4); box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);}
-        .task-item.completed .checkbox { background: var(--success); border-color: var(--success); box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2), inset 0 1px 1px rgba(255,255,255,0.4); }
-        .task-item.completed .checkbox::after { content: '✓'; color: white; font-size: 11px; font-weight: bold; }
-
-        .task-content { flex: 1; overflow: hidden; }
-        .task-text {
-            font-size: 1rem; white-space: normal; word-break: break-word;
-            color: var(--text-main); font-weight: 700; transition: color 0.3s; line-height: 1.4; text-shadow: 0 1px 1px rgba(255,255,255,0.4);
+        .dragging {
+            opacity: 0.5 !important;
+            transition: none !important;
+            z-index: 50;
         }
-        .task-item.completed .task-text { text-decoration: line-through; color: rgba(17, 24, 39, 0.4); text-shadow: none; }
 
-        .btn-delete-task { opacity: 0; background: transparent; border: none; color: #6B7280; cursor: pointer; padding: 2px; transition: 0.2s; transform: scale(0.8); flex-shrink: 0;}
-        .task-item:hover .btn-delete-task { opacity: 1; transform: scale(1); }
-        .btn-delete-task:hover { color: var(--danger) !important; transform: scale(1.2) !important; filter: drop-shadow(0 2px 3px rgba(239,68,68,0.2)); }
+        /* 🚀 렌더링 최적화: drag-over 시 transform scale 삭제, 배경색과 테두리만 변경 */
+        .drag-over {
+            border: 2px dashed rgba(255, 255, 255, 0.9) !important;
+            background: rgba(255, 255, 255, 0.5) !important;
+        }
 
-        .status-box { position: relative; text-align: center; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 1.5rem; flex-shrink: 0;}
-        .campus-bg { position: relative; width: 100%; height: 140px; background: rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: flex-end; transition: all 1s ease; box-shadow: inset 0 -5px 10px rgba(0,0,0,0.05); }
-        .sha-container { position: relative; width: 150px; height: 110px; margin-bottom: 10px; z-index: 10; }
-        .sha-part { position: absolute; background: transparent; transition: all 1s ease; }
-        .sha-s-left { width: 15px; height: 80px; left: 25px; bottom: 0; transform: skewX(-25deg); }
-        .sha-s-right { width: 15px; height: 80px; left: 55px; bottom: 0; transform: skewX(25deg); }
-        .sha-ya-main { width: 15px; height: 100px; right: 30px; bottom: 0; }
-        .sha-ya-top { width: 25px; height: 12px; right: 5px; top: 30px; }
-        .sha-ya-bot { width: 25px; height: 12px; right: 5px; top: 60px; }
-        .sha-bridge { width: 30px; height: 10px; left: 65px; top: 40px; }
-        .tree { position: absolute; bottom: 0; font-size: 1.8rem; opacity: 0; transform: translateY(10px); transition: 1s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 15; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15)); }
-        .tree-left { left: -30px; } .tree-right { right: -40px; font-size: 2.2rem; }
-        .ground { width: 100%; height: 15px; background: rgba(255,255,255,0.4); position: absolute; bottom: 0; z-index: 5; transition: 1s; backdrop-filter: blur(5px); border-top: 1px solid rgba(255,255,255,0.4);}
-        .stars { position: absolute; width: 100%; height: 100%; background: radial-gradient(white, rgba(255,255,255,0) 2px); background-size: 50px 50px; opacity: 0; transition: 2s ease; z-index: 1;}
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0, 0, 0, 0.15);
+            border-radius: 5px;
+            margin-right: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .task-item.completed .checkbox {
+            background: var(--success);
+            border-color: var(--success);
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .task-item.completed .checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .task-content {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .task-text {
+            font-size: 1rem;
+            white-space: normal;
+            word-break: break-word;
+            color: var(--text-main);
+            font-weight: 700;
+            transition: color 0.3s;
+            line-height: 1.4;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: rgba(17, 24, 39, 0.4);
+            text-shadow: none;
+        }
+
+        .btn-delete-task {
+            opacity: 0;
+            background: transparent;
+            border: none;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 2px;
+            transition: 0.2s;
+            transform: scale(0.8);
+            flex-shrink: 0;
+        }
+
+        .task-item:hover .btn-delete-task {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .btn-delete-task:hover {
+            color: var(--danger) !important;
+            transform: scale(1.2) !important;
+            filter: drop-shadow(0 2px 3px rgba(239, 68, 68, 0.2));
+        }
+
+        .status-box {
+            position: relative;
+            text-align: center;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .campus-bg {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transition: all 1s ease;
+            box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .sha-container {
+            position: relative;
+            width: 150px;
+            height: 110px;
+            margin-bottom: 10px;
+            z-index: 10;
+        }
+
+        .sha-part {
+            position: absolute;
+            background: transparent;
+            transition: all 1s ease;
+        }
+
+        .sha-s-left {
+            width: 15px;
+            height: 80px;
+            left: 25px;
+            bottom: 0;
+            transform: skewX(-25deg);
+        }
+
+        .sha-s-right {
+            width: 15px;
+            height: 80px;
+            left: 55px;
+            bottom: 0;
+            transform: skewX(25deg);
+        }
+
+        .sha-ya-main {
+            width: 15px;
+            height: 100px;
+            right: 30px;
+            bottom: 0;
+        }
+
+        .sha-ya-top {
+            width: 25px;
+            height: 12px;
+            right: 5px;
+            top: 30px;
+        }
+
+        .sha-ya-bot {
+            width: 25px;
+            height: 12px;
+            right: 5px;
+            top: 60px;
+        }
+
+        .sha-bridge {
+            width: 30px;
+            height: 10px;
+            left: 65px;
+            top: 40px;
+        }
+
+        .tree {
+            position: absolute;
+            bottom: 0;
+            font-size: 1.8rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 15;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+        }
+
+        .tree-left {
+            left: -30px;
+        }
+
+        .tree-right {
+            right: -40px;
+            font-size: 2.2rem;
+        }
+
+        .ground {
+            width: 100%;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.4);
+            position: absolute;
+            bottom: 0;
+            z-index: 5;
+            transition: 1s;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(white, rgba(255, 255, 255, 0) 2px);
+            background-size: 50px 50px;
+            opacity: 0;
+            transition: 2s ease;
+            z-index: 1;
+        }
 
         /* 정문 Evolution Stages */
-        .stage-1 .sha-part { border: 1px dashed rgba(55,65,81,0.3); background: rgba(255,255,255,0.05); }
-        .stage-2 .sha-part { border: 1px solid rgba(148, 163, 184, 0.6); background: rgba(148, 163, 184, 0.25); }
-        .stage-3 .sha-part { border: none; background: rgba(71, 85, 105, 0.8); box-shadow: 0 3px 8px rgba(0,0,0,0.1), inset 0 1px 1px rgba(255,255,255,0.2); }
-        .stage-3 .ground { background: rgba(203, 213, 225, 0.6); }
-        .stage-4 .sha-part { background: #1E3A8A; box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.3); }
-        .stage-4 .sha-ya-top, .stage-4 .sha-ya-bot, .stage-4 .sha-bridge { background: #3B82F6; }
-        .stage-4 .tree { opacity: 1; transform: translateY(0); }
-        .stage-4 .ground { background: #86EFAC; border-top: 1px solid #4ADE80;}
-        .stage-5 .campus-bg { background: linear-gradient(to bottom, #0F172A, #1E1B4B); }
-        .stage-5 .status-sub { color: #F59E0B; font-weight: 800; text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
-        .stage-5 .sha-part { background: #0F172A; box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), inset 0 1px 2px rgba(245, 158, 11, 0.8); border: 1px solid #F59E0B; }
-        .stage-5 .sha-s-left, .stage-5 .sha-s-right, .stage-5 .sha-ya-main { background: linear-gradient(to top, #1E3A8A, #F59E0B); }
-        .stage-5 .stars { opacity: 0.8; }
-        .stage-5 .ground { background: #064E3B; border-top: 1px solid #059669;}
+        .stage-1 .sha-part {
+            border: 1px dashed rgba(55, 65, 81, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .stage-2 .sha-part {
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: rgba(148, 163, 184, 0.25);
+        }
+
+        .stage-3 .sha-part {
+            border: none;
+            background: rgba(71, 85, 105, 0.8);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .stage-3 .ground {
+            background: rgba(203, 213, 225, 0.6);
+        }
+
+        .stage-4 .sha-part {
+            background: #1E3A8A;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .stage-4 .sha-ya-top,
+        .stage-4 .sha-ya-bot,
+        .stage-4 .sha-bridge {
+            background: #3B82F6;
+        }
+
+        .stage-4 .tree {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stage-4 .ground {
+            background: #86EFAC;
+            border-top: 1px solid #4ADE80;
+        }
+
+        .stage-5 .campus-bg {
+            background: linear-gradient(to bottom, #0F172A, #1E1B4B);
+        }
+
+        .stage-5 .status-sub {
+            color: #F59E0B;
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .stage-5 .sha-part {
+            background: #0F172A;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), inset 0 1px 2px rgba(245, 158, 11, 0.8);
+            border: 1px solid #F59E0B;
+        }
+
+        .stage-5 .sha-s-left,
+        .stage-5 .sha-s-right,
+        .stage-5 .sha-ya-main {
+            background: linear-gradient(to top, #1E3A8A, #F59E0B);
+        }
+
+        .stage-5 .stars {
+            opacity: 0.8;
+        }
+
+        .stage-5 .ground {
+            background: #064E3B;
+            border-top: 1px solid #059669;
+        }
 
         /* 🚀 최적화: 중복 블러 제거 */
-        .status-content { padding: 1rem; z-index: 20; background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.15)); border-top: 1px solid rgba(255,255,255,0.4); }
-        .status-level-label { font-size: 0.8rem; color: var(--text-sub); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .status-level-val { font-size: 3.2rem; font-weight: 900; color: var(--text-main); line-height: 1.1; margin-top: 0.2rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4); }
-        .status-sub { font-size: 0.85rem; color: var(--text-main); margin-top: 0.3rem; font-weight: 700; transition: 0.3s;}
+        .status-content {
+            padding: 1rem;
+            z-index: 20;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.15));
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+        }
 
-        .calendar-container { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative;}
+        .status-level-label {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-        .calendar-header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; padding: 0 0.5rem; flex-shrink: 0; }
-        .calendar-title { font-weight: 800; font-size: 1.1rem; color: var(--text-main); text-shadow: 0 1px 2px rgba(255,255,255,0.4);}
-        .btn-cal-nav { background: rgba(255,255,255,0.3); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); cursor: pointer; padding: 4px 12px; font-size: 0.9rem; transition: all 0.3s; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.04), inset 0 1px 1px rgba(255,255,255,0.6); }
-        .btn-cal-nav:hover { background: rgba(255,255,255,0.7); transform: scale(1.03) translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.7); }
-        .btn-cal-nav:active { transform: scale(0.97); }
+        .status-level-val {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1.1;
+            margin-top: 0.2rem;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
 
-        .calendar-grid-wrapper { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-right: 5px; overflow-x: hidden; }
-        .calendar-grid-wrapper::-webkit-scrollbar { width: 4px; }
-        .calendar-grid-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 2px; }
+        .status-sub {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            margin-top: 0.3rem;
+            font-weight: 700;
+            transition: 0.3s;
+        }
 
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform, opacity; padding-bottom: 5px; }
-        .calendar-grid.fade-out { opacity: 0; transform: translate3d(-15px, 0, 0); }
-        .calendar-grid.fade-in { opacity: 1; transform: translate3d(0, 0, 0); }
+        .calendar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            position: relative;
+        }
 
-        .cal-day-name { font-size: 0.75rem; color: var(--text-sub); font-weight: 800; margin-bottom: 0.3rem; }
+        .calendar-header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .calendar-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-cal-nav {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-weight: 800;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-cal-nav:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.03) translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-cal-nav:active {
+            transform: scale(0.97);
+        }
+
+        .calendar-grid-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding-right: 5px;
+            overflow-x: hidden;
+        }
+
+        .calendar-grid-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .calendar-grid-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+            padding-bottom: 5px;
+        }
+
+        .calendar-grid.fade-out {
+            opacity: 0;
+            transform: translate3d(-15px, 0, 0);
+        }
+
+        .calendar-grid.fade-in {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .cal-day-name {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
 
         .cal-cell {
-            min-height: 45px; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px;
-            display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-end;
-            padding: 6px; font-size: 0.85rem; color: var(--text-sub);
-            position: relative; background: rgba(255,255,255,0.1); cursor: pointer;
+            min-height: 45px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-end;
+            padding: 6px;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
             transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background 0.3s;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.3);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
             will-change: transform;
         }
-        .cal-cell:hover { transform: translate3d(0, -2px, 0) scale(1.03); z-index: 2; background: rgba(255,255,255,0.4); box-shadow: 0 6px 12px rgba(0,0,0,0.08), inset 0 1px 2px rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.4);}
-        .cal-cell.has-data { border-color: rgba(255,255,255,0.3); color: #111; }
-        .cal-cell.today { border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 0 10px rgba(255,255,255,0.3), inset 0 1px 2px rgba(255,255,255,0.8); font-weight: 900; background: rgba(255,255,255,0.3); }
-        .cal-date-num { font-size: 0.8rem; font-weight: 700; line-height: 1; pointer-events: none; text-shadow: 0 1px 1px rgba(255,255,255,0.4); }
+
+        .cal-cell:hover {
+            transform: translate3d(0, -2px, 0) scale(1.03);
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .cal-cell.has-data {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #111;
+        }
+
+        .cal-cell.today {
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .cal-date-num {
+            font-size: 0.8rem;
+            font-weight: 700;
+            line-height: 1;
+            pointer-events: none;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
 
         .cal-detail-panel {
-            position: relative; max-height: 0; overflow: hidden; opacity: 0; transform: translate3d(0, -10px, 0);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin-top: 0px;
-            flex-shrink: 0; will-change: transform, opacity, max-height;
+            position: relative;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translate3d(0, -10px, 0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 0px;
+            flex-shrink: 0;
+            will-change: transform, opacity, max-height;
         }
-        .cal-detail-panel.show { max-height: 150px; opacity: 1; transform: translate3d(0, 0, 0); padding: 1.2rem; margin-top: 1rem; }
-        .btn-close-detail { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text-sub); cursor: pointer; padding: 2px; transition: color 0.2s, transform 0.2s; }
-        .btn-close-detail:hover { color: var(--danger); transform: scale(1.15); }
-        .detail-header { font-size: 0.85rem; color: var(--text-sub); font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; padding-right: 20px;}
-        .detail-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;}
-        .detail-label { font-size: 0.95rem; font-weight: 800; color: var(--text-main); text-shadow: 0 1px 1px rgba(255,255,255,0.4); }
-        .detail-val-lvl { font-size: 1.2rem; font-weight: 900; color: #1E3A8A; }
-        .detail-val-time { font-size: 1.1rem; font-weight: 900; color: #92400E; font-variant-numeric: tabular-nums;}
+
+        .cal-detail-panel.show {
+            max-height: 150px;
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            padding: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .btn-close-detail {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            padding: 2px;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .btn-close-detail:hover {
+            color: var(--danger);
+            transform: scale(1.15);
+        }
+
+        .detail-header {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-right: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-label {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .detail-val-lvl {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #1E3A8A;
+        }
+
+        .detail-val-time {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #92400E;
+            font-variant-numeric: tabular-nums;
+        }
 
         /* 우측 패널: Library */
-        .book-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
 
         .book-card {
             padding: 1.2rem;
             cursor: grab;
-            display: flex; flex-direction: column; max-height: 350px; min-width: 0; will-change: transform;
+            display: flex;
+            flex-direction: column;
+            max-height: 350px;
+            min-width: 0;
+            will-change: transform;
         }
-        .book-card:active { cursor: grabbing; }
-        .book-card-header { margin-bottom: 0.8rem; }
 
-        .book-card-title { font-weight: 800; font-size: 1.05rem; margin-bottom: 0.5rem; white-space: normal; word-break: break-word; line-height: 1.3; padding-right: 55px; color: var(--text-main); display: flex; align-items: flex-start; text-shadow: 0 1px 1px rgba(255,255,255,0.4); }
-        .book-color-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; margin-top: 4px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.7), 0 1px 2px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.4);}
+        .book-card:active {
+            cursor: grabbing;
+        }
 
-        .book-meta { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; font-weight: 700; }
-        .mini-progress { height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 0.8rem; flex-shrink: 0; box-shadow: inset 0 1px 1px rgba(0,0,0,0.05); }
-        .mini-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.4s ease-out; box-shadow: inset 0 1px 2px rgba(255,255,255,0.4); }
+        .book-card-header {
+            margin-bottom: 0.8rem;
+        }
 
-        .card-chapters { flex: 1; overflow-y: auto; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 0.5rem; }
-        .card-chapters::-webkit-scrollbar { width: 4px; }
-        .card-chapters::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 2px; }
-        .mini-chapter { font-size: 0.85rem; padding: 0.4rem 0.3rem; color: var(--text-main); display: flex; align-items: center; cursor: pointer; transition: all 0.2s; border-radius: 6px; font-weight: 600;}
-        .mini-chapter:hover { background: rgba(255,255,255,0.3); padding-left: 6px; }
-        .mini-chapter-checkbox { width: 16px; height: 16px; border: 1px solid rgba(0,0,0,0.15); background: rgba(255,255,255,0.4); border-radius: 4px; margin-right: 8px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size: 11px; color: white; transition: all 0.2s; box-shadow: inset 0 1px 1px rgba(0,0,0,0.05); }
-        .mini-chapter.done { text-decoration: line-through; color: rgba(17, 24, 39, 0.4); text-shadow: none; }
-        .mini-chapter.done .mini-chapter-checkbox { box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.4); border-color: transparent;}
+        .book-card-title {
+            font-weight: 800;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.3;
+            padding-right: 55px;
+            color: var(--text-main);
+            display: flex;
+            align-items: flex-start;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
 
-        .btn-delete-book { position: absolute; top: 12px; right: 12px; border: none; background: rgba(255,255,255,0.3); border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; color: var(--text-sub); cursor: pointer; transition: 0.2s; z-index: 2; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .btn-delete-book:hover { color: var(--danger); transform: scale(1.1) rotate(90deg); background: rgba(255,255,255,0.6); }
-        .btn-edit-book { position: absolute; top: 12px; right: 42px; border: none; background: rgba(255,255,255,0.3); border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; color: var(--text-sub); cursor: pointer; transition: 0.2s; z-index: 2; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .btn-edit-book:hover { color: var(--primary); transform: scale(1.1); background: rgba(255,255,255,0.6); }
+        .book-color-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0;
+            margin-top: 4px;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 1px 2px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .book-meta {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        .mini-progress {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .mini-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.4s ease-out;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        .card-chapters {
+            flex: 1;
+            overflow-y: auto;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+            padding-top: 0.5rem;
+        }
+
+        .card-chapters::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-chapters::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+        }
+
+        .mini-chapter {
+            font-size: 0.85rem;
+            padding: 0.4rem 0.3rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .mini-chapter:hover {
+            background: rgba(255, 255, 255, 0.3);
+            padding-left: 6px;
+        }
+
+        .mini-chapter-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            margin-right: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: white;
+            transition: all 0.2s;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .mini-chapter.done {
+            text-decoration: line-through;
+            color: rgba(17, 24, 39, 0.4);
+            text-shadow: none;
+        }
+
+        .mini-chapter.done .mini-chapter-checkbox {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            border-color: transparent;
+        }
+
+        .btn-delete-book {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 2;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-delete-book:hover {
+            color: var(--danger);
+            transform: scale(1.1) rotate(90deg);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-edit-book {
+            position: absolute;
+            top: 12px;
+            right: 42px;
+            border: none;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 2;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-edit-book:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.6);
+        }
 
         /* Effects & Modals */
-        @keyframes floatUpFade { 0% { opacity: 0; transform: translate3d(-50%, 0, 0) scale(0.5); } 20% { opacity: 1; transform: translate3d(-50%, -20px, 0) scale(1.2); } 100% { opacity: 0; transform: translate3d(-50%, -60px, 0) scale(1); } }
-        .xp-popup { position: fixed; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0); color: var(--gold); font-size: 4rem; font-weight: 900; text-shadow: 0 3px 15px rgba(245, 158, 11, 0.5), 0 1px 3px rgba(255,255,255,0.6); pointer-events: none; z-index: 9999; will-change: transform, opacity;}
-        .xp-popup.animate { animation: floatUpFade 1.5s ease-out forwards; }
+        @keyframes floatUpFade {
+            0% {
+                opacity: 0;
+                transform: translate3d(-50%, 0, 0) scale(0.5);
+            }
 
-        .ypt-toast { position: fixed; top: 20%; left: 50%; transform: translate3d(-50%, -50%, 0); background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(10px); color: white; padding: 1.2rem 2.5rem; border-radius: 50px; font-weight: 800; font-size: 1.1rem; z-index: 9999; display: none; box-shadow: 0 15px 30px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); will-change: transform, opacity;}
-        .ypt-toast.show { display: block; animation: floatUpFade 2.5s ease-out forwards; }
+            20% {
+                opacity: 1;
+                transform: translate3d(-50%, -20px, 0) scale(1.2);
+            }
 
-        .app-footer { text-align: center; font-size: 0.8rem; color: var(--text-main); padding: 1rem; border-top: 1px solid var(--border-glass-light); background: rgba(255, 255, 255, 0.8); font-weight: 700; text-shadow: 0 1px 1px rgba(255,255,255,0.4); }
+            100% {
+                opacity: 0;
+                transform: translate3d(-50%, -60px, 0) scale(1);
+            }
+        }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 10, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; will-change: opacity, visibility; }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .xp-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            color: var(--gold);
+            font-size: 4rem;
+            font-weight: 900;
+            text-shadow: 0 3px 15px rgba(245, 158, 11, 0.5), 0 1px 3px rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            z-index: 9999;
+            will-change: transform, opacity;
+        }
+
+        .xp-popup.animate {
+            animation: floatUpFade 1.5s ease-out forwards;
+        }
+
+        .ypt-toast {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            will-change: transform, opacity;
+        }
+
+        .ypt-toast.show {
+            display: block;
+            animation: floatUpFade 2.5s ease-out forwards;
+        }
+
+        .app-footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            padding: 1rem;
+            border-top: 1px solid var(--border-glass-light);
+            background: rgba(255, 255, 255, 0.8);
+            font-weight: 700;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 10, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            will-change: opacity, visibility;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .modal-content {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 2.5rem; width: 450px; border-radius: 32px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            width: 450px;
+            border-radius: 32px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            transform: translate3d(0, 20px, 0) scale(0.9); opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform, opacity;
+            transform: translate3d(0, 20px, 0) scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform, opacity;
         }
-        .modal-overlay.show .modal-content { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
 
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 1rem; border: 1px solid rgba(255,255,255,0.5); border-radius: 12px; font-size: 0.95rem; margin-bottom: 1rem; background: rgba(255,255,255,0.3); color: var(--text-main); font-weight: 600; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { background: rgba(255,255,255,0.7); border-color: white; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02), 0 0 0 3px rgba(255,255,255,0.2); }
-        .form-input::placeholder, .form-textarea::placeholder { color: var(--text-sub); opacity: 0.7; }
+        .modal-overlay.show .modal-content {
+            transform: translate3d(0, 0, 0) scale(1);
+            opacity: 1;
+        }
 
-        .modal-footer { display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1rem;}
-        .btn-cancel { padding: 0.8rem 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.2); cursor: pointer; color: var(--text-main); font-weight: 700; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.6); }
-        .btn-cancel:hover { background: rgba(255,255,255,0.5); transform: translateY(-1px); }
-        .btn-confirm { padding: 0.8rem 1.5rem; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; cursor: pointer; font-weight: 700; transition: all 0.2s; box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.3); }
-        .btn-confirm:hover { transform: translateY(-1px); box-shadow: 0 8px 15px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.4);}
-        .btn-confirm:active { transform: translateY(0); }
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            color: var(--text-main);
+            font-weight: 600;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
 
-        .color-picker-container { display: flex; gap: 12px; margin-bottom: 1.5rem; align-items: center; background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.4); }
-        .color-label { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-right: auto; }
-        .color-input { width: 36px; height: 36px; border: none; cursor: pointer; background: none; border-radius: 50%; overflow: hidden; padding: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.6);}
-        .color-input::-webkit-color-swatch-wrapper { padding: 0; }
-        .color-input::-webkit-color-swatch { border: none; border-radius: 50%; }
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: white;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02), 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-sub);
+            opacity: 0.7;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .btn-cancel {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            color: var(--text-main);
+            font-weight: 700;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-confirm {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-confirm:active {
+            transform: translateY(0);
+        }
+
+        .color-picker-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.8rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .color-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-right: auto;
+        }
+
+        .color-input {
+            width: 36px;
+            height: 36px;
+            border: none;
+            cursor: pointer;
+            background: none;
+            border-radius: 50%;
+            overflow: hidden;
+            padding: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .color-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
 
         @media (max-width: 1300px) {
-            body { font-size: 14px; }
-            .panel { padding: 1rem; }
+            body {
+                font-size: 14px;
+            }
 
-            .content-grid { grid-template-columns: 2.8fr 2.2fr 5fr; }
+            .panel {
+                padding: 1rem;
+            }
 
-            .pl-info-bar { grid-template-columns: 1.1fr 0.8fr 1.2fr; gap: 0.4rem; margin-bottom: 1rem;}
-            .pl-pill { padding: 0.6rem 0.8rem; border-radius: 10px;}
-            .pl-pill-val { font-size: 1.2rem; }
-            .pl-pill-label { font-size: 0.65rem; }
+            .content-grid {
+                grid-template-columns: 2.8fr 2.2fr 5fr;
+            }
 
-            .status-level-val { font-size: 2.5rem; }
-            .calendar-grid { gap: 4px; }
-            .cal-cell { min-height: 40px; padding: 4px; }
+            .pl-info-bar {
+                grid-template-columns: 1.1fr 0.8fr 1.2fr;
+                gap: 0.4rem;
+                margin-bottom: 1rem;
+            }
 
-            .book-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+            .pl-pill {
+                padding: 0.6rem 0.8rem;
+                border-radius: 10px;
+            }
 
-            .book-card { padding: 1rem; }
-            .book-card-title { font-size: 0.95rem; }
-            .task-item { padding: 0.6rem 0.8rem; }
+            .pl-pill-val {
+                font-size: 1.2rem;
+            }
+
+            .pl-pill-label {
+                font-size: 0.65rem;
+            }
+
+            .status-level-val {
+                font-size: 2.5rem;
+            }
+
+            .calendar-grid {
+                gap: 4px;
+            }
+
+            .cal-cell {
+                min-height: 40px;
+                padding: 4px;
+            }
+
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+            }
+
+            .book-card {
+                padding: 1rem;
+            }
+
+            .book-card-title {
+                font-size: 0.95rem;
+            }
+
+            .task-item {
+                padding: 0.6rem 0.8rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="bg-shapes">
@@ -340,7 +1506,8 @@
     </div>
 
     <div id="loadingScreen">
-        <div style="font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: var(--text-main);">ONStudy2SNU</div>
+        <div style="font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: var(--text-main);">ONStudy2SNU
+        </div>
         <div id="loadingMsg" style="font-size: 1rem; font-weight: 600; color: var(--text-sub);">클라우드 데이터 동기화 중...</div>
     </div>
 
@@ -355,7 +1522,9 @@
 
             <div class="xp-wrapper">
                 <div class="xp-header"><span>Daily Progress</span><span id="xpText">0 / 30</span></div>
-                <div class="xp-track"><div class="xp-fill" id="xpBar"></div></div>
+                <div class="xp-track">
+                    <div class="xp-fill" id="xpBar"></div>
+                </div>
             </div>
 
             <div class="header-actions">
@@ -367,7 +1536,8 @@
                 <div class="btn-group">
                     <button class="btn-action" onclick="window.backupData()" title="데이터를 안전하게 백업합니다">백업</button>
                     <button class="btn-action" onclick="window.restoreData()" title="백업된 데이터를 불러옵니다">복원</button>
-                    <button class="btn-action btn-danger" onclick="window.resetData()" title="현재 데이터를 초기화합니다">Reset</button>
+                    <button class="btn-action btn-danger" onclick="window.resetData()"
+                        title="현재 데이터를 초기화합니다">Reset</button>
                 </div>
             </div>
         </header>
@@ -382,7 +1552,8 @@
                 <div class="scroll-area" style="display: flex; flex-direction: column;">
                     <div class="pl-info-bar">
                         <div class="pl-pill liquid-card">
-                            <div class="pl-pill-label">DATE <span class="btn-return-today" id="btnReturnToday" onclick="window.returnToToday()" style="display:none;">➔ 오늘 복귀</span></div>
+                            <div class="pl-pill-label">DATE <span class="btn-return-today" id="btnReturnToday"
+                                    onclick="window.returnToToday()" style="display:none;">➔ 오늘 복귀</span></div>
                             <span class="pl-pill-val" id="plDateDisplay">2026.02.20</span>
                         </div>
                         <div class="pl-pill liquid-card" onclick="window.setDday()" title="클릭하여 목표일 설정">
@@ -447,7 +1618,11 @@
 
                     <div class="cal-detail-panel liquid-card" id="calDetailPanel">
                         <button class="btn-close-detail" onclick="window.closeCalDetail()" title="닫기">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                         </button>
                         <div class="detail-header" id="detailDate">YYYY. MM. DD</div>
                         <div class="detail-row">
@@ -481,7 +1656,9 @@
 
     <div id="bookModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="margin-bottom:1.5rem; font-weight:800; font-size:1.3rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4);">Add New Book</h3>
+            <h3
+                style="margin-bottom:1.5rem; font-weight:800; font-size:1.3rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4);">
+                Add New Book</h3>
             <input type="text" id="newBookTitle" class="form-input" placeholder="문제집 제목">
             <textarea id="newBookChapters" class="form-textarea" rows="5" placeholder="목차 (엔터로 구분해서 입력)"></textarea>
             <div class="color-picker-container">
@@ -497,7 +1674,9 @@
 
     <div id="editBookModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="margin-bottom:1.5rem; font-weight:800; font-size:1.3rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4);">Edit Book</h3>
+            <h3
+                style="margin-bottom:1.5rem; font-weight:800; font-size:1.3rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4);">
+                Edit Book</h3>
             <input type="text" id="editBookTitle" class="form-input" placeholder="문제집 제목">
             <textarea id="editBookChapters" class="form-textarea" rows="5" placeholder="목차 (엔터로 구분해서 입력)"></textarea>
             <div class="color-picker-container">
@@ -514,7 +1693,9 @@
 
     <div id="dailyModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="margin-bottom:1.5rem; font-weight:800; font-size:1.3rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4);">Add Daily Task</h3>
+            <h3
+                style="margin-bottom:1.5rem; font-weight:800; font-size:1.3rem; text-shadow: 0 1px 2px rgba(255,255,255,0.4);">
+                Add Daily Task</h3>
             <select id="dailyType" class="form-select" onchange="window.toggleBookSelect()">
                 <option value="normal">일반 할 일 (General Task)</option>
                 <option value="study">문제집 진도 연동 (Study Quest)</option>
@@ -535,19 +1716,22 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-          apiKey: "AIzaSyDW4xa4Qn5EI1AGlOyAUHwlB6Dtl3NHxHE",
-          authDomain: "onstudytosnu27-851e8.firebaseapp.com",
-          projectId: "onstudytosnu27-851e8",
-          storageBucket: "onstudytosnu27-851e8.firebasestorage.app",
-          messagingSenderId: "695549162437",
-          appId: "1:695549162437:web:6cf537b21da18d63e591ac"
+            apiKey: "AIzaSyDW4xa4Qn5EI1AGlOyAUHwlB6Dtl3NHxHE",
+            authDomain: "onstudytosnu27-851e8.firebaseapp.com",
+            projectId: "onstudytosnu27-851e8",
+            storageBucket: "onstudytosnu27-851e8.firebasestorage.app",
+            messagingSenderId: "695549162437",
+            appId: "1:695549162437:web:6cf537b21da18d63e591ac"
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const db = initializeFirestore(app, {
+            experimentalForceLongPolling: true,
+            useFetchStreams: false
+        });
         const USER_DOC_ID = "minchan_data";
 
         const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
@@ -608,7 +1792,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const loader = document.getElementById('loadingScreen');
-                if(loader && loader.style.display !== 'none') {
+                if (loader && loader.style.display !== 'none') {
                     loader.style.display = 'none';
                 }
             }, 2000);
@@ -618,11 +1802,11 @@
             setDailyQuote();
         });
 
-        window.backupData = async function() {
-            if(confirm("현재 데이터를 백업하시겠습니까?\n기존 백업 데이터는 덮어씌워집니다.")) {
+        window.backupData = async function () {
+            if (confirm("현재 데이터를 백업하시겠습니까?\n기존 백업 데이터는 덮어씌워집니다.")) {
                 try {
                     const snap = await getDoc(doc(db, "users", USER_DOC_ID));
-                    if(snap.exists()){
+                    if (snap.exists()) {
                         const data = snap.data();
                         data.ypt_time = appData.lastYptTime;
                         setDoc(doc(db, "users", "backup_data"), data);
@@ -636,15 +1820,15 @@
             }
         };
 
-        window.restoreData = async function() {
-            if(!confirm("정말 복원하시겠습니까?")) return;
-            if(window.appState.unsubSnapshot) window.appState.unsubSnapshot();
+        window.restoreData = async function () {
+            if (!confirm("정말 복원하시겠습니까?")) return;
+            if (window.appState.unsubSnapshot) window.appState.unsubSnapshot();
 
             document.getElementById('loadingMsg').innerText = "복원 중...";
             document.getElementById('loadingScreen').style.display = 'flex';
 
-            const backupSnap = await getDoc(doc(db,"users","backup_data"));
-            if(!backupSnap.exists()){
+            const backupSnap = await getDoc(doc(db, "users", "backup_data"));
+            if (!backupSnap.exists()) {
                 alert("백업 데이터 없음");
                 document.getElementById('loadingScreen').style.display = 'none';
                 setupRealtimeListener();
@@ -658,7 +1842,7 @@
             appData = window.structuredClone ? structuredClone(backupData) : JSON.parse(JSON.stringify(backupData));
             renderAll();
 
-            setDoc(doc(db,"users",USER_DOC_ID), backupData);
+            setDoc(doc(db, "users", USER_DOC_ID), backupData);
 
             window.appState.isAfterRestore = true;
             setupRealtimeListener();
@@ -667,15 +1851,15 @@
             alert("✅ 복원 완료");
         };
 
-        window.resetData = async function() {
-            if(confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
+        window.resetData = async function () {
+            if (confirm("정말 모든 데이터를 초기화하시겠습니까?")) {
                 window.appState.isRestoring = true;
                 document.getElementById('loadingMsg').innerText = "데이터 초기화 중...";
                 document.getElementById('loadingScreen').style.display = 'flex';
 
-                if(window.appState.unsubSnapshot) window.appState.unsubSnapshot();
+                if (window.appState.unsubSnapshot) window.appState.unsubSnapshot();
 
-                const blankData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], calendarHistory: {}, dailyPlanner: {}, plannerConfigs: {ddayDate:""}, lastDate: getStudyDateString(), lastYptTime: "00:00:00", ypt_time: "00:00:00" };
+                const blankData = { user: { level: 1, xp: 0, nextXp: 30 }, books: [], calendarHistory: {}, dailyPlanner: {}, plannerConfigs: { ddayDate: "" }, lastDate: getStudyDateString(), lastYptTime: "00:00:00", ypt_time: "00:00:00" };
                 appData = blankData;
                 viewDate = getStudyDateString();
                 renderAll();
@@ -694,15 +1878,15 @@
                 appData.user.level = 1; appData.user.xp = 0; appData.user.nextXp = 30;
                 appData.lastDate = currentStudyDate; appData.lastYptTime = "00:00:00";
 
-                if(!appData.dailyPlanner) appData.dailyPlanner = {};
-                if(!appData.dailyPlanner[currentStudyDate]) {
+                if (!appData.dailyPlanner) appData.dailyPlanner = {};
+                if (!appData.dailyPlanner[currentStudyDate]) {
                     appData.dailyPlanner[currentStudyDate] = { tasks: [] };
                 }
 
                 if (!appData.calendarHistory) appData.calendarHistory = {};
                 appData.calendarHistory[currentStudyDate] = { level: 1, time: "00:00:00" };
 
-                if(!window.appState.isRestoring) {
+                if (!window.appState.isRestoring) {
                     setDoc(doc(db, "users", USER_DOC_ID), { ypt_time: "00:00:00" }, { merge: true });
                     saveDataToCloud();
                 }
@@ -711,42 +1895,42 @@
             return false;
         }
 
-        function setupRealtimeListener(){
+        function setupRealtimeListener() {
             window.appState.unsubSnapshot =
-            onSnapshot(doc(db,"users",USER_DOC_ID),(docSnap)=>{
+                onSnapshot(doc(db, "users", USER_DOC_ID), (docSnap) => {
 
-                if(!docSnap.exists()) {
+                    if (!docSnap.exists()) {
+                        document.getElementById('loadingScreen').style.display = 'none';
+                        return;
+                    }
+
+                    if (draggedTaskIdx !== null || draggedBookIdx !== null) return;
+
+                    const data = docSnap.data();
+
+                    if (data.user) appData.user = data.user;
+                    if (data.books !== undefined) appData.books = data.books;
+                    if (data.calendarHistory) appData.calendarHistory = data.calendarHistory;
+                    if (data.dailyPlanner) appData.dailyPlanner = data.dailyPlanner;
+                    if (data.lastDate) appData.lastDate = data.lastDate;
+                    if (data.plannerConfigs) appData.plannerConfigs = data.plannerConfigs;
+                    if (data.lastYptTime) appData.lastYptTime = data.lastYptTime;
+
+                    const isReset = checkDailyReset();
+
+                    if (!window.appState.isAfterRestore && !isReset) {
+                        const remoteYptTime = data.ypt_time || "00:00:00";
+                        processYptUpdate(remoteYptTime);
+                    } else if (window.appState.isAfterRestore) {
+                        window.appState.isAfterRestore = false;
+                    }
+
+                    renderAll();
                     document.getElementById('loadingScreen').style.display = 'none';
-                    return;
-                }
-
-                if (draggedTaskIdx !== null || draggedBookIdx !== null) return;
-
-                const data = docSnap.data();
-
-                if (data.user) appData.user = data.user;
-                if (data.books !== undefined) appData.books = data.books;
-                if (data.calendarHistory) appData.calendarHistory = data.calendarHistory;
-                if (data.dailyPlanner) appData.dailyPlanner = data.dailyPlanner;
-                if (data.lastDate) appData.lastDate = data.lastDate;
-                if (data.plannerConfigs) appData.plannerConfigs = data.plannerConfigs;
-                if (data.lastYptTime) appData.lastYptTime = data.lastYptTime;
-
-                const isReset = checkDailyReset();
-
-                if(!window.appState.isAfterRestore && !isReset){
-                    const remoteYptTime = data.ypt_time || "00:00:00";
-                    processYptUpdate(remoteYptTime);
-                } else if (window.appState.isAfterRestore) {
-                    window.appState.isAfterRestore = false;
-                }
-
-                renderAll();
-                document.getElementById('loadingScreen').style.display = 'none';
-            }, (error) => {
-                console.error("Firebase Sync Error: ", error);
-                document.getElementById('loadingMsg').innerText = "DB 연결 오류! 콘솔(F12)을 확인하세요.";
-            });
+                }, (error) => {
+                    console.error("Firebase Sync Error: ", error);
+                    document.getElementById('loadingMsg').innerText = "DB 연결 오류! 콘솔(F12)을 확인하세요.";
+                });
         }
 
         function processYptUpdate(newTimeStr) {
@@ -820,7 +2004,7 @@
         }
 
         async function saveDataToCloud() {
-            if(window.appState.isRestoring) return;
+            if (window.appState.isRestoring) return;
             try { setDoc(doc(db, "users", USER_DOC_ID), appData, { merge: true }); }
             catch (e) { console.error("Error:", e); }
         }
@@ -835,13 +2019,13 @@
 
         function renderPlanner() {
             const dateEl = document.getElementById('plDateDisplay');
-            if(dateEl.innerText !== viewDate) dateEl.innerText = viewDate;
+            if (dateEl.innerText !== viewDate) dateEl.innerText = viewDate;
 
             const isToday = (viewDate === getStudyDateString());
             document.getElementById('btnReturnToday').style.display = isToday ? 'none' : 'inline-block';
 
-            if(!appData.dailyPlanner) appData.dailyPlanner = {};
-            if(!appData.dailyPlanner[viewDate]) {
+            if (!appData.dailyPlanner) appData.dailyPlanner = {};
+            if (!appData.dailyPlanner[viewDate]) {
                 appData.dailyPlanner[viewDate] = { tasks: [] };
             }
             const viewData = appData.dailyPlanner[viewDate];
@@ -855,14 +2039,14 @@
                 if (diff > 0) ddayText = `D-${diff}`;
                 else if (diff === 0) ddayText = `D-DAY`;
                 else ddayText = `D+${Math.abs(diff)}`;
-                if(ddayEl.innerText !== ddayText) ddayEl.innerText = ddayText;
+                if (ddayEl.innerText !== ddayText) ddayEl.innerText = ddayText;
             } else {
-                if(ddayEl.innerText !== "설정 (클릭)") ddayEl.innerText = "설정 (클릭)";
+                if (ddayEl.innerText !== "설정 (클릭)") ddayEl.innerText = "설정 (클릭)";
             }
 
             const totalTimeEl = document.getElementById('plTotalTime');
             const timeText = appData.calendarHistory[viewDate]?.time || "00:00:00";
-            if(totalTimeEl.innerText !== timeText) totalTimeEl.innerText = timeText;
+            if (totalTimeEl.innerText !== timeText) totalTimeEl.innerText = timeText;
 
             const list = document.getElementById('taskList');
             const currentTasksJson = JSON.stringify(viewData.tasks || []);
@@ -927,16 +2111,16 @@
             }
         }
 
-        window.returnToToday = function() {
+        window.returnToToday = function () {
             viewDate = getStudyDateString();
             renderPlanner();
         }
 
-        window.setDday = function() {
+        window.setDday = function () {
             const current = appData.plannerConfigs?.ddayDate || "2026.11.12";
             const input = prompt("D-DAY 목표 날짜를 YYYY.MM.DD 형식으로 입력하세요:", current);
-            if(input) {
-                if(!appData.plannerConfigs) appData.plannerConfigs = {};
+            if (input) {
+                if (!appData.plannerConfigs) appData.plannerConfigs = {};
                 appData.plannerConfigs.ddayDate = input;
                 renderPlanner();
                 saveDataToCloud();
@@ -957,7 +2141,7 @@
             else { widget.classList.add('stage-5'); msg.innerText = "완벽한 하루! 수고하셨습니다. 🎇"; }
         }
 
-        window.showCalDetail = function(dateStr, level, time) {
+        window.showCalDetail = function (dateStr, level, time) {
             const panel = document.getElementById('calDetailPanel');
 
             if (activeCalDate === dateStr && panel.classList.contains('show')) {
@@ -976,7 +2160,7 @@
             panel.classList.add('show');
         }
 
-        window.closeCalDetail = function() { document.getElementById('calDetailPanel').classList.remove('show'); activeCalDate = null; }
+        window.closeCalDetail = function () { document.getElementById('calDetailPanel').classList.remove('show'); activeCalDate = null; }
 
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
@@ -986,7 +2170,7 @@
             const viewMonth = currentCalendarDate.getMonth();
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-            if(monthLabel.innerText !== `${monthNames[viewMonth]} ${viewYear}`) {
+            if (monthLabel.innerText !== `${monthNames[viewMonth]} ${viewYear}`) {
                 monthLabel.innerText = `${monthNames[viewMonth]} ${viewYear}`;
             }
 
@@ -1002,11 +2186,11 @@
                 grid.appendChild(el);
             });
 
-            for(let i=0; i<firstDay; i++) grid.appendChild(document.createElement('div'));
+            for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
             const studyDateStr = getStudyDateString();
 
-            for(let d=1; d<=daysInMonth; d++) {
+            for (let d = 1; d <= daysInMonth; d++) {
                 const dateObj = new Date(viewYear, viewMonth, d);
                 const dateKey = getFixedDateKey(dateObj);
                 const isToday = (dateKey === studyDateStr);
@@ -1040,17 +2224,17 @@
             const { level, xp, nextXp } = appData.user;
 
             const lvlEl = document.getElementById('lvlInfo');
-            if(lvlEl.innerText !== `Today: Lv.${level}`) lvlEl.innerText = `Today: Lv.${level}`;
+            if (lvlEl.innerText !== `Today: Lv.${level}`) lvlEl.innerText = `Today: Lv.${level}`;
 
             const mainLvlEl = document.getElementById('todayLevelDisplay');
-            if(mainLvlEl.innerText !== `Lv. ${level}`) mainLvlEl.innerText = `Lv. ${level}`;
+            if (mainLvlEl.innerText !== `Lv. ${level}`) mainLvlEl.innerText = `Lv. ${level}`;
 
             const xpTextEl = document.getElementById('xpText');
-            if(xpTextEl.innerText !== `${xp} / ${nextXp}`) xpTextEl.innerText = `${xp} / ${nextXp}`;
+            if (xpTextEl.innerText !== `${xp} / ${nextXp}`) xpTextEl.innerText = `${xp} / ${nextXp}`;
 
             const xpBar = document.getElementById('xpBar');
-            const width = `${Math.min((xp/nextXp)*100, 100)}%`;
-            if(xpBar.style.width !== width) xpBar.style.width = width;
+            const width = `${Math.min((xp / nextXp) * 100, 100)}%`;
+            if (xpBar.style.width !== width) xpBar.style.width = width;
         }
 
         function renderBooks() {
@@ -1062,13 +2246,13 @@
             appData.books.forEach((book, idx) => {
                 const total = book.chapters.length;
                 const done = book.chapters.filter(c => c.done).length;
-                const percent = total === 0 ? 0 : Math.round((done/total)*100);
+                const percent = total === 0 ? 0 : Math.round((done / total) * 100);
                 const isMastered = (percent === 100 && total > 0);
                 const color = book.color || '#0066FF';
                 let chaptersHtml = '<div class="card-chapters">';
                 book.chapters.forEach((ch, chIdx) => {
                     const checkboxStyle = ch.done ? `background-color:${color}; border-color:${color};` : '';
-                    chaptersHtml += `<div class="mini-chapter ${ch.done?'done':''}" onclick="window.toggleChapter(${book.id}, ${chIdx})"><div class="mini-chapter-checkbox" style="${checkboxStyle}">${ch.done?'✔':''}</div><span>${ch.name}</span></div>`;
+                    chaptersHtml += `<div class="mini-chapter ${ch.done ? 'done' : ''}" onclick="window.toggleChapter(${book.id}, ${chIdx})"><div class="mini-chapter-checkbox" style="${checkboxStyle}">${ch.done ? '✔' : ''}</div><span>${ch.name}</span></div>`;
                 });
                 chaptersHtml += '</div>';
 
@@ -1126,7 +2310,7 @@
             grid.dataset.lastBooks = currentBooksJson;
         }
 
-        window.changeMonth = function(offset) {
+        window.changeMonth = function (offset) {
             const grid = document.getElementById('calendarGrid');
             window.closeCalDetail();
             window.returnToToday();
@@ -1140,19 +2324,19 @@
             }, 150);
         }
 
-        window.addBook = function() {
+        window.addBook = function () {
             const t = document.getElementById('newBookTitle').value;
-            const c = document.getElementById('newBookChapters').value.split('\n').filter(l=>l.trim()).map(l=>({name:l.trim(), done:false}));
+            const c = document.getElementById('newBookChapters').value.split('\n').filter(l => l.trim()).map(l => ({ name: l.trim(), done: false }));
             const color = document.getElementById('newBookColor').value;
-            if(t){
-                appData.books.push({id:Date.now(), title:t, chapters:c, color: color});
+            if (t) {
+                appData.books.push({ id: Date.now(), title: t, chapters: c, color: color });
                 window.closeModal('bookModal');
                 renderBooks();
                 saveDataToCloud();
             }
         };
 
-        window.openEditBookModal = function(bookId) {
+        window.openEditBookModal = function (bookId) {
             const book = appData.books.find(b => b.id == bookId);
             if (!book) return;
             document.getElementById('editBookId').value = bookId;
@@ -1162,16 +2346,16 @@
             window.openModal('editBookModal');
         }
 
-        window.confirmEditBook = function() {
+        window.confirmEditBook = function () {
             const bookId = document.getElementById('editBookId').value;
             const title = document.getElementById('editBookTitle').value;
             const chaptersText = document.getElementById('editBookChapters').value;
             const color = document.getElementById('editBookColor').value;
-            if(!title.trim()) return alert("Title required");
+            if (!title.trim()) return alert("Title required");
 
             const bookIndex = appData.books.findIndex(b => b.id == bookId);
             if (bookIndex > -1) {
-                const newChapters = chaptersText.split('\n').filter(l=>l.trim()).map(line => {
+                const newChapters = chaptersText.split('\n').filter(l => l.trim()).map(line => {
                     const txt = line.trim();
                     const isDone = txt.endsWith('(Done)');
                     const pureName = isDone ? txt.replace(/\s*\(Done\)$/, '').trim() : txt;
@@ -1187,30 +2371,30 @@
             }
         }
 
-        window.deleteBook = function(id, e) {
+        window.deleteBook = function (id, e) {
             e.stopPropagation();
-            if(confirm("Delete book?")) {
-                appData.books = appData.books.filter(b=>b.id!==id);
+            if (confirm("Delete book?")) {
+                appData.books = appData.books.filter(b => b.id !== id);
                 renderBooks();
                 saveDataToCloud();
             }
         };
 
-        window.addDailyQuest = function() {
+        window.addDailyQuest = function () {
             const type = document.getElementById('dailyType').value;
-            let task = { id:Date.now(), type, done:false, content:'' };
-            if(type==='study') {
+            let task = { id: Date.now(), type, done: false, content: '' };
+            if (type === 'study') {
                 const bid = document.getElementById('selectBook').value;
                 const cid = document.getElementById('selectChapter').value;
-                if(!bid||cid==="") return alert("Select Book & Chapter");
-                const b = appData.books.find(x=>x.id==bid);
-                task.content = `[${b.title}] ${b.chapters[cid].name}`; task.bookId=bid; task.chapterIdx=cid;
+                if (!bid || cid === "") return alert("Select Book & Chapter");
+                const b = appData.books.find(x => x.id == bid);
+                task.content = `[${b.title}] ${b.chapters[cid].name}`; task.bookId = bid; task.chapterIdx = cid;
             } else {
                 task.content = document.getElementById('dailyContent').value;
-                if(!task.content) return;
+                if (!task.content) return;
             }
-            if(!appData.dailyPlanner[viewDate]) appData.dailyPlanner[viewDate] = { tasks: [] };
-            if(!appData.dailyPlanner[viewDate].tasks) appData.dailyPlanner[viewDate].tasks = [];
+            if (!appData.dailyPlanner[viewDate]) appData.dailyPlanner[viewDate] = { tasks: [] };
+            if (!appData.dailyPlanner[viewDate].tasks) appData.dailyPlanner[viewDate].tasks = [];
 
             appData.dailyPlanner[viewDate].tasks.push(task);
 
@@ -1219,38 +2403,38 @@
             saveDataToCloud();
         };
 
-        window.deleteTask = function(idx, e) {
+        window.deleteTask = function (idx, e) {
             e.stopPropagation();
-            if(confirm("Delete task?")) {
-                appData.dailyPlanner[viewDate].tasks.splice(idx,1);
+            if (confirm("Delete task?")) {
+                appData.dailyPlanner[viewDate].tasks.splice(idx, 1);
                 renderPlanner();
                 saveDataToCloud();
             }
         };
 
-        window.toggleChapter = function(bookId, chapterIdx) {
+        window.toggleChapter = function (bookId, chapterIdx) {
             const book = appData.books.find(b => b.id === bookId);
             if (!book) return;
             const chapter = book.chapters[chapterIdx];
             chapter.done = !chapter.done;
-            if(appData.dailyPlanner[viewDate] && appData.dailyPlanner[viewDate].tasks) {
+            if (appData.dailyPlanner[viewDate] && appData.dailyPlanner[viewDate].tasks) {
                 appData.dailyPlanner[viewDate].tasks.forEach(task => {
                     if (task.type === 'study' && task.bookId == bookId && task.chapterIdx == chapterIdx) task.done = chapter.done;
                 });
             }
-            if(viewDate === getStudyDateString()) gainXp(chapter.done ? 10 : -10);
+            if (viewDate === getStudyDateString()) gainXp(chapter.done ? 10 : -10);
             else saveDataToCloud();
             renderAll();
         };
 
-        window.toggleTask = function(idx) {
+        window.toggleTask = function (idx) {
             const t = appData.dailyPlanner[viewDate].tasks[idx];
             t.done = !t.done;
-            if(t.type==='study' && t.bookId) {
-                const b = appData.books.find(x=>x.id==t.bookId);
-                if(b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
+            if (t.type === 'study' && t.bookId) {
+                const b = appData.books.find(x => x.id == t.bookId);
+                if (b && b.chapters[t.chapterIdx]) b.chapters[t.chapterIdx].done = t.done;
             }
-            if(viewDate === getStudyDateString()) gainXp(t.done?10:-10);
+            if (viewDate === getStudyDateString()) gainXp(t.done ? 10 : -10);
             else saveDataToCloud();
             renderAll();
         };
@@ -1277,30 +2461,31 @@
             setTimeout(() => { el.remove(); }, 1500);
         }
 
-        window.openModal = function(id) { document.getElementById(id).classList.add('show'); }
-        window.closeModal = function(id) { document.getElementById(id).classList.remove('show'); }
+        window.openModal = function (id) { document.getElementById(id).classList.add('show'); }
+        window.closeModal = function (id) { document.getElementById(id).classList.remove('show'); }
 
-        window.openDailyModal = function() { window.openModal('dailyModal'); window.toggleBookSelect(); document.getElementById('dailyContent').value=''; }
+        window.openDailyModal = function () { window.openModal('dailyModal'); window.toggleBookSelect(); document.getElementById('dailyContent').value = ''; }
 
-        window.openBookModal = function() { window.openModal('bookModal'); document.getElementById('newBookTitle').value=''; document.getElementById('newBookChapters').value=''; }
+        window.openBookModal = function () { window.openModal('bookModal'); document.getElementById('newBookTitle').value = ''; document.getElementById('newBookChapters').value = ''; }
 
-        window.toggleBookSelect = function() {
+        window.toggleBookSelect = function () {
             const isStudy = document.getElementById('dailyType').value === 'study';
-            document.getElementById('bookSelectGroup').style.display = isStudy?'block':'none';
-            document.getElementById('normalInputGroup').style.display = isStudy?'none':'block';
-            if(isStudy) {
-                const sel = document.getElementById('selectBook'); sel.innerHTML='<option value="">Select...</option>';
-                appData.books.forEach(b => sel.innerHTML+=`<option value="${b.id}">${b.title}</option>`);
+            document.getElementById('bookSelectGroup').style.display = isStudy ? 'block' : 'none';
+            document.getElementById('normalInputGroup').style.display = isStudy ? 'none' : 'block';
+            if (isStudy) {
+                const sel = document.getElementById('selectBook'); sel.innerHTML = '<option value="">Select...</option>';
+                appData.books.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.title}</option>`);
             }
         }
-        window.updateChapterSelect = function() {
+        window.updateChapterSelect = function () {
             const bid = document.getElementById('selectBook').value;
-            const csel = document.getElementById('selectChapter'); csel.innerHTML='';
-            const b = appData.books.find(x=>x.id==bid);
-            if(b) b.chapters.forEach((c,i)=>csel.innerHTML+=`<option value="${i}">${c.name} ${c.done?'(Done)':''}</option>`);
+            const csel = document.getElementById('selectChapter'); csel.innerHTML = '';
+            const b = appData.books.find(x => x.id == bid);
+            if (b) b.chapters.forEach((c, i) => csel.innerHTML += `<option value="${i}">${c.name} ${c.done ? '(Done)' : ''}</option>`);
         }
 
-        window.onclick = function(e) { if(e.target.classList.contains('modal-overlay')) { e.target.classList.remove('show'); } }
+        window.onclick = function (e) { if (e.target.classList.contains('modal-overlay')) { e.target.classList.remove('show'); } }
     </script>
 </body>
+
 </html>
